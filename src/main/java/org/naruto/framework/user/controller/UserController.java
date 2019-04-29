@@ -1,8 +1,7 @@
 package org.naruto.framework.user.controller;
 
 
-import lombok.extern.slf4j.Slf4j;
-import org.naruto.framework.core.ResultEntity;
+import org.naruto.framework.core.web.ResultEntity;
 import org.naruto.framework.user.domain.User;
 import org.naruto.framework.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping(value = "/v1/register", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    public ResponseEntity<ResultEntity> createUser(@RequestBody User user){
-        return ResponseEntity.ok(ResultEntity.ok(userService.createUser(user)));
+    public ResponseEntity<ResultEntity> register(@RequestBody User user){
+        return ResponseEntity.ok(ResultEntity.ok(userService.register(user)));
     }
 }
