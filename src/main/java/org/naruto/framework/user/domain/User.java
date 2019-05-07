@@ -1,13 +1,20 @@
 package org.naruto.framework.user.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+
 
 @Entity
 @Table(name="users")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
     @Id
     @GenericGenerator(name="idGenerator", strategy="uuid")
@@ -18,14 +25,18 @@ public class User {
     private String nickname;
 
     @Column(length = 20,unique = true)
+    @NotBlank(message = "请输入手机号")
     private String mobile;
 
     @Column(length = 50)
+    @NotBlank(message = "请输入密码")
     private String password;
 
     @Column(length = 50,unique = true)
+    @NotBlank(message = "请输入邮箱")
     private String mail;
 
+    /*
     public User(String nickname, String mobile, String password, String mail) {
         this.nickname = nickname;
         this.mobile = mobile;
@@ -35,6 +46,6 @@ public class User {
 
     public User(){
         super();
-    }
+    }*/
 
 }

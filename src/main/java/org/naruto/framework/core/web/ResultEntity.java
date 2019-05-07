@@ -21,10 +21,10 @@ public class ResultEntity<T> {
         return new ResultEntity("ok",data);
     }
 
-    public static ResultEntity fail(EmServiceError serviceError){
+    public static ResultEntity fail(ServiceException serviceException){
         Map<String,Object> data = new HashMap<String,Object>();
-        data.put("errCode",serviceError.getErrCode());
-        data.put("errMsg",serviceError.getErrMsg());
+        data.put("errCode",serviceException.getErrCode());
+        data.put("errMsg",serviceException.getErrMsg());
         return new ResultEntity("fail",data);
     }
 }
