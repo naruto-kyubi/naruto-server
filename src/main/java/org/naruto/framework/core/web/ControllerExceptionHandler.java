@@ -27,7 +27,8 @@ public class ControllerExceptionHandler {
             MethodArgumentNotValidException exception = (MethodArgumentNotValidException)ex;
             StringBuffer errorMsgs = new StringBuffer();
             exception.getBindingResult().getAllErrors().forEach(fieldError ->{
-                errorMsgs.append(fieldError.getDefaultMessage() + ";");
+
+                errorMsgs.append(fieldError.getDefaultMessage() +  ";");
             });
 
             ServiceException serviceException = new ServiceException(EmServiceError.PARAMETER_VALIDATION_ERROR);

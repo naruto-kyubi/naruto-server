@@ -36,16 +36,5 @@ public class User {
     @NotBlank(message = "请输入邮箱")
     private String mail;
 
-    /*
-    public User(String nickname, String mobile, String password, String mail) {
-        this.nickname = nickname;
-        this.mobile = mobile;
-        this.password = password;
-        this.mail = mail;
-    };
-
-    public User(){
-        super();
-    }*/
 
 }

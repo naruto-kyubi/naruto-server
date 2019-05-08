@@ -1,5 +1,13 @@
 package org.naruto.framework.hello;
 
+import com.aliyuncs.CommonRequest;
+import com.aliyuncs.CommonResponse;
+import com.aliyuncs.DefaultAcsClient;
+import com.aliyuncs.IAcsClient;
+import com.aliyuncs.exceptions.ClientException;
+import com.aliyuncs.exceptions.ServerException;
+import com.aliyuncs.http.MethodType;
+import com.aliyuncs.profile.DefaultProfile;
 import lombok.extern.slf4j.Slf4j;
 import org.naruto.framework.core.exception.EmServiceError;
 import org.naruto.framework.core.exception.ServiceException;
@@ -29,5 +37,6 @@ public class GreetingController {
                     String.format(template, name))));
         }
     }
+
 
 }
