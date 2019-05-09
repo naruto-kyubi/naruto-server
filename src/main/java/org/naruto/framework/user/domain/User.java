@@ -36,5 +36,7 @@ public class User {
     @NotBlank(message = "请输入邮箱")
     private String mail;
 
+    private String captcha;
+
 
 }

@@ -22,7 +22,8 @@ public class FrameworkApplicationTests {
 	@Test
     public void register(){
 
-		User user = userRepository.save(new User(null,"Jack","13034196846","Jack130","Jack130@gamil.com"));
+		User user = userRepository.save(new User(null,"Jack","13034196846","Jack130","Jack130@gamil.com",null
+		));
 		Assert.assertNotNull(user.getId());
 	}
 }
