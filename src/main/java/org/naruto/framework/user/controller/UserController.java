@@ -21,7 +21,7 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping(value = "/v1/register", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    public ResponseEntity<ResultEntity> register(@Valid @RequestBody User user){
+    public ResponseEntity<ResultEntity> register(@Validated @RequestBody User user){
         return ResponseEntity.ok(ResultEntity.ok(userService.register(user)));
     }
 }
