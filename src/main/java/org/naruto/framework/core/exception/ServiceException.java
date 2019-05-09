@@ -21,7 +21,7 @@ public class ServiceException  extends RuntimeException implements ICommonError 
     }
 
     @Override
-    public int getErrCode() {
+    public String getErrCode() {
         return this.commonError.getErrCode();
     }
 

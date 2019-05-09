@@ -31,5 +31,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'mysql:mysql-connector-java:5.1.6'
 	implementation 'com.aliyun:aliyun-java-sdk-core:4.0.3'
+	implementation 'com.alibaba:fastjson:1.2.57'
 }
 

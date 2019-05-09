@@ -19,24 +19,29 @@ import java.util.Map;
 public class ControllerExceptionHandler {
 
     @ResponseBody
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    public ResultEntity methodArgumentNotValidExceptionHandler(Exception ex) {
+        MethodArgumentNotValidException exception = (MethodArgumentNotValidException) ex;
+        StringBuffer errorMsgs = new StringBuffer();
+        exception.getBindingResult().getAllErrors().forEach(fieldError -> {
+
+            errorMsgs.append(fieldError.getDefaultMessage() + ";");
+        });
+
+        ServiceException serviceException = new ServiceException(EmServiceError.PARAMETER_VALIDATION_ERROR);
+        serviceException.setErrMsg(errorMsgs.toString());
+        return ResultEntity.fail(serviceException);
+    }
+
+    @ResponseBody
+    @ExceptionHandler(value = ServiceException.class)
+    public ResultEntity serviceExceptionHandler(Exception ex) {
+        return ResultEntity.fail((ServiceException) ex);
+    }
+
+    @ResponseBody
     @ExceptionHandler(value = Exception.class)
-    public ResultEntity exceptionHandler(Exception ex){
-        if(ex instanceof ServiceException) {
-            return ResultEntity.fail((ServiceException) ex);
-        }if(ex instanceof MethodArgumentNotValidException){
-            MethodArgumentNotValidException exception = (MethodArgumentNotValidException)ex;
-            StringBuffer errorMsgs = new StringBuffer();
-            exception.getBindingResult().getAllErrors().forEach(fieldError ->{
-
-                errorMsgs.append(fieldError.getDefaultMessage() +  ";");
-            });
-
-            ServiceException serviceException = new ServiceException(EmServiceError.PARAMETER_VALIDATION_ERROR);
-            serviceException.setErrMsg(errorMsgs.toString());
-            return ResultEntity.fail(serviceException);
-
-        }else{
-            return ResultEntity.fail(new ServiceException(EmServiceError.UNKNOW_ERROR));
-        }
+    public ResultEntity exceptionHandler(Exception ex) {
+        return ResultEntity.fail(new ServiceException(EmServiceError.UNKNOW_ERROR));
     }
 }
