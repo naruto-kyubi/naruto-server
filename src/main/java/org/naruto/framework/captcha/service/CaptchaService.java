@@ -10,6 +10,7 @@ import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.exceptions.ServerException;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
+import io.micrometer.core.instrument.util.StringUtils;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.naruto.framework.captcha.CaptchaConfig;
@@ -22,7 +23,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 @Service
@@ -44,7 +48,10 @@ public class CaptchaService {
         Random random = new Random();
         int otp = 1000 + random.nextInt(999);
 
+        log.info("The otp code is :" + Long.toString(otp));
         captcha.setCaptcha(String.valueOf(otp));
+
+        /*
         DefaultProfile profile = DefaultProfile.getProfile(captchaConfig.getRegionId(), captchaConfig.getAccessKey(), captchaConfig.getAccessSecret());
         IAcsClient client = new DefaultAcsClient(profile);
         CommonRequest request = new CommonRequest();
@@ -72,6 +79,26 @@ public class CaptchaService {
         } catch (ClientException e) {
             log.error(e.getErrMsg());
             throw new ServiceException(EmServiceError.CAPTCHA_SERVICE_ERROR);
+        }*/
+
+        return captchaRepository.save(captcha);
+    }
+
+    public Boolean verfiyCaptcha(String mobile, String captcha){
+        if(StringUtils.isBlank(mobile) ||  StringUtils.isBlank(captcha)){
+            return false;
         }
+
+        List<Captcha> otps = captchaRepository.findCaptchasByMobileAndCaptcha(mobile,captcha);
+
+        if(otps.isEmpty()) return false;
+
+        Captcha latestOtps = otps.get(0);
+
+        long duration = Duration.between(latestOtps.getCreateAt().toInstant(), Instant.now()).getSeconds();
+
+        if (duration > 300) return false;
+
+        return true;
     }
 }
