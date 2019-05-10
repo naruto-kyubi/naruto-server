@@ -46,12 +46,15 @@ public class CaptchaService {
         captcha.setCreateAt(new Date());
 
         Random random = new Random();
-        int otp = 1000 + random.nextInt(999);
+        String otp = Integer.toString(1000 + random.nextInt(9000));
 
-        log.info("The otp code is :" + Long.toString(otp));
-        captcha.setCaptcha(String.valueOf(otp));
+        log.info("The otp code is :" + otp);
+        captcha.setCaptcha(otp);
+        sendSMS(mobile, otp);
+        return captchaRepository.save(captcha);
+    }
 
-        /*
+    private void sendSMS(String mobile, String content) {
         DefaultProfile profile = DefaultProfile.getProfile(captchaConfig.getRegionId(), captchaConfig.getAccessKey(), captchaConfig.getAccessSecret());
         IAcsClient client = new DefaultAcsClient(profile);
         CommonRequest request = new CommonRequest();
@@ -65,23 +68,20 @@ public class CaptchaService {
         request.putQueryParameter("SignName", captchaConfig.getSignName());
         request.putQueryParameter("TemplateCode", captchaConfig.getTemplateCode());
 
-        request.putQueryParameter("TemplateParam", "{\"code\":" + String.valueOf(otp) + "}");
+        request.putQueryParameter("TemplateParam", "{\"code\":" + String.valueOf(content) + "}");
         try {
             CommonResponse response = client.getCommonResponse(request);
             log.info(response.getData());
             JSONObject jsonObject = JSONObject.parseObject(response.getData());
             String code = jsonObject.getString("Code");
             if(!"OK".equals(code)) throw new ServiceException(EmServiceError.CAPTCHA_SERVICE_ERROR);
-            return captchaRepository.save(captcha);
         } catch (ServerException e) {
             log.error(e.getErrMsg());
             throw new ServiceException(EmServiceError.CAPTCHA_SERVICE_ERROR);
         } catch (ClientException e) {
             log.error(e.getErrMsg());
             throw new ServiceException(EmServiceError.CAPTCHA_SERVICE_ERROR);
-        }*/
-
-        return captchaRepository.save(captcha);
+        }
     }
 
     public Boolean verfiyCaptcha(String mobile, String captcha){

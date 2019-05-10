@@ -6,7 +6,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties(prefix = "captcha")
+@ConfigurationProperties(prefix = "captcha.aliyuncs")
 @Data
 public class CaptchaConfig {
     private String regionId;

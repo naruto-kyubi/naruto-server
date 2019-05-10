@@ -38,7 +38,7 @@ public class CaptchaControllerTest {
     }
     @Test
     public void getCaptcha() throws Exception {
-        String str = mockMvc.perform(MockMvcRequestBuilders.get("/v1/getCaptcha?mobile=13704812516")
+        String str = mockMvc.perform(MockMvcRequestBuilders.get("/v1/getCaptcha?mobile=13045196846")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)).andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.status",is("ok")))
                 .andReturn().getResponse().getContentAsString();
