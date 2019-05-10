@@ -3,7 +3,6 @@ package org.naruto.framework.core.web;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.naruto.framework.core.exception.EmServiceError;
 import org.naruto.framework.core.exception.ServiceException;
 
 import java.util.HashMap;

@@ -1,6 +1,5 @@
 package org.naruto.framework.captcha.service;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.aliyuncs.CommonRequest;
 import com.aliyuncs.CommonResponse;
@@ -15,18 +14,16 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.naruto.framework.captcha.CaptchaConfig;
 import org.naruto.framework.captcha.domain.Captcha;
+import org.naruto.framework.captcha.error.CaptchaError;
 import org.naruto.framework.captcha.repository.CaptchaRepository;
-import org.naruto.framework.core.exception.EmServiceError;
+import org.naruto.framework.core.exception.CommonError;
 import org.naruto.framework.core.exception.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
-import java.util.List;
 import java.util.Random;
 
 @Service
@@ -54,6 +51,15 @@ public class CaptchaService {
         return captchaRepository.save(captcha);
     }
 
+    public void verfiyCaptcha(String mobile, String captcha){
+        if(StringUtils.isBlank(mobile) ||  StringUtils.isBlank(captcha)) throw new ServiceException(CommonError.PARAMETER_VALIDATION_ERROR);
+
+        Captcha otp = captchaRepository.findFirstByMobileAndCaptchaOrderByCreateAtDesc(mobile,captcha);
+        if(null==otp)  throw new ServiceException(CaptchaError.CAPTCHA_INCORRECT_ERROR);
+        long duration = Duration.between(otp.getCreateAt().toInstant(), Instant.now()).getSeconds();
+        if (duration > 300) throw new ServiceException(CaptchaError.CAPTCHA_TIMEOUT_ERROR);
+    }
+
     private void sendSMS(String mobile, String content) {
         DefaultProfile profile = DefaultProfile.getProfile(captchaConfig.getRegionId(), captchaConfig.getAccessKey(), captchaConfig.getAccessSecret());
         IAcsClient client = new DefaultAcsClient(profile);
@@ -74,31 +80,15 @@ public class CaptchaService {
             log.info(response.getData());
             JSONObject jsonObject = JSONObject.parseObject(response.getData());
             String code = jsonObject.getString("Code");
-            if(!"OK".equals(code)) throw new ServiceException(EmServiceError.CAPTCHA_SERVICE_ERROR);
+            if(!"OK".equals(code)) throw new ServiceException(CaptchaError.CAPTCHA_SERVICE_ERROR);
         } catch (ServerException e) {
             log.error(e.getErrMsg());
-            throw new ServiceException(EmServiceError.CAPTCHA_SERVICE_ERROR);
+            throw new ServiceException(CaptchaError.CAPTCHA_SERVICE_ERROR);
         } catch (ClientException e) {
             log.error(e.getErrMsg());
-            throw new ServiceException(EmServiceError.CAPTCHA_SERVICE_ERROR);
+            throw new ServiceException(CaptchaError.CAPTCHA_SERVICE_ERROR);
         }
     }
 
-    public Boolean verfiyCaptcha(String mobile, String captcha){
-        if(StringUtils.isBlank(mobile) ||  StringUtils.isBlank(captcha)){
-            return false;
-        }
 
-        List<Captcha> otps = captchaRepository.findCaptchasByMobileAndCaptcha(mobile,captcha);
-
-        if(otps.isEmpty()) return false;
-
-        Captcha latestOtps = otps.get(0);
-
-        long duration = Duration.between(latestOtps.getCreateAt().toInstant(), Instant.now()).getSeconds();
-
-        if (duration > 300) return false;
-
-        return true;
-    }
 }
