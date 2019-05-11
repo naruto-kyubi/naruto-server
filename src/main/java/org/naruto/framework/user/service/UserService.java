@@ -4,6 +4,7 @@ import org.naruto.framework.captcha.service.CaptchaService;
 import org.naruto.framework.core.exception.CommonError;
 import org.naruto.framework.core.exception.ServiceException;
 import org.naruto.framework.user.domain.User;
+import org.naruto.framework.user.exception.UserError;
 import org.naruto.framework.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,9 @@ public class UserService {
     public User register(User user){
         if(user == null) {
             throw new ServiceException(CommonError.PARAMETER_VALIDATION_ERROR);
+        }
+        if(userRepository.getUsersByMobile(user.getMobile()).size() > 0){
+            throw new ServiceException(UserError.USER_EXIST_ERROR);
         }
         captchaService.verfiyCaptcha(user.getMobile(),user.getCaptcha());
         return userRepository.save(user);
