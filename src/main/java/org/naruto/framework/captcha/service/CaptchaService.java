@@ -38,6 +38,11 @@ public class CaptchaService {
     private CaptchaConfig captchaConfig;
 
     public Captcha getCaptcha(String mobile){
+        if(StringUtils.isBlank(mobile)){
+            ServiceException ex =  new ServiceException(CommonError.PARAMETER_VALIDATION_ERROR);
+            ex.setErrMsg("PhoneNumbers is mandatory ");
+            throw ex;
+        }
         Captcha captcha = new Captcha();
         captcha.setMobile(mobile);
         captcha.setCreateAt(new Date());
@@ -80,12 +85,16 @@ public class CaptchaService {
             log.info(response.getData());
             JSONObject jsonObject = JSONObject.parseObject(response.getData());
             String code = jsonObject.getString("Code");
-            if(!"OK".equals(code)) throw new ServiceException(CaptchaError.CAPTCHA_SERVICE_ERROR);
+            if(!"OK".equals(code)) {
+                String message = jsonObject.getString("Message");
+                ServiceException ex =  new ServiceException(CaptchaError.CAPTCHA_SERVICE_ERROR);
+                ex.setErrMsg(message);
+                throw ex;
+            }
         } catch (ServerException e) {
             log.error(e.getErrMsg());
             throw new ServiceException(CaptchaError.CAPTCHA_SERVICE_ERROR);
         } catch (ClientException e) {
-            log.error(e.getErrMsg());
             throw new ServiceException(CaptchaError.CAPTCHA_SERVICE_ERROR);
         }
     }

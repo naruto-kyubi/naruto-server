@@ -30,12 +30,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = FrameworkApplication.class)
 public class UserControllerTest {
-    /**
-     *  注入一个web应用环境(容器)
-     */
     @Resource
     private WebApplicationContext webApplicationContext;
-    //mvc 环境对象
     private MockMvc mockMvc;
 
     private User user ;

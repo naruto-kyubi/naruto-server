@@ -1,7 +1,6 @@
 package org.naruto.framework.captcha;
 
-import com.alibaba.fastjson.JSONObject;
-import org.junit.Assert;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,12 +23,9 @@ import static org.hamcrest.Matchers.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = FrameworkApplication.class)
 public class CaptchaControllerTest {
-    /**
-     *  注入一个web应用环境(容器)
-     */
     @Resource
     private WebApplicationContext webApplicationContext;
-    //mvc 环境对象
+
     private MockMvc mockMvc;
 
     @Before
@@ -41,6 +37,24 @@ public class CaptchaControllerTest {
         String str = mockMvc.perform(MockMvcRequestBuilders.get("/v1/getCaptcha?mobile=13045196846")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)).andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.status",is("ok")))
+                .andReturn().getResponse().getContentAsString();
+    }
+
+    @Test
+    public void getCaptchaWithNoMobile() throws Exception {
+        String str = mockMvc.perform(MockMvcRequestBuilders.get("/v1/getCaptcha")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)).andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.status",is("fail")))
+                .andExpect(jsonPath("$.data.errCode",is("sys.invalid-parameter.error")))
+                .andReturn().getResponse().getContentAsString();
+    }
+
+    @Test
+    public void getCaptchaWithInvalidMobile() throws Exception {
+        String str = mockMvc.perform(MockMvcRequestBuilders.get("/v1/getCaptcha?mobile=2345")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)).andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.status",is("fail")))
+                .andExpect(jsonPath("$.data.errCode",is("captcha.unknown.error")))
                 .andReturn().getResponse().getContentAsString();
     }
 }
