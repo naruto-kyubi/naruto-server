@@ -8,6 +8,12 @@ import org.naruto.framework.user.exception.UserError;
 import org.naruto.framework.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
+
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 
 @Service
 public class UserService {
@@ -17,6 +23,8 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    private String salt = "kyubi";
 
     public User register(User user){
         if(user == null) {
@@ -29,6 +37,9 @@ public class UserService {
             throw new ServiceException(UserError.NICKNAME_EXIST_ERROR);
         }
         captchaService.verfiyCaptcha(user.getMobile(),user.getCaptcha());
+
+        user.setPassword(DigestUtils.md5DigestAsHex(user.getPassword().getBytes()));
+
         return userRepository.save(user);
     }
 }
