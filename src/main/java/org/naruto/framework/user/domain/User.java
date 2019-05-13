@@ -33,7 +33,6 @@ public class User {
     private String password;
 
     @Column(length = 50,unique = true)
-    @NotBlank(message = "请输入邮箱")
     private String mail;
 
     private String captcha;

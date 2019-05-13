@@ -25,6 +25,9 @@ public class UserService {
         if(userRepository.getUsersByMobile(user.getMobile()).size() > 0){
             throw new ServiceException(UserError.USER_EXIST_ERROR);
         }
+        if(userRepository.getUsersByNickname(user.getNickname()).size() > 0){
+            throw new ServiceException(UserError.NICKNAME_EXIST_ERROR);
+        }
         captchaService.verfiyCaptcha(user.getMobile(),user.getCaptcha());
         return userRepository.save(user);
     }

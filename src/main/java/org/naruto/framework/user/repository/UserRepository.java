@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface UserRepository extends CrudRepository<User,String> {
     public List<User> getUsersByMobile(String mobile);
+    public List<User> getUsersByNickname(String nickname);
 }
