@@ -25,7 +25,7 @@ public class UserService {
         if(user == null) {
             throw new ServiceException(CommonError.PARAMETER_VALIDATION_ERROR);
         }
-        if(userRepository.getUsersByMobile(user.getMobile()).size() > 0){
+        if(null == userRepository.getUserByMobile(user.getMobile())){
             throw new ServiceException(UserError.USER_EXIST_ERROR);
         }
         if(userRepository.getUsersByNickname(user.getNickname()).size() > 0){
@@ -37,4 +37,9 @@ public class UserService {
 
         return userRepository.save(user);
     }
+
+    public User getUserByMobile(String mobile){
+        return userRepository.getUserByMobile(mobile);
+    }
+
 }

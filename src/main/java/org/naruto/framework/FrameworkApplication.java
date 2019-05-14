@@ -10,4 +10,6 @@ public class FrameworkApplication {
 		SpringApplication.run(FrameworkApplication.class, args);
 	}
 
+
+
 }
