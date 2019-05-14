@@ -33,6 +33,7 @@ dependencies {
 	implementation 'com.aliyun:aliyun-java-sdk-core:4.0.3'
 	implementation 'com.alibaba:fastjson:1.2.57'
     implementation 'org.apache.shiro:shiro-spring-boot-web-starter:1.4.1'
+	implementation 'org.apache.commons:commons-lang3:3.7'
 
 }
 

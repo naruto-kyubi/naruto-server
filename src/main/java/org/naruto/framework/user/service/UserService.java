@@ -3,12 +3,12 @@ package org.naruto.framework.user.service;
 import org.naruto.framework.captcha.service.CaptchaService;
 import org.naruto.framework.core.exception.CommonError;
 import org.naruto.framework.core.exception.ServiceException;
+import org.naruto.framework.security.encrpyt.IEncrpyt;
 import org.naruto.framework.user.domain.User;
 import org.naruto.framework.user.exception.UserError;
 import org.naruto.framework.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.DigestUtils;
 
 @Service
 public class UserService {
@@ -18,6 +18,9 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private IEncrpyt encrpytService;
 
     private String salt = "kyubi";
 
@@ -33,8 +36,8 @@ public class UserService {
         }
         captchaService.verfiyCaptcha(user.getMobile(),user.getCaptcha());
 
-        user.setPassword(DigestUtils.md5DigestAsHex(user.getPassword().getBytes()));
-
+//        user.setPassword(DigestUtils.md5DigestAsHex(user.getPassword().getBytes()));
+        user.setPassword(encrpytService.encrpyt(user.getPassword(),"123456"));
         return userRepository.save(user);
     }
 

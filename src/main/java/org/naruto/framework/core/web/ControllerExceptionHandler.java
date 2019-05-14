@@ -36,6 +36,7 @@ public class ControllerExceptionHandler {
     @ResponseBody
     @ExceptionHandler(value = Exception.class)
     public ResultEntity exceptionHandler(Exception ex) {
+        log.error(ex.getMessage());
         return ResultEntity.fail(new ServiceException(CommonError.UNKNOWN_ERROR));
     }
 
@@ -46,5 +47,4 @@ public class ControllerExceptionHandler {
         serviceException.setErrMsg(ex.getMessage());
         return ResultEntity.fail(serviceException);
     }
-
 }
