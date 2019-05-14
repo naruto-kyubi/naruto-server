@@ -1,7 +1,11 @@
 package org.naruto.framework.security.encrpyt;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.stereotype.Component;
 import org.springframework.util.DigestUtils;
 
+@Component
+@ConditionalOnMissingBean(name="encrpytService")
 public class DefaltEncrpyt implements IEncrpyt{
 
     @Override

@@ -2,7 +2,7 @@ package org.naruto.framework.security.encrpyt;
 
 import org.springframework.stereotype.Component;
 
-@Component("encrpytService")
+//@Component("encrpytService")
 public class MD5Encrpyt implements IEncrpyt{
 
     @Override
