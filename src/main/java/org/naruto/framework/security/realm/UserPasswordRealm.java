@@ -18,9 +18,9 @@ public class UserPasswordRealm extends AuthorizingRealm{
     private UserService userService;
 
     @Autowired
-    public UserPasswordRealm(IEncrpyt encrpytService){
+    public UserPasswordRealm(PasswordCredentialsMatcher passwordCredentialsMatcher){
         this.userService = userService;
-        this.setCredentialsMatcher(new PasswordCredentialsMatcher(encrpytService));
+        this.setCredentialsMatcher(passwordCredentialsMatcher);
     }
     /**
      *

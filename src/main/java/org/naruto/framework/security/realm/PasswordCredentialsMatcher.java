@@ -8,14 +8,15 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.util.ByteSource;
 import org.naruto.framework.security.encrpyt.IEncrpyt;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @Slf4j
+@Component
 public class PasswordCredentialsMatcher implements CredentialsMatcher {
+    @Autowired
     private IEncrpyt encrpytService ;
 
-    public PasswordCredentialsMatcher(IEncrpyt encrpytService){
-        this.encrpytService = encrpytService;
-    }
     @Override
     public boolean doCredentialsMatch(AuthenticationToken token, AuthenticationInfo info) {
         UsernamePasswordToken userpasswordToken = (UsernamePasswordToken)token;
@@ -23,7 +24,7 @@ public class PasswordCredentialsMatcher implements CredentialsMatcher {
 
         ByteSource salt = ((SimpleAuthenticationInfo)info).getCredentialsSalt();
 
-        String pwdSalt = this.encrpytService.encrpyt(password,salt.toString());
+        String pwdSalt = encrpytService.encrpyt(password,salt.toString());
 
         if(pwdSalt.equals(info.getCredentials())) return true;
         return false;
