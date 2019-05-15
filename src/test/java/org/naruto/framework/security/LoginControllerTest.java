@@ -6,7 +6,7 @@ import org.junit.runner.RunWith;
 import org.naruto.framework.FrameworkApplication;
 import org.naruto.framework.captcha.domain.Captcha;
 import org.naruto.framework.captcha.repository.CaptchaRepository;
-import org.naruto.framework.security.encrpyt.IEncrpyt;
+import org.naruto.framework.core.encrpyt.IEncrpyt;
 import org.naruto.framework.user.domain.User;
 import org.naruto.framework.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
