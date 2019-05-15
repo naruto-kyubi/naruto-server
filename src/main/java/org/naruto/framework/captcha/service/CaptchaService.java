@@ -13,6 +13,7 @@ import io.micrometer.core.instrument.util.StringUtils;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.naruto.framework.captcha.CaptchaConfig;
+import org.naruto.framework.captcha.CaptchaType;
 import org.naruto.framework.captcha.domain.Captcha;
 import org.naruto.framework.captcha.error.CaptchaError;
 import org.naruto.framework.captcha.repository.CaptchaRepository;
@@ -37,12 +38,13 @@ public class CaptchaService {
     @Autowired
     private CaptchaConfig captchaConfig;
 
-    public Captcha getCaptcha(String mobile){
-        if(StringUtils.isBlank(mobile)){
-            throw  new ServiceException(CommonError.PARAMETER_VALIDATION_ERROR.setErrMsg("PhoneNumbers is mandatory"));
+    public Captcha getCaptcha(String mobile,CaptchaType captchaType){
+        if(StringUtils.isBlank(mobile) || null==captchaType){
+            throw  new ServiceException(CommonError.PARAMETER_VALIDATION_ERROR.setErrMsg("PhoneNumber or type is mandatory"));
         }
         Captcha captcha = new Captcha();
         captcha.setMobile(mobile);
+        captcha.setType(captchaType.toString());
         captcha.setCreateAt(new Date());
 
         Random random = new Random();
@@ -54,10 +56,10 @@ public class CaptchaService {
         return captchaRepository.save(captcha);
     }
 
-    public void verfiyCaptcha(String mobile, String captcha){
-        if(StringUtils.isBlank(mobile) ||  StringUtils.isBlank(captcha)) throw new ServiceException(CommonError.PARAMETER_VALIDATION_ERROR);
+    public void verfiyCaptcha(String mobile, CaptchaType captchaType,String captcha){
+        if(StringUtils.isBlank(mobile) ||  null==captchaType || StringUtils.isBlank(captcha)) throw new ServiceException(CommonError.PARAMETER_VALIDATION_ERROR);
 
-        Captcha otp = captchaRepository.findFirstByMobileAndCaptchaOrderByCreateAtDesc(mobile,captcha);
+        Captcha otp = captchaRepository.findFirstByMobileAndTypeAndCaptchaOrderByCreateAtDesc(mobile,captchaType.toString(),captcha);
         if(null==otp)  throw new ServiceException(CaptchaError.CAPTCHA_INCORRECT_ERROR);
         long duration = Duration.between(otp.getCreateAt().toInstant(), Instant.now()).getSeconds();
         if (duration > captchaConfig.getExpiryDate()) throw new ServiceException(CaptchaError.CAPTCHA_TIMEOUT_ERROR);

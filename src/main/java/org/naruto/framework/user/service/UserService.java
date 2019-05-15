@@ -1,5 +1,6 @@
 package org.naruto.framework.user.service;
 
+import org.naruto.framework.captcha.CaptchaType;
 import org.naruto.framework.captcha.service.CaptchaService;
 import org.naruto.framework.core.exception.CommonError;
 import org.naruto.framework.core.exception.ServiceException;
@@ -36,7 +37,7 @@ public class UserService {
         if(userRepository.getUsersByNickname(user.getNickname()).size() > 0){
             throw new ServiceException(UserError.NICKNAME_EXIST_ERROR);
         }
-        captchaService.verfiyCaptcha(user.getMobile(),user.getCaptcha());
+        captchaService.verfiyCaptcha(user.getMobile(), CaptchaType.SINGUP,user.getCaptcha());
 
         user.setPassword(encrpytService.encrpyt(user.getPassword(),salt));
         return userRepository.save(user);

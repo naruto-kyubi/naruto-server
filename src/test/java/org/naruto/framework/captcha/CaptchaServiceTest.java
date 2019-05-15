@@ -29,11 +29,11 @@ public class CaptchaServiceTest {
     private CaptchaRepository captchaRepository;
 
 
-    Captcha captcha;
+    private Captcha captcha;
 
     @Before
     public void before() throws Exception{
-        captcha = captchaRepository.save(new Captcha(null,"18686876684","1234",new Date()));
+        captcha = captchaRepository.save(new Captcha(null,"18686876684",CaptchaType.SINGUP.toString(),"1234",new Date()));
     }
     @After
     public void after() throws Exception{
@@ -43,13 +43,13 @@ public class CaptchaServiceTest {
     @Test
     @Transactional
     public void verfiyCaptchaSuccess() {
-        captchaService.verfiyCaptcha("18686876684","1234");
+        captchaService.verfiyCaptcha("18686876684",CaptchaType.SINGUP,"1234");
     }
 
     @Test(expected = ServiceException.class)
     @Transactional
     public void verfiyCaptchaFailWithErrorCaptacha() {
-        captchaService.verfiyCaptcha("18686876684","2345");
+        captchaService.verfiyCaptcha("18686876684",CaptchaType.SINGUP,"2345");
 
     }
 }

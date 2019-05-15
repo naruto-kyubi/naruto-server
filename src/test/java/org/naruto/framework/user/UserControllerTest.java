@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.naruto.framework.FrameworkApplication;
+import org.naruto.framework.captcha.CaptchaType;
 import org.naruto.framework.captcha.domain.Captcha;
 import org.naruto.framework.captcha.repository.CaptchaRepository;
 import org.naruto.framework.user.domain.User;
@@ -44,7 +45,7 @@ public class UserControllerTest {
     public void init(){
 
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        captcha = captchaRepository.save(new Captcha(null,"18686876684","1234",new Date()));
+        captcha = captchaRepository.save(new Captcha(null,"18686876684", CaptchaType.SINGUP.toString(),"1234",new Date()));
         user = new User();
         user.setMail("nick@yahoo.com.cn");
         user.setCaptcha(null);

@@ -21,11 +21,15 @@ public class Captcha {
     private String id;
 
     @Column(length = 20)
-    @NotBlank(message = "请输入手机号")
+    @NotBlank(message = "Invalid mobile")
     private String mobile;
 
+    @Column(length=20)
+    @NotBlank(message="Invalid type")
+    private String type;
+
     @Column(length = 20)
-    @NotBlank(message = "请输入验证码")
+    @NotBlank(message = "Invalid captcha")
     private String captcha;
 
     @Column(name="create_at",columnDefinition="datetime")

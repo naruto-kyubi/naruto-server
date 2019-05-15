@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.naruto.framework.FrameworkApplication;
+import org.naruto.framework.captcha.CaptchaType;
 import org.naruto.framework.captcha.domain.Captcha;
 import org.naruto.framework.captcha.repository.CaptchaRepository;
 import org.naruto.framework.core.encrpyt.IEncrpyt;
@@ -55,7 +56,7 @@ public class LoginControllerTest {
         password = "123456";
 
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        captcha = captchaRepository.save(new Captcha(null,mobile,"1234",new Date()));
+        captcha = captchaRepository.save(new Captcha(null,mobile, CaptchaType.LOGON.toString(),"1234",new Date()));
         user = new User();
         user.setMail("nick@yahoo.com.cn");
         user.setCaptcha(null);

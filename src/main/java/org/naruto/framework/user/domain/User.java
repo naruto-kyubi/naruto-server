@@ -35,6 +35,7 @@ public class User {
     @Column(length = 50,unique = true)
     private String mail;
 
+    @Transient
     private String captcha;
 
 
