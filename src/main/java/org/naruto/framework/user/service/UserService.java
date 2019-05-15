@@ -3,11 +3,12 @@ package org.naruto.framework.user.service;
 import org.naruto.framework.captcha.service.CaptchaService;
 import org.naruto.framework.core.exception.CommonError;
 import org.naruto.framework.core.exception.ServiceException;
-import org.naruto.framework.security.encrpyt.IEncrpyt;
+import org.naruto.framework.core.encrpyt.IEncrpyt;
 import org.naruto.framework.user.domain.User;
 import org.naruto.framework.user.exception.UserError;
 import org.naruto.framework.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,13 +23,14 @@ public class UserService {
     @Autowired
     private IEncrpyt encrpytService;
 
-    private String salt = "kyubi";
+    @Value("${naruto.encrpyt.salt}")
+    private String salt;
 
     public User register(User user){
         if(user == null) {
             throw new ServiceException(CommonError.PARAMETER_VALIDATION_ERROR);
         }
-        if(null == userRepository.getUserByMobile(user.getMobile())){
+        if(null != userRepository.getUserByMobile(user.getMobile())){
             throw new ServiceException(UserError.USER_EXIST_ERROR);
         }
         if(userRepository.getUsersByNickname(user.getNickname()).size() > 0){
@@ -36,8 +38,7 @@ public class UserService {
         }
         captchaService.verfiyCaptcha(user.getMobile(),user.getCaptcha());
 
-//        user.setPassword(DigestUtils.md5DigestAsHex(user.getPassword().getBytes()));
-        user.setPassword(encrpytService.encrpyt(user.getPassword(),"123456"));
+        user.setPassword(encrpytService.encrpyt(user.getPassword(),salt));
         return userRepository.save(user);
     }
 

@@ -16,4 +16,5 @@ public class CaptchaConfig {
     private String accessSecret;
     private String signName;
     private String templateCode;
+    private Integer expiryDate;
 }

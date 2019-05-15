@@ -7,7 +7,7 @@ import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.util.ByteSource;
-import org.naruto.framework.security.encrpyt.IEncrpyt;
+import org.naruto.framework.core.encrpyt.IEncrpyt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

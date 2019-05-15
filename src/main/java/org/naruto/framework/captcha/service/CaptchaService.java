@@ -60,7 +60,7 @@ public class CaptchaService {
         Captcha otp = captchaRepository.findFirstByMobileAndCaptchaOrderByCreateAtDesc(mobile,captcha);
         if(null==otp)  throw new ServiceException(CaptchaError.CAPTCHA_INCORRECT_ERROR);
         long duration = Duration.between(otp.getCreateAt().toInstant(), Instant.now()).getSeconds();
-        if (duration > 300) throw new ServiceException(CaptchaError.CAPTCHA_TIMEOUT_ERROR);
+        if (duration > captchaConfig.getExpiryDate()) throw new ServiceException(CaptchaError.CAPTCHA_TIMEOUT_ERROR);
     }
 
     private void sendSMS(String mobile, String content) {
@@ -94,6 +94,4 @@ public class CaptchaService {
             throw new ServiceException(CaptchaError.CAPTCHA_SERVICE_ERROR);
         }
     }
-
-
 }
