@@ -1,7 +1,6 @@
 package org.naruto.framework.captcha;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,13 +42,13 @@ public class CaptchaServiceTest {
     @Test
     @Transactional
     public void verfiyCaptchaSuccess() {
-        captchaService.verfiyCaptcha("18686876684",CaptchaType.SINGUP,"1234");
+        captchaService.validateCaptcha("18686876684",CaptchaType.SINGUP,"1234");
     }
 
     @Test(expected = ServiceException.class)
     @Transactional
     public void verfiyCaptchaFailWithErrorCaptacha() {
-        captchaService.verfiyCaptcha("18686876684",CaptchaType.SINGUP,"2345");
+        captchaService.validateCaptcha("18686876684",CaptchaType.SINGUP,"2345");
 
     }
 }

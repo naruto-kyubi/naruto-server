@@ -56,7 +56,7 @@ public class CaptchaService {
         return captchaRepository.save(captcha);
     }
 
-    public void verfiyCaptcha(String mobile, CaptchaType captchaType,String captcha){
+    public void validateCaptcha(String mobile, CaptchaType captchaType, String captcha){
         if(StringUtils.isBlank(mobile) ||  null==captchaType || StringUtils.isBlank(captcha)) throw new ServiceException(CommonError.PARAMETER_VALIDATION_ERROR);
 
         Captcha otp = captchaRepository.findFirstByMobileAndTypeAndCaptchaOrderByCreateAtDesc(mobile,captchaType.toString(),captcha);
