@@ -36,4 +36,17 @@ public class UserController {
         return ResponseEntity.ok(ResultEntity.ok(null));
     }
 
+    @RequestMapping(value = "/v1/user/resetPassword", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    public ResponseEntity<ResultEntity> resetPassword(@Validated @RequestBody User user){
+
+        return ResponseEntity.ok(ResultEntity.ok(userService.resetPassword(user)));
+    }
+
+
+
+    @RequestMapping(value = "/v1/user/forgotPasswordCaptcha", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public ResponseEntity<ResultEntity> getForgotPasswordCaptcha(@Validated @RequestParam(name = "mobile") String mobile) {
+        captchaService.getCaptcha(mobile, CaptchaType.FORGOTPASSWORD);
+        return ResponseEntity.ok(ResultEntity.ok(null));
+    }
 }

@@ -47,4 +47,20 @@ public class UserService {
         return userRepository.getUserByMobile(mobile);
     }
 
+
+    public User resetPassword(User user){
+        if(user == null) {
+            throw new ServiceException(CommonError.PARAMETER_VALIDATION_ERROR);
+        }
+
+        User current = userRepository.getUserByMobile(user.getMobile());
+        if(null == current){
+            throw new ServiceException(UserError.USER_NOT_EXIST_ERROR);
+        }
+
+       // captchaService.validateCaptcha(user.getMobile(), CaptchaType.FORGOTPASSWORD,user.getCaptcha());
+        current.setPassword(encrpytService.encrpyt(user.getPassword(),salt));
+        return userRepository.save(current);
+    }
+
 }
