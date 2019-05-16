@@ -1,19 +1,25 @@
 package org.naruto.framework.security.realm;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.HostAuthenticationToken;
+import org.apache.shiro.subject.Subject;
+import org.naruto.framework.core.exception.ServiceException;
+import org.naruto.framework.security.error.SecurityError;
 
-public class CaptchaToken implements HostAuthenticationToken {
-	private static final long serialVersionUID = 9217639903967592166L;
+public class CaptchaToken implements HostAuthenticationToken, ValidateToken {
+    private static final long serialVersionUID = 9217639903967592166L;
 
-	private String token;
+    private String token;
     private String host;
 
     private String mobile;
-    public CaptchaToken(String mobile,String token) {
-        this(mobile,token, null);
+
+    public CaptchaToken(String mobile, String token) {
+        this(mobile, token, null);
     }
 
-    public CaptchaToken(String mobile,String token, String host) {
+    public CaptchaToken(String mobile, String token, String host) {
         this.mobile = mobile;
         this.token = token;
         this.host = host;
@@ -35,7 +41,7 @@ public class CaptchaToken implements HostAuthenticationToken {
         this.mobile = mobile;
     }
 
-    public String getToken(){
+    public String getToken() {
         return this.token;
     }
 
@@ -45,7 +51,8 @@ public class CaptchaToken implements HostAuthenticationToken {
 
     @Override
     public Object getPrincipal() {
-        return token;
+        Subject subject = SecurityUtils.getSubject();
+        return subject.getPrincipal();
     }
 
     @Override
@@ -54,7 +61,19 @@ public class CaptchaToken implements HostAuthenticationToken {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return token + ':' + host;
     }
+
+    @Override
+    public void validate() {
+        try {
+            Subject subject = SecurityUtils.getSubject();
+            subject.login(this);
+        } catch (AuthenticationException e) {
+            throw new ServiceException(SecurityError.LOGON_MOBILE_INCORRECT_ERROR);
+        }
+    }
+
+
 }
