@@ -16,14 +16,4 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class FrameworkApplicationTests {
 
-	@Autowired
-	public UserRepository userRepository;
-
-	@Test
-    public void register(){
-
-		User user = userRepository.save(new User(null,"Jack","13034196846","Jack130","Jack130@gamil.com",null
-		));
-		Assert.assertNotNull(user.getId());
-	}
 }

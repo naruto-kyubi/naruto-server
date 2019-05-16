@@ -58,7 +58,7 @@ public class UserService {
             throw new ServiceException(UserError.USER_NOT_EXIST_ERROR);
         }
 
-       // captchaService.validateCaptcha(user.getMobile(), CaptchaType.FORGOTPASSWORD,user.getCaptcha());
+        captchaService.validateCaptcha(user.getMobile(), CaptchaType.FORGOTPASSWORD,user.getCaptcha());
         current.setPassword(encrpytService.encrpyt(user.getPassword(),salt));
         return userRepository.save(current);
     }
