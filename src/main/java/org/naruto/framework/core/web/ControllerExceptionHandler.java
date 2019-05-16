@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.naming.AuthenticationException;
+
 @Slf4j
 @ControllerAdvice
 public class ControllerExceptionHandler {
@@ -18,7 +20,6 @@ public class ControllerExceptionHandler {
     public ResultEntity methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException ex) {
         StringBuffer errorMsgs = new StringBuffer();
         ex.getBindingResult().getAllErrors().forEach(fieldError -> {
-
             errorMsgs.append(fieldError.getDefaultMessage() + ";");
         });
 
@@ -32,6 +33,7 @@ public class ControllerExceptionHandler {
     public ResultEntity serviceExceptionHandler(ServiceException ex) {
         return ResultEntity.fail(ex);
     }
+
 
     @ResponseBody
     @ExceptionHandler(value = Exception.class)

@@ -32,10 +32,10 @@ public class LogonController {
         User user = loginService.login(logonUser);
         return ResponseEntity.ok(ResultEntity.ok(user));
     }
+
     @RequestMapping(value = "/v1/logon/captcha", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public ResponseEntity<ResultEntity> getCaptcha(@Validated @RequestParam(name = "mobile") String mobile) {
         captchaService.getCaptcha(mobile, CaptchaType.LOGON);
         return ResponseEntity.ok(ResultEntity.ok(null));
     }
-
 }

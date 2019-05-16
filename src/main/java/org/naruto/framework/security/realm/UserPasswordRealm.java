@@ -27,7 +27,7 @@ public class UserPasswordRealm extends AuthorizingRealm{
     }
     @Override
     public boolean supports(AuthenticationToken token) {
-        return token instanceof UsernamePasswordToken;
+        return token instanceof NarutoUsernamePasswordToken;
     }
     /**
      *
