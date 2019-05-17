@@ -73,7 +73,7 @@ public class LoginControllerTest {
 //                .content("")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)).andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.status",is("ok")))
-//                .andExpect(jsonPath("$.data.errCode",is("captcha.incorrect.error")))
+//                .andExpect(jsonPath("$.data.errCode",is("captcha.incorrect.exception")))
                 .andReturn().getResponse().getContentAsString();
     }
 }

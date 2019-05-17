@@ -1,8 +1,8 @@
 package org.naruto.framework.core.exception;
 
 public class CommonError implements ICommonError{
-    public static CommonError PARAMETER_VALIDATION_ERROR = new CommonError("sys.invalid-parameter.error","Invalid Parameter");
-    public static CommonError UNKNOWN_ERROR = new CommonError("sys.unkown.error","unknow error");
+    public static CommonError PARAMETER_VALIDATION_ERROR = new CommonError("sys.invalid-parameter.exception","Invalid Parameter");
+    public static CommonError UNKNOWN_ERROR = new CommonError("sys.unkown.exception","unknow exception");
 
     private String errCode;
     private String errMsg;

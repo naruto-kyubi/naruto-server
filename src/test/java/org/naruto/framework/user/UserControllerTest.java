@@ -61,7 +61,7 @@ public class UserControllerTest {
                 .content(JSON.toJSONString(user))
                 .contentType(MediaType.APPLICATION_JSON_UTF8)).andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.status",is("fail")))
-                .andExpect(jsonPath("$.data.errCode",is("captcha.incorrect.error")))
+                .andExpect(jsonPath("$.data.errCode",is("captcha.incorrect.exception")))
                 .andReturn().getResponse().getContentAsString();
     }
     @Test

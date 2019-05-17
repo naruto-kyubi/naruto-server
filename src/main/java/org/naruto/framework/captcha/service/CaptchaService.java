@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.naruto.framework.captcha.CaptchaConfig;
 import org.naruto.framework.captcha.CaptchaType;
 import org.naruto.framework.captcha.domain.Captcha;
-import org.naruto.framework.captcha.error.CaptchaError;
+import org.naruto.framework.captcha.exception.CaptchaError;
 import org.naruto.framework.captcha.repository.CaptchaRepository;
 import org.naruto.framework.core.exception.CommonError;
 import org.naruto.framework.core.exception.ServiceException;

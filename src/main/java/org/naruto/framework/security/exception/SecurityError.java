@@ -1,4 +1,4 @@
-package org.naruto.framework.security.error;
+package org.naruto.framework.security.exception;
 
 import org.naruto.framework.core.exception.CommonError;
 

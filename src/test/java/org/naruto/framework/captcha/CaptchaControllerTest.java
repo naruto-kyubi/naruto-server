@@ -45,7 +45,7 @@ public class CaptchaControllerTest {
         String str = mockMvc.perform(MockMvcRequestBuilders.get("/v1/getCaptcha")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)).andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.status",is("fail")))
-                .andExpect(jsonPath("$.data.errCode",is("sys.invalid-parameter.error")))
+                .andExpect(jsonPath("$.data.errCode",is("sys.invalid-parameter.exception")))
                 .andReturn().getResponse().getContentAsString();
     }
 
@@ -54,7 +54,7 @@ public class CaptchaControllerTest {
         String str = mockMvc.perform(MockMvcRequestBuilders.get("/v1/getCaptcha?mobile=2345")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)).andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.status",is("fail")))
-                .andExpect(jsonPath("$.data.errCode",is("captcha.unknown.error")))
+                .andExpect(jsonPath("$.data.errCode",is("captcha.unknown.exception")))
                 .andReturn().getResponse().getContentAsString();
     }
 }

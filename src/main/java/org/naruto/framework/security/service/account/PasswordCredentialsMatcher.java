@@ -1,4 +1,4 @@
-package org.naruto.framework.security.realm;
+package org.naruto.framework.security.service.account;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.AuthenticationInfo;
