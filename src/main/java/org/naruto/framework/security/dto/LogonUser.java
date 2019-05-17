@@ -11,4 +11,5 @@ public class LogonUser {
     private String password;
     private String mobile;
     private String captcha;
+    private String authCode;
 }

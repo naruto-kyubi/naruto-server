@@ -38,7 +38,18 @@ public class CaptchaService {
     @Autowired
     private CaptchaConfig captchaConfig;
 
-    public Captcha getCaptcha(String mobile,CaptchaType captchaType){
+    public Captcha getCaptcha(String mobile, CaptchaType captchaType){
+        if(StringUtils.isBlank(mobile) ||  null==captchaType ) throw new ServiceException(CommonError.PARAMETER_VALIDATION_ERROR);
+
+        Captcha otp = captchaRepository.findFirstByMobileAndTypeOrderByCreateAtDesc(mobile,captchaType.toString());
+
+        if(null==otp)  throw new ServiceException(CaptchaError.CAPTCHA_INCORRECT_ERROR);
+        long duration = Duration.between(otp.getCreateAt().toInstant(), Instant.now()).getSeconds();
+        if (duration > captchaConfig.getExpiryDate()) throw new ServiceException(CaptchaError.CAPTCHA_TIMEOUT_ERROR);
+        return otp;
+    }
+
+    public Captcha createCaptcha(String mobile, CaptchaType captchaType){
         if(StringUtils.isBlank(mobile) || null==captchaType){
             throw  new ServiceException(CommonError.PARAMETER_VALIDATION_ERROR.setErrMsg("PhoneNumber or type is mandatory"));
         }

@@ -11,10 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
-
 @RestController
 public class UserController {
 
@@ -32,7 +28,7 @@ public class UserController {
 
     @RequestMapping(value = "/v1/user/registerCaptcha", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public ResponseEntity<ResultEntity> getRegisterCaptcha(@Validated @RequestParam(name = "mobile") String mobile) {
-        captchaService.getCaptcha(mobile, CaptchaType.SINGUP);
+        captchaService.createCaptcha(mobile, CaptchaType.SINGUP);
         return ResponseEntity.ok(ResultEntity.ok(null));
     }
 
@@ -46,7 +42,7 @@ public class UserController {
 
     @RequestMapping(value = "/v1/user/forgotPasswordCaptcha", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public ResponseEntity<ResultEntity> getForgotPasswordCaptcha(@Validated @RequestParam(name = "mobile") String mobile) {
-        captchaService.getCaptcha(mobile, CaptchaType.FORGOTPASSWORD);
+        captchaService.createCaptcha(mobile, CaptchaType.FORGOTPASSWORD);
         return ResponseEntity.ok(ResultEntity.ok(null));
     }
 }

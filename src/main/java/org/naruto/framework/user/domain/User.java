@@ -30,15 +30,16 @@ public class User {
     private String nickname;
 
     @Column(length = 20,unique = true)
-    @NotBlank(message = "请输入手机号")
     private String mobile;
 
     @Column(length = 50)
-    @NotBlank(message = "请输入密码")
     private String password;
 
     @Column(length = 50,unique = true)
     private String mail;
+
+    @Column(length = 50,unique = true)
+    private String weibo;
 
     @Transient
     private String captcha;

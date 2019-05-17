@@ -13,7 +13,7 @@ import org.apache.shiro.subject.Subject;
 public class CaptchaToken implements AuthenticationToken {
     private static final long serialVersionUID = 9217639903967592166L;
     private String mobile;
-    private String token;
+    private String captcha;
 
     @Override
     public Object getPrincipal() {
@@ -23,7 +23,7 @@ public class CaptchaToken implements AuthenticationToken {
 
     @Override
     public Object getCredentials() {
-        return token;
+        return captcha;
     }
 
 }

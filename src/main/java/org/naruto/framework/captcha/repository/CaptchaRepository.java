@@ -8,4 +8,6 @@ import java.util.List;
 public interface CaptchaRepository extends CrudRepository<Captcha,String> {
 //    Captcha findFirstByMobileAndCaptchaOrderByCreateAtDesc(String mobile,String captcha);
     Captcha findFirstByMobileAndTypeAndCaptchaOrderByCreateAtDesc(String mobile,String type,String captcha);
+
+    Captcha findFirstByMobileAndTypeOrderByCreateAtDesc(String mobile,String type);
 }

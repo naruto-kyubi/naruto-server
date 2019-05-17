@@ -43,10 +43,17 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public User save(User user){
+        return userRepository.save(user);
+    }
+
     public User getUserByMobile(String mobile){
         return userRepository.getUserByMobile(mobile);
     }
 
+    public User getUserByWeibo(String weibo){
+        return userRepository.getUserByWeibo(weibo);
+    }
 
     public User resetPassword(User user){
         if(user == null) {

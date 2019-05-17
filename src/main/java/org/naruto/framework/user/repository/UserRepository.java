@@ -10,6 +10,9 @@ public interface UserRepository extends CrudRepository<User,String> {
 //    public List<User> getUsersByMobile(String mobile);
 
     public User getUserByMobile(String mobile);
+
+    public User getUserByWeibo(String weibo);
+
     public List<User> getUsersByNickname(String nickname);
 
 }

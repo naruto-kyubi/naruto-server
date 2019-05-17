@@ -34,7 +34,7 @@ public class CaptchaControllerTest {
     }
     @Test
     public void getCaptcha() throws Exception {
-        String str = mockMvc.perform(MockMvcRequestBuilders.get("/v1/getCaptcha?mobile=13045196846")
+        String str = mockMvc.perform(MockMvcRequestBuilders.get("/v1/createCaptcha?mobile=13045196846")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)).andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.status",is("ok")))
                 .andReturn().getResponse().getContentAsString();
@@ -42,7 +42,7 @@ public class CaptchaControllerTest {
 
     @Test
     public void getCaptchaWithNoMobile() throws Exception {
-        String str = mockMvc.perform(MockMvcRequestBuilders.get("/v1/getCaptcha")
+        String str = mockMvc.perform(MockMvcRequestBuilders.get("/v1/createCaptcha")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)).andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.status",is("fail")))
                 .andExpect(jsonPath("$.data.errCode",is("sys.invalid-parameter.exception")))
@@ -51,7 +51,7 @@ public class CaptchaControllerTest {
 
     @Test
     public void getCaptchaWithInvalidMobile() throws Exception {
-        String str = mockMvc.perform(MockMvcRequestBuilders.get("/v1/getCaptcha?mobile=2345")
+        String str = mockMvc.perform(MockMvcRequestBuilders.get("/v1/createCaptcha?mobile=2345")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)).andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.status",is("fail")))
                 .andExpect(jsonPath("$.data.errCode",is("captcha.unknown.exception")))

@@ -5,6 +5,7 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.naruto.framework.captcha.CaptchaType;
+import org.naruto.framework.captcha.domain.Captcha;
 import org.naruto.framework.captcha.service.CaptchaService;
 import org.naruto.framework.user.domain.User;
 import org.naruto.framework.user.service.UserService;
@@ -20,9 +21,6 @@ public class CaptchaRealm extends AuthorizingRealm{
     @Autowired
     private CaptchaService captchaService;
 
-    public CaptchaRealm(){
-        this.userService = userService;
-    }
     /**
      *
      * @param token
@@ -31,16 +29,14 @@ public class CaptchaRealm extends AuthorizingRealm{
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+
         CaptchaToken captchaToken = (CaptchaToken)token;
-//        String username = userpasswordToken.getUsername();
-        captchaService.validateCaptcha(captchaToken.getMobile(), CaptchaType.LOGON,captchaToken.getToken());
-
         User user = userService.getUserByMobile(captchaToken.getMobile());
-
         if(user == null)
             throw new AuthenticationException("Invalid userName or password");
 
-        return new SimpleAuthenticationInfo(user, captchaToken.getToken(), this.getName());
+        Captcha captcha = captchaService.getCaptcha(captchaToken.getMobile(),CaptchaType.LOGON);
+        return new SimpleAuthenticationInfo(user, captcha.getCaptcha(), this.getName());
     }
 
     @Override
