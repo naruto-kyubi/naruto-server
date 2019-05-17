@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class LogonController {
     @Autowired
-    LogonService loginService;
+    LogonService logonService;
     @Autowired
     CaptchaService captchaService;
 
@@ -22,7 +22,7 @@ public class LogonController {
     @RequestMapping(value = "/v1/logon/account", method = RequestMethod.POST ,produces ="application/json")
     public ResponseEntity<ResultEntity> logon(@Validated @RequestBody LogonUser logonUser) {
 
-        User user = loginService.authenticate(logonUser);
+        User user = logonService.authenticate(logonUser);
         return ResponseEntity.ok(ResultEntity.ok(user));
     }
 

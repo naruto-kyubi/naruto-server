@@ -13,16 +13,15 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service
 public class LogonService {
     @Autowired
-    private Map<String, IAuthenticationService> strategyLoginServiceMap = new ConcurrentHashMap<>();
+    private Map<String, IAuthenticationService> authenticationServiceMap = new ConcurrentHashMap<>();
 
     public User authenticate(LogonUser logonUser){
-        String type = logonUser.getType();
-        //@ToDo
+        String type = logonUser.getAuthType();
         if(null==type) throw new ServiceException(SecurityError.PARAMETER_VALIDATION_ERROR);
 
-        IAuthenticationService loginService = strategyLoginServiceMap.get(type + "AuthenticationService");
-        if(null==loginService) throw new ServiceException(SecurityError.PARAMETER_VALIDATION_ERROR);
+        IAuthenticationService authenticationService = authenticationServiceMap.get(type.concat("AuthenticationService"));
+        if(null==authenticationService) throw new ServiceException(SecurityError.PARAMETER_VALIDATION_ERROR);
 
-        return loginService.authenticate(logonUser);
+        return authenticationService.authenticate(logonUser);
     }
 }
