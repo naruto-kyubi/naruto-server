@@ -38,7 +38,7 @@ public class WeiboRealm extends AuthorizingRealm{
         WeiboToken weiboToken = (WeiboToken) token;
         Map<String, String> map = new HashMap();
 
-        map.put("code", weiboToken.getOAuthCode());
+        map.put("code", weiboToken.getAuthCode());
         map.put("client_id", weiboConfig.getClientId());
         map.put("client_secret", weiboConfig.getClientSecret());
         map.put("grant_type", weiboConfig.getGrantType());
@@ -72,7 +72,7 @@ public class WeiboRealm extends AuthorizingRealm{
 //                user.setAvatar(profile_image_url);
             user = userService.save(user);
         }
-        return new SimpleAuthenticationInfo(user, weiboToken.getOAuthCode(), this.getName());
+        return new SimpleAuthenticationInfo(user, weiboToken.getAuthCode(), this.getName());
     }
 
     @Override
