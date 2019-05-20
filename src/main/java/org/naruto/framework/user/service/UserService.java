@@ -5,12 +5,18 @@ import org.naruto.framework.captcha.service.CaptchaService;
 import org.naruto.framework.core.exception.CommonError;
 import org.naruto.framework.core.exception.ServiceException;
 import org.naruto.framework.core.encrpyt.IEncrpyt;
+import org.naruto.framework.user.domain.Role;
 import org.naruto.framework.user.domain.User;
 import org.naruto.framework.user.exception.UserError;
 import org.naruto.framework.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserService {
@@ -69,5 +75,13 @@ public class UserService {
         current.setPassword(encrpytService.encrpyt(user.getPassword(),salt));
         return userRepository.save(current);
     }
+
+    @Transactional
+    public Set<Role> getUserRoles(String id) {
+        return userRepository.findById(id).get().getRoles();
+    }
+
+    @Transactional
+    public User getUserById(String id){ return userRepository.findById(id).get(); }
 
 }

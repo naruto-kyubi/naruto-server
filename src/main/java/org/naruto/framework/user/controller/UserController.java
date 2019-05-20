@@ -38,8 +38,6 @@ public class UserController {
         return ResponseEntity.ok(ResultEntity.ok(userService.resetPassword(user)));
     }
 
-
-
     @RequestMapping(value = "/v1/user/forgotPasswordCaptcha", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public ResponseEntity<ResultEntity> getForgotPasswordCaptcha(@Validated @RequestParam(name = "mobile") String mobile) {
         captchaService.createCaptcha(mobile, CaptchaType.FORGOTPASSWORD);

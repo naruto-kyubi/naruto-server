@@ -28,6 +28,4 @@ public class GreetingController {
                     String.format(template, name))));
         }
     }
-
-
 }

@@ -7,16 +7,17 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.naruto.framework.captcha.CaptchaType;
 import org.naruto.framework.captcha.domain.Captcha;
 import org.naruto.framework.captcha.service.CaptchaService;
+import org.naruto.framework.security.service.NarutoAuthorizingRealm;
 import org.naruto.framework.user.domain.User;
 import org.naruto.framework.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CaptchaRealm extends AuthorizingRealm{
+public class CaptchaRealm extends NarutoAuthorizingRealm {
 
-    @Autowired
-    private UserService userService;
+//    @Autowired
+//    private UserService userService;
 
     @Autowired
     private CaptchaService captchaService;
@@ -44,8 +45,8 @@ public class CaptchaRealm extends AuthorizingRealm{
         return token instanceof CaptchaToken;
     }
 
-    @Override
-    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        return null;
-    }
+//    @Override
+//    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+//        return null;
+//    }
 }

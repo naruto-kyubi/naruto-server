@@ -9,6 +9,7 @@ import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.naruto.framework.security.service.NarutoAuthorizingRealm;
 import org.naruto.framework.user.domain.User;
 import org.naruto.framework.user.service.UserService;
 import org.naruto.framework.utils.NetHttpClient;
@@ -19,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class WeiboRealm extends AuthorizingRealm{
+public class WeiboRealm extends NarutoAuthorizingRealm{
 
     @Autowired
     private UserService userService;
@@ -80,8 +81,4 @@ public class WeiboRealm extends AuthorizingRealm{
         return token instanceof WeiboToken;
     }
 
-    @Override
-    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        return null;
-    }
 }

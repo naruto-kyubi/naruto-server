@@ -3,15 +3,19 @@ package org.naruto.framework.user.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
@@ -20,10 +24,12 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
+@ToString
 public class User {
     @Id
     @GenericGenerator(name="idGenerator", strategy="uuid")
     @GeneratedValue(generator="idGenerator")
+    @Column(length=40)
     private String id;
 
     @Column(length = 20,unique = true)
@@ -50,5 +56,7 @@ public class User {
     @LastModifiedDate
     private Date updatedAt;
 
+    @ManyToMany(fetch=FetchType.EAGER)
+    private Set<Role> roles= new HashSet<>();
 
 }
