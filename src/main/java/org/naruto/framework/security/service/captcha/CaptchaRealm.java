@@ -1,20 +1,16 @@
 package org.naruto.framework.security.service.captcha;
 
 import org.apache.shiro.authc.*;
-import org.apache.shiro.authz.AuthorizationInfo;
-import org.apache.shiro.realm.AuthorizingRealm;
-import org.apache.shiro.subject.PrincipalCollection;
 import org.naruto.framework.captcha.CaptchaType;
 import org.naruto.framework.captcha.domain.Captcha;
 import org.naruto.framework.captcha.service.CaptchaService;
-import org.naruto.framework.security.service.NarutoAuthorizingRealm;
+import org.naruto.framework.security.service.BaseAuthorizingRealm;
 import org.naruto.framework.user.domain.User;
-import org.naruto.framework.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CaptchaRealm extends NarutoAuthorizingRealm {
+public class CaptchaRealm extends BaseAuthorizingRealm {
 
 //    @Autowired
 //    private UserService userService;

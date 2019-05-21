@@ -1,23 +1,15 @@
 package org.naruto.framework.security.service.account;
 
 import org.apache.shiro.authc.*;
-import org.apache.shiro.authz.AuthorizationInfo;
-import org.apache.shiro.authz.SimpleAuthorizationInfo;
-import org.apache.shiro.realm.AuthorizingRealm;
-import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
-import org.naruto.framework.security.service.NarutoAuthorizingRealm;
+import org.naruto.framework.security.service.BaseAuthorizingRealm;
 import org.naruto.framework.user.domain.User;
-import org.naruto.framework.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Component
-public class UserPasswordRealm extends NarutoAuthorizingRealm{
+public class UserPasswordRealm extends BaseAuthorizingRealm {
 
     @Value("${naruto.encrpyt.salt}")
     private String salt;
@@ -25,13 +17,14 @@ public class UserPasswordRealm extends NarutoAuthorizingRealm{
 
     @Autowired
     public UserPasswordRealm(PasswordCredentialsMatcher passwordCredentialsMatcher){
-//        this.userService = userService;
         this.setCredentialsMatcher(passwordCredentialsMatcher);
     }
+
     @Override
     public boolean supports(AuthenticationToken token) {
         return token instanceof UsernamePasswordToken;
     }
+
     /**
      *
      * @param token
@@ -39,7 +32,7 @@ public class UserPasswordRealm extends NarutoAuthorizingRealm{
      * @throws AuthenticationException
      */
     @Override
-    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+    public AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         UsernamePasswordToken userpasswordToken = (UsernamePasswordToken)token;
         String username = userpasswordToken.getUsername();
         User user = userService.getUserByMobile(username);

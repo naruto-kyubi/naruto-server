@@ -15,12 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public abstract class NarutoAuthorizingRealm extends AuthorizingRealm {
+public abstract class BaseAuthorizingRealm extends AuthorizingRealm {
     @Autowired
     protected UserService userService;
 
     @Override
-    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+    public AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         User user = (User) principals.getPrimaryPrincipal();

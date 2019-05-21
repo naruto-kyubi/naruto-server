@@ -1,5 +1,6 @@
 package org.naruto.framework.security.service.jwt;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
@@ -26,9 +27,9 @@ import java.time.ZoneId;
 import java.util.Date;
 
 @Component
+@Slf4j
 public class JwtAuthFilter extends AuthenticatingFilter {
-	private final Logger log = LoggerFactory.getLogger(JwtAuthFilter.class);
-	
+
     private static final int tokenRefreshInterval = 300;
 
     @Autowired
@@ -104,7 +105,6 @@ public class JwtAuthFilter extends AuthenticatingFilter {
             User user = (User) subject.getPrincipal();
             boolean shouldRefresh = shouldTokenRefresh(JwtUtils.getIssuedAt(jwtToken.getToken()));
             if(shouldRefresh) {
-//                newToken = userService.generateJwtToken(user.getName());
                 newToken = JwtUtils.sign(user.getId(),salt,3600);
             }
         }

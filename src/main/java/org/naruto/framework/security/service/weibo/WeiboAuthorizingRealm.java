@@ -6,10 +6,7 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
-import org.apache.shiro.authz.AuthorizationInfo;
-import org.apache.shiro.realm.AuthorizingRealm;
-import org.apache.shiro.subject.PrincipalCollection;
-import org.naruto.framework.security.service.NarutoAuthorizingRealm;
+import org.naruto.framework.security.service.BaseAuthorizingRealm;
 import org.naruto.framework.user.domain.User;
 import org.naruto.framework.user.service.UserService;
 import org.naruto.framework.utils.NetHttpClient;
@@ -20,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class WeiboRealm extends NarutoAuthorizingRealm{
+public class WeiboAuthorizingRealm extends BaseAuthorizingRealm {
 
     @Autowired
     private UserService userService;

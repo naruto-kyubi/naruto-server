@@ -1,22 +1,18 @@
 package org.naruto.framework.security.service.jwt;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
-import org.apache.shiro.authz.AuthorizationInfo;
-import org.apache.shiro.authz.SimpleAuthorizationInfo;
-import org.apache.shiro.subject.PrincipalCollection;
-import org.naruto.framework.security.service.NarutoAuthorizingRealm;
+import org.naruto.framework.security.service.BaseAuthorizingRealm;
 import org.naruto.framework.user.domain.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
-public class JWTRealm extends NarutoAuthorizingRealm {
-	private final Logger log = LoggerFactory.getLogger(JWTRealm.class);
+public class JWTRealm extends BaseAuthorizingRealm {
 
     @Value("${naruto.encrpyt.salt}")
     private String salt;
@@ -35,7 +31,7 @@ public class JWTRealm extends NarutoAuthorizingRealm {
      * 默认使用此方法进行用户名正确与否验证，错误抛出异常即可。
      */
     @Override
-    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken) throws AuthenticationException {
+    public AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken) throws AuthenticationException {
         JWTToken jwtToken = (JWTToken) authcToken;
         String token = jwtToken.getToken();
 
@@ -47,9 +43,4 @@ public class JWTRealm extends NarutoAuthorizingRealm {
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(user,salt,this.getName());
         return authenticationInfo;
     }
-
-//    @Override
-//    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-//        return new SimpleAuthorizationInfo();
-//    }
 }
