@@ -72,6 +72,7 @@ public class ShiroConfig {
 
     @Bean("shiroFilter")
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
+
         ShiroFilterFactoryBean factoryBean = new ShiroFilterFactoryBean();
         factoryBean.setSecurityManager(securityManager);
         Map<String, Filter> filterMap = factoryBean.getFilters();
@@ -85,7 +86,8 @@ public class ShiroConfig {
         return factoryBean;
     }
 
-    private ShiroFilterChainDefinition shiroFilterChainDefinition() {
+    @Bean
+    public  ShiroFilterChainDefinition shiroFilterChainDefinition() {
 
         List<Perm> perms = permReponsitory.getPermsByOrderBySeqAsc();
         DefaultShiroFilterChainDefinition chainDefinition = new DefaultShiroFilterChainDefinition();
@@ -94,19 +96,4 @@ public class ShiroConfig {
         }
         return chainDefinition;
     }
-
-//    @Bean
-//    public ShiroFilterChainDefinition shiroFilterChainDefinition() {
-//        DefaultShiroFilterChainDefinition chainDefinition = new DefaultShiroFilterChainDefinition();
-//
-//        // logged in users with the 'admin' role
-//        chainDefinition.addPathDefinition("/admin/**", "authc, roles[admin]");
-//
-//        // logged in users with the 'document:read' permission
-//        chainDefinition.addPathDefinition("/docs/**", "authc, perms[document:read]");
-//
-//        // all other paths require a logged in user
-//        chainDefinition.addPathDefinition("/**", "authc");
-//        return chainDefinition;
-//    }
 }
