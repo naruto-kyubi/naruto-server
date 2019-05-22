@@ -6,30 +6,25 @@ import org.apache.shiro.spring.web.config.DefaultShiroFilterChainDefinition;
 import org.apache.shiro.web.filter.mgt.DefaultFilterChainManager;
 import org.apache.shiro.web.filter.mgt.PathMatchingFilterChainResolver;
 import org.apache.shiro.web.servlet.AbstractShiroFilter;
-import org.naruto.framework.user.domain.Perm;
-import org.naruto.framework.user.repository.PermReponsitory;
+import org.naruto.framework.user.domain.Permission;
+import org.naruto.framework.user.repository.PermissionReponsitory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Map;
 
 @Service
 @Slf4j
-public class PermService {
+public class PermissionService {
     @Autowired
-    private PermReponsitory permReponsitory;
+    private PermissionReponsitory permissionReponsitory;
 
 //    @Autowired
 //    private ShiroFilterFactoryBean shiroFilterFactoryBean;
 
     @Autowired
     private ShiroFilterFactoryBean shiroFilter;
-
-    public List<Perm> getPerms(){
-        return permReponsitory.getPermsByOrderBySeqAsc();
-    }
 
     /**
      * 重新加载权限
@@ -67,10 +62,10 @@ public class PermService {
     }
 
     public DefaultShiroFilterChainDefinition loadFilterChainDefinitions() {
-        List<Perm> perms = this.getPerms();
+        List<Permission> permissions = permissionReponsitory.getPermissionsByOrderBySeqAsc();
         DefaultShiroFilterChainDefinition chainDefinition = new DefaultShiroFilterChainDefinition();
-        for (Perm obj : perms) {
-            chainDefinition.addPathDefinition(obj.getResourceUrl(), obj.getPerm());
+        for (Permission obj : permissions) {
+            chainDefinition.addPathDefinition(obj.getResourceUrl(), obj.getPermission());
         }
         return chainDefinition;
     }

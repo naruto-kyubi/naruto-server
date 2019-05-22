@@ -8,9 +8,8 @@ import org.apache.shiro.spring.web.config.ShiroFilterChainDefinition;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.naruto.framework.security.service.AnyRolesAuthorizationFilter;
 import org.naruto.framework.security.service.jwt.JwtAuthFilter;
-import org.naruto.framework.user.domain.Perm;
-import org.naruto.framework.user.repository.PermReponsitory;
-import org.naruto.framework.user.service.PermService;
+import org.naruto.framework.user.domain.Permission;
+import org.naruto.framework.user.repository.PermissionReponsitory;
 import org.naruto.framework.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -32,7 +31,7 @@ public class ShiroConfig {
     private UserService userService;
 
     @Autowired
-    private PermReponsitory permReponsitory;
+    private PermissionReponsitory permissionReponsitory;
 
     @Autowired
     private JwtAuthFilter jwtAuthFilter;
@@ -77,7 +76,7 @@ public class ShiroConfig {
         factoryBean.setSecurityManager(securityManager);
         Map<String, Filter> filterMap = factoryBean.getFilters();
         //token权限验证；
-        filterMap.put("authcToken", jwtAuthFilter);
+        filterMap.put("jwtAuthToken", jwtAuthFilter);
         //角色验证。
         filterMap.put("anyRole", anyRolesAuthorizationFilter);
         factoryBean.setFilters(filterMap);
@@ -89,10 +88,10 @@ public class ShiroConfig {
     @Bean
     public  ShiroFilterChainDefinition shiroFilterChainDefinition() {
 
-        List<Perm> perms = permReponsitory.getPermsByOrderBySeqAsc();
+        List<Permission> permissions = permissionReponsitory.getPermissionsByOrderBySeqAsc();
         DefaultShiroFilterChainDefinition chainDefinition = new DefaultShiroFilterChainDefinition();
-        for (Perm perm : perms) {
-            chainDefinition.addPathDefinition(perm.getResourceUrl(), perm.getPerm());
+        for (Permission permission : permissions) {
+            chainDefinition.addPathDefinition(permission.getResourceUrl(), permission.getPermission());
         }
         return chainDefinition;
     }

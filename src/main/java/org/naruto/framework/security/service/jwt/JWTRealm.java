@@ -1,14 +1,22 @@
 package org.naruto.framework.security.service.jwt;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Transformer;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.subject.PrincipalCollection;
 import org.naruto.framework.security.service.BaseAuthorizingRealm;
+import org.naruto.framework.user.domain.Role;
 import org.naruto.framework.user.domain.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Slf4j
 @Component
@@ -42,5 +50,25 @@ public class JWTRealm extends BaseAuthorizingRealm {
 
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(user,salt,this.getName());
         return authenticationInfo;
+    }
+
+    @Override
+    public AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+
+        SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
+        User user = (User) principals.getPrimaryPrincipal();
+//        Set<Role> roles = userService.getUserRoles(user.getId());
+
+        //获取集合某一对象属性集合；
+        List<String> roleList = (List<String>) CollectionUtils.collect(user.getRoles(), new Transformer() {
+            @Override
+            public Object transform(Object o) {
+                Role role = (Role) o;
+                return role.getId();
+            }
+        });
+
+        if (roleList != null) simpleAuthorizationInfo.addRoles(roleList);
+        return simpleAuthorizationInfo;
     }
 }

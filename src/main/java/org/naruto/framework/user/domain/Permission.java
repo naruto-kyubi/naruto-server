@@ -9,12 +9,12 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 
 @Entity
-@Table(name="perms")
+@Table(name="permissions")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class Perm {
+public class Permission {
     @Id
     @GenericGenerator(name="idGenerator", strategy="uuid")
     @GeneratedValue(generator="idGenerator")
@@ -25,7 +25,7 @@ public class Perm {
     private String resourceUrl;
 
     @Column(length = 400,unique = true)
-    private String perm;
+    private String permission;
 
     private Integer seq;
 

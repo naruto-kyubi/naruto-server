@@ -41,6 +41,9 @@ public class User {
     @Column(length = 50)
     private String password;
 
+    @Column(length = 50)
+    private String passwordSalt;
+
     @Column(length = 50,unique = true)
     private String mail;
 
@@ -57,6 +60,7 @@ public class User {
     private Date updatedAt;
 
     @ManyToMany(fetch=FetchType.EAGER)
+    @JoinTable(name= "user_roles", joinColumns = {@JoinColumn(name = "user_id", nullable = false, updatable = false) },inverseJoinColumns = { @JoinColumn(name = "role_id", nullable =false, updatable = false) })
     private Set<Role> roles= new HashSet<>();
 
 }

@@ -1,15 +1,31 @@
 package org.naruto.framework.user.controller;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.naruto.framework.captcha.CaptchaType;
 import org.naruto.framework.captcha.service.CaptchaService;
 import org.naruto.framework.core.web.ResultEntity;
 import org.naruto.framework.user.domain.User;
 import org.naruto.framework.user.service.UserService;
+import org.naruto.framework.utils.ObjUtils;
+import org.naruto.framework.utils.QueryPageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 public class UserController {
@@ -41,6 +57,79 @@ public class UserController {
     @RequestMapping(value = "/v1/user/forgotPasswordCaptcha", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public ResponseEntity<ResultEntity> getForgotPasswordCaptcha(@Validated @RequestParam(name = "mobile") String mobile) {
         captchaService.createCaptcha(mobile, CaptchaType.FORGOTPASSWORD);
+        return ResponseEntity.ok(ResultEntity.ok(null));
+    }
+
+    //多条件组合查询查询
+    @ResponseBody
+    @RequestMapping(value = "/v1/user", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    public ResponseEntity<ResultEntity> query(
+            @RequestParam(required = false) Map map,
+            HttpServletRequest request, HttpServletResponse response) {
+
+        Map _map = QueryPageUtils.prepareQueryPageMap(map);
+        //查询条件参数验证。
+        Page page = userService.queryPage(_map);
+
+        List dataList = page.getContent();
+
+        return ResponseEntity.ok(ResultEntity.ok(dataList,wrapperPage(page)));
+    }
+
+    public Map wrapperPage(Page page){
+        Pagination pagination = new Pagination(page.getSize(),page.getNumber(),page.getTotalElements());
+        Map pageMap  = new HashMap();
+        pageMap.put("pagination",pagination);
+        return pageMap;
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class Pagination{
+        private int pageSize;
+        private int currentPage;
+        private long total;
+    }
+
+    // 新增记录；
+    @ResponseBody
+    @RequestMapping(value = "/v1/user", method = RequestMethod.POST)
+    public ResponseEntity<ResultEntity> add(
+            @Valid @RequestBody User user,
+            BindingResult bindingResult,
+            HttpServletRequest request,
+            HttpServletResponse response) {
+        return ResponseEntity.ok(ResultEntity.ok(userService.save(user)));
+    }
+
+    // 修改记录；
+    @ResponseBody
+    @RequestMapping(value = "/v1/user/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<ResultEntity> update(
+            @PathVariable("id") String id,
+            @RequestBody Map map,
+            HttpServletRequest request,
+            HttpServletResponse response) {
+
+        if (null == id || "".equals(id)) return null;
+        if (CollectionUtils.isEmpty(map)) return null;
+        User user = userService.findById(id);
+
+        ObjUtils.copyMap2Obj(map, user);
+        return ResponseEntity.ok(ResultEntity.ok(userService.save(user)));
+    }
+
+    // 删除记录；
+    @ResponseBody
+    @RequestMapping(value = "/v1/user/{ids}", method = RequestMethod.DELETE)
+    public ResponseEntity<ResultEntity> delete(
+            @PathVariable("ids") String ids,
+            HttpServletRequest request,
+            HttpServletResponse response) {
+
+        String[] _ids = ids.split(",");
+        List idList = Arrays.asList(_ids);
+        if (!CollectionUtils.isEmpty(idList)) userService.delete(idList);
         return ResponseEntity.ok(ResultEntity.ok(null));
     }
 }

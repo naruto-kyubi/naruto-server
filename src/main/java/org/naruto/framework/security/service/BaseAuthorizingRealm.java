@@ -21,21 +21,22 @@ public abstract class BaseAuthorizingRealm extends AuthorizingRealm {
 
     @Override
     public AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-
-        SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-        User user = (User) principals.getPrimaryPrincipal();
-//        Set<Role> roles = userService.getUserRoles(user.getId());
-
-        //获取集合某一对象属性集合；
-        List<String> roleList = (List<String>) CollectionUtils.collect(user.getRoles(), new Transformer() {
-            @Override
-            public Object transform(Object o) {
-                Role role = (Role) o;
-                return role.getId();
-            }
-        });
-
-        if (roleList != null) simpleAuthorizationInfo.addRoles(roleList);
-        return simpleAuthorizationInfo;
+//
+//        SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
+//        User user = (User) principals.getPrimaryPrincipal();
+////        Set<Role> roles = userService.getUserRoles(user.getId());
+//
+//        //获取集合某一对象属性集合；
+//        List<String> roleList = (List<String>) CollectionUtils.collect(user.getRoles(), new Transformer() {
+//            @Override
+//            public Object transform(Object o) {
+//                Role role = (Role) o;
+//                return role.getId();
+//            }
+//        });
+//
+//        if (roleList != null) simpleAuthorizationInfo.addRoles(roleList);
+//        return simpleAuthorizationInfo;
+        return null;
     }
 }
