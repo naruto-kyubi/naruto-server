@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class PermController {
+public class PermissionController {
     @Autowired
     private PermissionService permService;
 
