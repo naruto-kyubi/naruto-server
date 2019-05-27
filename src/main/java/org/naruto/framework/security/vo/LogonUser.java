@@ -1,4 +1,4 @@
-package org.naruto.framework.security.dto;
+package org.naruto.framework.security.vo;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

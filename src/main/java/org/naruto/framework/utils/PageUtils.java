@@ -1,6 +1,9 @@
 package org.naruto.framework.utils;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -8,7 +11,7 @@ import org.springframework.data.domain.Sort;
 import java.util.HashMap;
 import java.util.Map;
 
-public class QueryPageUtils {
+public class PageUtils {
     public static Map prepareQueryPageMap(Map map) {
         if (null == map) map = new HashMap();
         Integer currentPage = null == map.get("currentPage") ? 1 : Integer.valueOf((String) map.get("currentPage"));
@@ -35,4 +38,20 @@ public class QueryPageUtils {
         }
         return pageable;
     }
+
+    public static Map wrapperPagination(Page page){
+        Pagination pagination = new Pagination(page.getSize(),page.getNumber()+1,page.getTotalElements());
+        Map pageMap  = new HashMap();
+        pageMap.put("pagination",pagination);
+        return pageMap;
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class Pagination{
+        private int pageSize;
+        private int current;
+        private long total;
+    }
+
 }

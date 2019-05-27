@@ -1,5 +1,6 @@
 package org.naruto.framework.user.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -38,9 +39,11 @@ public class User {
     @Column(length = 20,unique = true)
     private String mobile;
 
+    @JsonIgnore
     @Column(length = 50)
     private String password;
 
+    @JsonIgnore
     @Column(length = 50)
     private String passwordSalt;
 
@@ -50,6 +53,7 @@ public class User {
     @Column(length = 50,unique = true)
     private String weibo;
 
+    @JsonIgnore
     @Transient
     private String captcha;
 
@@ -59,6 +63,7 @@ public class User {
     @LastModifiedDate
     private Date updatedAt;
 
+    @JsonIgnore
     @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(name= "user_roles", joinColumns = {@JoinColumn(name = "user_id", nullable = false, updatable = false) },inverseJoinColumns = { @JoinColumn(name = "role_id", nullable =false, updatable = false) })
     private Set<Role> roles= new HashSet<>();

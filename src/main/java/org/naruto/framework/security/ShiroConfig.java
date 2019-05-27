@@ -9,7 +9,9 @@ import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.naruto.framework.security.service.AnyRolesAuthorizationFilter;
 import org.naruto.framework.security.service.jwt.JwtAuthFilter;
 import org.naruto.framework.user.domain.Permission;
+import org.naruto.framework.user.domain.ResourceRole;
 import org.naruto.framework.user.repository.PermissionReponsitory;
+import org.naruto.framework.user.repository.ResourceRoleReponsitory;
 import org.naruto.framework.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -32,6 +34,9 @@ public class ShiroConfig {
 
     @Autowired
     private PermissionReponsitory permissionReponsitory;
+
+    @Autowired
+    private ResourceRoleReponsitory resourceRoleReponsitory;
 
     @Autowired
     private JwtAuthFilter jwtAuthFilter;
@@ -88,11 +93,15 @@ public class ShiroConfig {
     @Bean
     public  ShiroFilterChainDefinition shiroFilterChainDefinition() {
 
-        List<Permission> permissions = permissionReponsitory.getPermissionsByOrderBySeqAsc();
+//        List<Permission> permissions = permissionReponsitory.getPermissionsByOrderBySeqAsc();
+        List<ResourceRole> permissions = (List)resourceRoleReponsitory.findAll();
+
         DefaultShiroFilterChainDefinition chainDefinition = new DefaultShiroFilterChainDefinition();
-        for (Permission permission : permissions) {
+        for (ResourceRole permission : permissions) {
             chainDefinition.addPathDefinition(permission.getResourceUrl(), permission.getPermission());
         }
+        chainDefinition.addPathDefinition("/login","anon");
+        chainDefinition.addPathDefinition("/**","anon");
         return chainDefinition;
     }
 }

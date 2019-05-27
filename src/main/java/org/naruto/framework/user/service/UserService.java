@@ -10,7 +10,7 @@ import org.naruto.framework.user.domain.Role;
 import org.naruto.framework.user.domain.User;
 import org.naruto.framework.user.exception.UserError;
 import org.naruto.framework.user.repository.UserRepository;
-import org.naruto.framework.utils.QueryPageUtils;
+import org.naruto.framework.utils.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -99,7 +99,6 @@ public class UserService {
         String nickname = (String) map.get("nickname");
         String mobile = (String) map.get("mobile");
 
-
         //规格定义
         Specification<User> specification = new Specification<User>() {
 
@@ -125,11 +124,10 @@ public class UserService {
                 return cb.and(predicates.toArray(new Predicate[0]));
             }
         };
-        Pageable pageable = QueryPageUtils.createPageable(map);
+        Pageable pageable = PageUtils.createPageable(map);
         //查询
         return userRepository.findAll(specification,pageable);
     }
-
 
     //删除单条记录；
     public void delete(String id ){
