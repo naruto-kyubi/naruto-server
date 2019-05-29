@@ -28,7 +28,7 @@ public class CustomerSpecs {
                         predicates.add(criteriaBuilder.equal(root.get(item.getKey()),item.getValue()));
 
                     }else if("like".equalsIgnoreCase(item.getRule())){
-                        predicates.add(criteriaBuilder.like(root.get(item.getKey()),item.getValue() + "%"));
+                        predicates.add(criteriaBuilder.like(root.get(item.getKey()),"%" + item.getValue() + "%"));
                     }
                     else if("between".equalsIgnoreCase(item.getRule())){
                         //解析value值，数组；
