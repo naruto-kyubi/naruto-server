@@ -1,6 +1,8 @@
 package org.naruto.framework.user.controller;
 
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.naruto.framework.captcha.CaptchaType;
 import org.naruto.framework.captcha.service.CaptchaService;
 import org.naruto.framework.core.web.ResultEntity;
@@ -111,5 +113,15 @@ public class UserController {
         List idList = Arrays.asList(_ids);
         if (!CollectionUtils.isEmpty(idList)) userService.delete(idList);
         return ResponseEntity.ok(ResultEntity.ok(null));
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/v1/user/currentUser", method = RequestMethod.GET)
+    public ResponseEntity<ResultEntity> getCurrentUser(
+            HttpServletRequest request, HttpServletResponse response) {
+        Subject subject = SecurityUtils.getSubject();
+        User user = (User) subject.getPrincipal();
+        return ResponseEntity.ok(ResultEntity.ok(user));
     }
 }

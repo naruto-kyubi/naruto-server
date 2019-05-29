@@ -54,6 +54,9 @@ public class User {
     @Column(length = 50,unique = true)
     private String weibo;
 
+    @Column(length = 255)
+    private String avatar;
+
     @Transient
     private String captcha;
 
