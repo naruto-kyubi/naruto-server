@@ -31,6 +31,7 @@ public class ControllerExceptionHandler {
     @ResponseBody
     @ExceptionHandler(value = ServiceException.class)
     public ResultEntity serviceExceptionHandler(ServiceException ex) {
+        log.error(ex.toString());
         return ResultEntity.fail(ex);
     }
 

@@ -7,14 +7,13 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.persistence.metamodel.Attribute;
 import javax.persistence.metamodel.EntityType;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerSpecs {
 
-    public static <T> Specification<T> byAuto(List<SearchItem> searchItems){
+    public static <T> Specification<T> createQuery(List<SearchItem> searchItems){
 
         return new Specification<T>(){
             @Override

@@ -24,10 +24,9 @@ public class CustomRepositoryImpl <T,ID extends Serializable>
     public Page<T> queryPageByCondition(Map map) {
 
         Map _map = PageUtils.prepareQueryPageMap(map);
-
         Pageable pageable = PageUtils.createPageable(_map);
         _map = PageUtils.clearPaginationArgs(_map);
         List<SearchItem> searchItems = PageUtils.getSearchItems(_map);
-        return (Page<T>) findAll(CustomerSpecs.byAuto(searchItems),pageable);
+        return (Page<T>) findAll(CustomerSpecs.createQuery(searchItems),pageable);
     }
 }
