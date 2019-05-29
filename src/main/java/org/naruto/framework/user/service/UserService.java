@@ -91,42 +91,44 @@ public class UserService {
     @Transactional
     public User getUserById(String id){ return this.userRepository.findById(id).get(); }
 
-
+//
+//    public Page<User> queryPage(Map map) {
+//        if(null == map) map = new HashMap();
+//        //查询条件；
+//        String nickname = (String) map.get("nickname");
+//        String mobile = (String) map.get("mobile");
+//
+//        //规格定义
+//        Specification<User> specification = new Specification<User>() {
+//
+//            /**
+//             * 构造断言
+//             * @param root 实体对象引用
+//             * @param query 规则查询对象
+//             * @param cb 规则构建对象
+//             * @return 断言
+//             */
+//            @Override
+//            public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+//                List<Predicate> predicates = new ArrayList<>(); //所有的断言
+//                //组织查询条件。
+//                if(StringUtils.isNotBlank(nickname)){
+//                    Predicate pArgs = cb.like(root.get("nickname").as(String.class),nickname+"%");
+//                    predicates.add(pArgs);
+//                }
+//                if(StringUtils.isNotBlank(mobile)){
+//                    Predicate pArgs = cb.like(root.get("mobile").as(String.class),mobile+"%");
+//                    predicates.add(pArgs);
+//                }
+//                return cb.and(predicates.toArray(new Predicate[0]));
+//            }
+//        };
+//        Pageable pageable = PageUtils.createPageable(map);
+//        //查询
+//        return userRepository.findAll(specification,pageable);
+//    }
     public Page<User> queryPage(Map map) {
-        if(null == map) map = new HashMap();
-
-        //查询条件；
-        String nickname = (String) map.get("nickname");
-        String mobile = (String) map.get("mobile");
-
-        //规格定义
-        Specification<User> specification = new Specification<User>() {
-
-            /**
-             * 构造断言
-             * @param root 实体对象引用
-             * @param query 规则查询对象
-             * @param cb 规则构建对象
-             * @return 断言
-             */
-            @Override
-            public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                List<Predicate> predicates = new ArrayList<>(); //所有的断言
-                //组织查询条件。
-                if(StringUtils.isNotBlank(nickname)){
-                    Predicate pArgs = cb.like(root.get("nickname").as(String.class),nickname+"%");
-                    predicates.add(pArgs);
-                }
-                if(StringUtils.isNotBlank(mobile)){
-                    Predicate pArgs = cb.like(root.get("mobile").as(String.class),mobile+"%");
-                    predicates.add(pArgs);
-                }
-                return cb.and(predicates.toArray(new Predicate[0]));
-            }
-        };
-        Pageable pageable = PageUtils.createPageable(map);
-        //查询
-        return userRepository.findAll(specification,pageable);
+        return userRepository.queryPageByCondition(map);
     }
 
     //删除单条记录；
@@ -146,4 +148,7 @@ public class UserService {
         return this.userRepository.findById(id).get();
     }
 
+    public Page<User> queryCustomPage(Map map) {
+        return userRepository.queryPageByCondition(map);
+    }
 }

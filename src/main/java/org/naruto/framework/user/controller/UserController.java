@@ -64,9 +64,8 @@ public class UserController {
             @RequestParam(required = false) Map map,
             HttpServletRequest request, HttpServletResponse response) {
 
-        Map _map = PageUtils.prepareQueryPageMap(map);
         //查询条件参数验证。
-        Page page = userService.queryPage(_map);
+        Page page = userService.queryPage(map);
         return ResponseEntity.ok(ResultEntity.ok(page.getContent(), PageUtils.wrapperPagination(page)));
     }
 

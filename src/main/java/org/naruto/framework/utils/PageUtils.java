@@ -3,12 +3,16 @@ package org.naruto.framework.utils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
+import org.naruto.framework.core.repository.SearchItem;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import javax.swing.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class PageUtils {
@@ -28,12 +32,13 @@ public class PageUtils {
         String sorter = (String) map.get("sorter");
         //分页信息
         Pageable pageable = new PageRequest(currentPage, pageSize);
+
         if (StringUtils.isNotEmpty(sorter)) {
             String[] strs = sorter.split("_");
             if ("ascend".equalsIgnoreCase(strs[1])) {
-                pageable = new PageRequest(currentPage, pageSize, Sort.Direction.ASC, strs[0]);
+                pageable = new PageRequest(currentPage, pageSize, new Sort(new Sort.Order(Sort.Direction.ASC, strs[0])));
             } else {
-                pageable = new PageRequest(currentPage, pageSize, Sort.Direction.DESC, strs[0]);
+                pageable = new PageRequest(currentPage, pageSize, new Sort(new Sort.Order(Sort.Direction.DESC, strs[0])));
             }
         }
         return pageable;
@@ -44,6 +49,27 @@ public class PageUtils {
         Map pageMap  = new HashMap();
         pageMap.put("pagination",pagination);
         return pageMap;
+    }
+
+    public static Map clearPaginationArgs(Map map){
+        if(map.containsKey("currentPage")) map.remove("currentPage");
+        if(map.containsKey("pageSize")) map.remove("pageSize");
+        if(map.containsKey("sorter")) map.remove("sorter");
+        return map;
+    }
+
+    public static List<SearchItem> getSearchItems(Map map){
+        List list = new ArrayList();
+        for (Object key : map.keySet()) {
+            String param = (String)key;
+            String[] params =  param.split("\\-");
+            if(params.length>1){
+                list.add(new SearchItem(params[0], (String) map.get(key),params[1]));
+            }else{
+                list.add(new SearchItem(params[0], (String) map.get(key),"like"));
+            }
+        }
+        return list;
     }
 
     @Data
