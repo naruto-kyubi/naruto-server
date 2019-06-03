@@ -92,4 +92,8 @@ public class User {
         this.password = password;
     }
 
+    public User(String id){
+        this.id = id;
+    }
+
 }
