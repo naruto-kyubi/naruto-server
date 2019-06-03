@@ -12,4 +12,10 @@ public class LogonUser {
     private String mobile;
     private String captcha;
     private String authCode;
+
+    /*bind (weibo/weixin/taobao)*/
+    private String bindType;
+    private String bindUid;
+    private String bindName;
+
 }

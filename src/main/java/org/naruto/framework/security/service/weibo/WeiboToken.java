@@ -12,7 +12,10 @@ import org.apache.shiro.subject.Subject;
 @AllArgsConstructor
 public class WeiboToken implements AuthenticationToken {
     private static final long serialVersionUID = 9217639903967592166L;
-    private String authCode;
+
+    private String type;
+
+    private String uid;
 
     @Override
     public Object getPrincipal() {
@@ -22,7 +25,7 @@ public class WeiboToken implements AuthenticationToken {
 
     @Override
     public Object getCredentials() {
-        return authCode;
+        return uid;
     }
 
 }

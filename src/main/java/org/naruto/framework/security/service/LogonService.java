@@ -24,4 +24,13 @@ public class LogonService {
 
         return authenticationService.authenticate(logonUser);
     }
+
+    public void bind(User user ,LogonUser logonUser){
+        String type = logonUser.getBindType();
+        if(null==type) throw new ServiceException(SecurityError.PARAMETER_VALIDATION_ERROR);
+        IAuthenticationService authenticationService = authenticationServiceMap.get(type.concat("AuthenticationService"));
+        if(null==authenticationService) throw new ServiceException(SecurityError.PARAMETER_VALIDATION_ERROR);
+
+        authenticationService.bind(user,logonUser.getBindType(),logonUser.getBindUid(),logonUser.getBindName());
+    }
 }

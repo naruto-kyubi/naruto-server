@@ -14,7 +14,7 @@ public interface UserRepository extends CustomRepository<User,String> {
 
     public User getUserByMobile(String mobile);
 
-    public User getUserByWeibo(String weibo);
+    public User getUserByWeiboUid(String weibo);
 
     public List<User> getUsersByNickname(String nickname);
 

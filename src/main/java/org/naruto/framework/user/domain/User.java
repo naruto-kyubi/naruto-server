@@ -52,7 +52,10 @@ public class User {
     private String email;
 
     @Column(length = 50,unique = true)
-    private String weibo;
+    private String weiboUid;
+
+    @Column(length = 100)
+    private String weiboName;
 
     @Column(length = 255)
     private String avatar;

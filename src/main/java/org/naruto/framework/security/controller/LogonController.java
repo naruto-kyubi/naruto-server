@@ -1,5 +1,6 @@
 package org.naruto.framework.security.controller;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.naruto.framework.captcha.CaptchaType;
@@ -39,7 +40,17 @@ public class LogonController {
     @RequestMapping(value = "/v1/logon/account", method = RequestMethod.POST ,produces ="application/json")
     public ResponseEntity<ResultEntity> logon(@Validated @RequestBody LogonUser logonUser, HttpServletResponse response) {
 
+
         User user = logonService.authenticate(logonUser);
+
+        //if exists thrid party user info. bind it(weixin/weibo/taobo etc);
+        if(StringUtils.isNotEmpty(logonUser.getBindType())
+                && StringUtils.isNotEmpty(logonUser.getBindUid())
+                && !logonUser.getAuthType().equals(logonUser.getBindType())
+                ){
+//            bind
+            logonService.bind(user,logonUser);
+        }
         String newToken = JwtUtils.sign(user.getId(),salt,3600);
         response.setHeader("x-auth-token", newToken);
         return ResponseEntity.ok(ResultEntity.ok(user));
