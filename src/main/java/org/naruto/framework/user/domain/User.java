@@ -49,13 +49,25 @@ public class User {
     private String passwordSalt;
 
     @Column(length = 50,unique = true)
-    private String mail;
+    private String email;
 
     @Column(length = 50,unique = true)
     private String weibo;
 
     @Column(length = 255)
     private String avatar;
+
+    @Column(length = 255)
+    private String profile;
+
+
+    @Embedded
+    private Geographic geographic;
+
+    private String country;
+
+    @Column(length = 255)
+    private String  address;
 
     @Transient
     private String captcha;
