@@ -47,7 +47,7 @@ public class UserControllerTest {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         captcha = captchaRepository.save(new Captcha(null,"18686876684", CaptchaType.SINGUP.toString(),"1234",new Date()));
         user = new User();
-        user.setMail("nick@yahoo.com.cn");
+        user.setEmail("nick@yahoo.com.cn");
         user.setCaptcha(null);
         user.setNickname("nickname");
         user.setMobile("18686876684");

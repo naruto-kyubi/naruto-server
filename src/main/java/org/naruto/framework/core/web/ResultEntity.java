@@ -13,22 +13,39 @@ import java.util.Map;
 @NoArgsConstructor
 public class ResultEntity<T> {
 
+//    ok,fail;
     private String status;
-    private T data;
+
+    //errCode,errMsg;
+    private Object error;
+
+    private Object data;
+
     private Object meta;
 
     public static ResultEntity ok(Object data){
-        return new ResultEntity("ok",data,null);
+        return new ResultEntity("ok",null,data,null);
     }
 
     public static ResultEntity ok(Object data,Object meta){
-        return new ResultEntity("ok",data,meta);
+        return new ResultEntity("ok",null,data,meta);
     }
 
     public static ResultEntity fail(ServiceException serviceException){
-        Map<String,Object> data = new HashMap<String,Object>();
-        data.put("errCode",serviceException.getErrCode());
-        data.put("errMsg",serviceException.getErrMsg());
-        return new ResultEntity("fail",data,null);
+        Map<String,Object> err = new HashMap<String,Object>();
+
+        err.put("errCode",serviceException.getErrCode());
+        err.put("errMsg",serviceException.getErrMsg());
+
+        return new ResultEntity("fail",err,serviceException.getData(),null);
     }
+
+//    public static ResultEntity fail(ServiceException serviceException,Object objData){
+//        Map<String,Object> err = new HashMap<String,Object>();
+//
+//        err.put("errCode",serviceException.getErrCode());
+//        err.put("errMsg",serviceException.getErrMsg());
+//
+//        return new ResultEntity("fail",err,objData,null);
+//    }
 }

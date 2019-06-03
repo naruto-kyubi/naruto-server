@@ -31,8 +31,15 @@ public class ServiceException  extends RuntimeException implements ICommonError 
     }
 
     @Override
+    public Object getData() {
+        return this.commonError.getData();
+    }
+
+    @Override
     public ICommonError setErrMsg(String errMsg) {
         this.commonError.setErrMsg(errMsg);
         return this;
     }
+
+
 }

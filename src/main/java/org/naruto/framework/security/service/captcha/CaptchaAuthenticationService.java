@@ -27,4 +27,9 @@ public class CaptchaAuthenticationService implements IAuthenticationService {
         }
         return (User) subject.getPrincipal();
     }
+
+    @Override
+    public void bind(User user, String bindType,String bindUid, String bindName) {
+
+    }
 }

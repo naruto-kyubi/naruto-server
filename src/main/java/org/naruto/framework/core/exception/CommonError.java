@@ -7,6 +7,8 @@ public class CommonError implements ICommonError{
     private String errCode;
     private String errMsg;
 
+    private Object data;
+
     @Override
     public  String getErrCode() {
         return this.errCode;
@@ -26,5 +28,13 @@ public class CommonError implements ICommonError{
     public CommonError setErrMsg(String errMsg) {
         this.errMsg = errMsg;
         return this;
+    }
+
+    public Object getData() {
+        return data;
+    }
+
+    public void setData(Object data) {
+        this.data = data;
     }
 }

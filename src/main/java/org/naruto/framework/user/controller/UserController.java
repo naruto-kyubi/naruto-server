@@ -12,16 +12,20 @@ import org.naruto.framework.utils.ObjUtils;
 import org.naruto.framework.utils.PageUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +33,8 @@ import java.util.Map;
 @RestController
 public class UserController {
 
+    @Value("${img.location}")
+    private String location;
     @Autowired
     private UserService userService;
 
@@ -87,18 +93,16 @@ public class UserController {
     @RequestMapping(value = "/v1/user/update/{id}", method = RequestMethod.PUT)
     public ResponseEntity<ResultEntity> update(
             @PathVariable("id") String id,
-            @RequestBody Map map,
+            @RequestBody User user,
             HttpServletRequest request,
             HttpServletResponse response) {
 
 //        if (null == id || "".equals(id)) return null;
-        if (CollectionUtils.isEmpty(map)) return null;
-        User user = userService.findById(id);
+        if (null==user) return null;
+        User dbUser = userService.findById(id);
 
-//        BeanUtils.copyProperties(user,_user);
-
-        ObjUtils.copyMap2Obj(map, user);
-        return ResponseEntity.ok(ResultEntity.ok(userService.save(user)));
+        BeanUtils.copyProperties(user,dbUser,"mobile","password","passwordSalt","avatar","weibo","roles");
+        return ResponseEntity.ok(ResultEntity.ok(userService.save(dbUser)));
     }
 
     // 删除记录；
@@ -121,7 +125,43 @@ public class UserController {
     public ResponseEntity<ResultEntity> getCurrentUser(
             HttpServletRequest request, HttpServletResponse response) {
         Subject subject = SecurityUtils.getSubject();
-        User user = (User) subject.getPrincipal();
-        return ResponseEntity.ok(ResultEntity.ok(user));
+        User sessionUser = (User) subject.getPrincipal();
+        User localUser = userService.findById(sessionUser.getId());
+        return ResponseEntity.ok(ResultEntity.ok(localUser));
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/v1/user/avatar", method = RequestMethod.POST)
+    public ResponseEntity<ResultEntity> uploadFile(@RequestParam("file") MultipartFile file) throws Exception{
+        //首先进行文件上传
+        String contentType = file.getContentType();
+        String fileName = file.getOriginalFilename();
+        uploadFile(file.getBytes(), location, fileName);
+        Subject subject = SecurityUtils.getSubject();
+        User sessionUser = (User) subject.getPrincipal();
+
+        User user = userService.findById(sessionUser.getId());
+        String imageUrl = "/naruto/api/images/" + fileName;
+        user.setAvatar(imageUrl);
+        userService.save(user);
+        return ResponseEntity.ok(ResultEntity.ok(imageUrl));
+    }
+
+    /**
+     * 上传文件
+     * @param file  文件对应的byte数组流   使用file.getBytes()方法可以获取
+     * @param filePath  上传文件路径，不包含文件名
+     * @param fileName 上传文件名
+     * @throws Exception
+     */
+    public static void uploadFile(byte[] file, String filePath, String fileName) throws Exception {
+        File targetFile = new File(filePath);
+        if(!targetFile.exists()){
+            targetFile.mkdirs();
+        }
+        FileOutputStream out = new FileOutputStream(filePath+"/"+fileName);
+        out.write(file);
+        out.flush();
+        out.close();
     }
 }
