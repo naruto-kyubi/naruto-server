@@ -51,18 +51,11 @@ public class User {
     @Column(length = 50,unique = true)
     private String email;
 
-    @Column(length = 50,unique = true)
-    private String weiboUid;
-
-    @Column(length = 100)
-    private String weiboName;
-
     @Column(length = 255)
     private String avatar;
 
     @Column(length = 255)
     private String profile;
-
 
     @Embedded
     private Geographic geographic;

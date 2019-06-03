@@ -64,10 +64,6 @@ public class UserService {
         return userRepository.getUserByMobile(mobile);
     }
 
-    public User getUserByWeibo(String weibo){
-        return userRepository.getUserByWeiboUid(weibo);
-    }
-
     public User resetPassword(User user){
         if(user == null) {
             throw new ServiceException(CommonError.PARAMETER_VALIDATION_ERROR);
