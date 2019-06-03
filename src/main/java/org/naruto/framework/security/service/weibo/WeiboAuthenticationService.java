@@ -1,7 +1,6 @@
 package org.naruto.framework.security.service.weibo;
 
 import com.alibaba.fastjson.JSONObject;
-import com.sun.tools.internal.ws.wscompile.AuthInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
