@@ -20,7 +20,7 @@ public class ArticleController {
     @Autowired
     private ArticleService articleService;
 
-    @RequestMapping(value = "/v1/article/public", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/v1/article/add", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 
     public ResponseEntity<ResultEntity> pub(@Validated @RequestBody Article article){
 
