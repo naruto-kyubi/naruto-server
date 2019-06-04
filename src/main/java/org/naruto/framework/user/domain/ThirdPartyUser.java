@@ -1,5 +1,6 @@
 package org.naruto.framework.user.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,12 +24,13 @@ public class ThirdPartyUser {
     @Column(length=40)
     private String id;
 
-    private String type;
+    private String authType;
 
     private String uid;
 
     private String name;
 
+    @JsonIgnore
     @ManyToOne
     private User user;
 

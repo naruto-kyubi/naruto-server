@@ -49,7 +49,7 @@ public class LogonController {
                 && !logonUser.getAuthType().equals(logonUser.getBindType())
                 ){
 //            bind
-            logonService.bind(user,logonUser);
+            logonService.bind(user,logonUser.getBindType(),logonUser.getBindUid(),logonUser.getBindName());
         }
         String newToken = JwtUtils.sign(user.getId(),salt,3600);
         response.setHeader("x-auth-token", newToken);

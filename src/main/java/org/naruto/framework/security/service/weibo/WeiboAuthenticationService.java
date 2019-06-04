@@ -14,6 +14,7 @@ import org.naruto.framework.user.service.ThirdPartyUserService;
 import org.naruto.framework.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -55,10 +56,24 @@ public class WeiboAuthenticationService implements IAuthenticationService {
     }
 
     @Override
-    public void bind(User user,String bindType, String bindUid, String bindName) {
+    public ThirdPartyUser bind(User user,String bindType, String bindUid, String bindName) {
 
         ThirdPartyUser thirdPartyUser = new ThirdPartyUser(null,bindType,bindUid,bindName,user);
-        thirdPartyUserService.save(thirdPartyUser);
+        return thirdPartyUserService.save(thirdPartyUser);
+    }
+
+    @Override
+    public ThirdPartyUser bind(User user, String bindType, String authCode) {
+
+        Map<String,String> authInfo = this.getAuthInfo(authCode);
+        return this.bind(user,bindType,authInfo.get("uid"),authInfo.get("name"));
+    }
+
+    @Transactional
+    @Override
+    public void unbind(User user, String authType) {
+
+        thirdPartyUserService.unbind(user,authType);
     }
 
     private Map<String,String> getAuthInfo(String authCode) {

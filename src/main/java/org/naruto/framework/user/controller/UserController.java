@@ -6,7 +6,10 @@ import org.apache.shiro.subject.Subject;
 import org.naruto.framework.captcha.CaptchaType;
 import org.naruto.framework.captcha.service.CaptchaService;
 import org.naruto.framework.core.web.ResultEntity;
+import org.naruto.framework.security.service.LogonService;
+import org.naruto.framework.user.domain.ThirdPartyUser;
 import org.naruto.framework.user.domain.User;
+import org.naruto.framework.user.service.ThirdPartyUserService;
 import org.naruto.framework.user.service.UserService;
 import org.naruto.framework.utils.ObjUtils;
 import org.naruto.framework.utils.PageUtils;
@@ -37,6 +40,12 @@ public class UserController {
     private String location;
     @Autowired
     private UserService userService;
+
+    @Autowired
+    LogonService logonService;
+
+    @Autowired
+    private ThirdPartyUserService thirdPartyUserService;
 
     @Autowired
     CaptchaService captchaService;
@@ -163,5 +172,43 @@ public class UserController {
         out.write(file);
         out.flush();
         out.close();
+    }
+
+    // bind with third party；
+    @ResponseBody
+    @RequestMapping(value = "/v1/user/bind", method = RequestMethod.GET)
+    public ResponseEntity<ResultEntity> bind(
+            @RequestParam("authType") String authType,
+            @RequestParam("authCode") String authCode,
+            HttpServletRequest request,
+            HttpServletResponse response) {
+
+        Subject subject = SecurityUtils.getSubject();
+        User sessionUser = (User) subject.getPrincipal();
+        ThirdPartyUser thirdPartyUser = logonService.bind(sessionUser,authType,authCode);
+        return ResponseEntity.ok(ResultEntity.ok(thirdPartyUser));
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/v1/user/unbind", method = RequestMethod.GET)
+    public ResponseEntity<ResultEntity> unbind(
+            @RequestParam("authType") String authType,
+            HttpServletRequest request,
+            HttpServletResponse response) {
+
+        Subject subject = SecurityUtils.getSubject();
+        User sessionUser = (User) subject.getPrincipal();
+        logonService.unbind(sessionUser,authType);
+        return ResponseEntity.ok(ResultEntity.ok(null));
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/v1/user/queryBinds", method = RequestMethod.GET)
+    public ResponseEntity<ResultEntity> queryBinds() {
+
+        Subject subject = SecurityUtils.getSubject();
+        User sessionUser = (User) subject.getPrincipal();
+        List<ThirdPartyUser> thirdPartyUserList = thirdPartyUserService.findThirdPartyUsersByUser(sessionUser);
+        return ResponseEntity.ok(ResultEntity.ok(thirdPartyUserList));
     }
 }

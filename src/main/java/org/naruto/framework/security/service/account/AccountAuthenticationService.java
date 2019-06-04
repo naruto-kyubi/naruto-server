@@ -9,6 +9,7 @@ import org.naruto.framework.core.exception.ServiceException;
 import org.naruto.framework.security.vo.LogonUser;
 import org.naruto.framework.security.exception.SecurityError;
 import org.naruto.framework.security.service.IAuthenticationService;
+import org.naruto.framework.user.domain.ThirdPartyUser;
 import org.naruto.framework.user.domain.User;
 import org.springframework.stereotype.Component;
 
@@ -30,6 +31,17 @@ public class AccountAuthenticationService implements IAuthenticationService {
     }
 
     @Override
-    public void bind(User user,String bindType, String bindUid, String bindName) {
+    public ThirdPartyUser bind(User user, String bindType, String bindUid, String bindName) {
+        return null;
+    }
+
+    @Override
+    public ThirdPartyUser bind(User user, String bindType, String authCode) {
+        return null;
+    }
+
+    @Override
+    public void unbind(User user, String authType) {
+
     }
 }
