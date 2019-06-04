@@ -22,11 +22,12 @@ public class ArticleController {
 
     @RequestMapping(value = "/v1/article/add", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 
-    public ResponseEntity<ResultEntity> pub(@Validated @RequestBody Article article){
+    public ResponseEntity<ResultEntity> add(@Validated @RequestBody Article article){
 
         return ResponseEntity.ok(ResultEntity.ok(articleService.save(article)));
     }
 
+    @ResponseBody
     @RequestMapping(value = "/v1/article/query", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
     public ResponseEntity<ResultEntity> query(
             @RequestParam(required = false) Map map,
@@ -34,5 +35,12 @@ public class ArticleController {
 
         Page page = articleService.queryPage(map);
         return ResponseEntity.ok(ResultEntity.ok(page.getContent(), PageUtils.wrapperPagination(page)));
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/v1/articles/{id}", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    public ResponseEntity<ResultEntity> queryById(@PathVariable("id") String id){
+        Article article = articleService.queryById(id);
+        return ResponseEntity.ok(ResultEntity.ok(article));
     }
 }

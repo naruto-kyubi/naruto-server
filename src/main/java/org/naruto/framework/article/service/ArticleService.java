@@ -28,4 +28,8 @@ public class ArticleService {
     public Page<Article> queryPage(Map map) {
         return articleRepository.queryPageByCondition(map);
     }
+
+    public Article queryById(String id){
+        return  articleRepository.getOne(id);
+    }
 }
