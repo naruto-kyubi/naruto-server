@@ -30,6 +30,6 @@ public class ArticleService {
     }
 
     public Article queryById(String id){
-        return  articleRepository.getOne(id);
+        return  articleRepository.findById(id).get();
     }
 }
