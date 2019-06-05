@@ -13,6 +13,8 @@ public class LogonUser {
     private String captcha;
     private String authCode;
 
+    private boolean isRememberMe = false;
+
     /*bind (weibo/weixin/taobao)*/
     private String bindType;
     private String bindUid;

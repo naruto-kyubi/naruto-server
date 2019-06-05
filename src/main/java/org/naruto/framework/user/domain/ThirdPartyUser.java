@@ -9,6 +9,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name="third_party_users")
@@ -17,7 +18,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 @ToString
-public class ThirdPartyUser {
+public class ThirdPartyUser implements Serializable {
     @Id
     @GenericGenerator(name="idGenerator", strategy="uuid")
     @GeneratedValue(generator="idGenerator")

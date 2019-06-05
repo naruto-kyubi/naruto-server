@@ -21,6 +21,8 @@ public class AccountAuthenticationService implements IAuthenticationService {
 
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(logonUser.getUserName(),logonUser.getPassword());
+        token.setRememberMe(logonUser.isRememberMe());
+
         try {
             subject.login(token);
         } catch (AuthenticationException e) {

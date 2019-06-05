@@ -14,7 +14,6 @@ public class UserPasswordRealm extends BaseAuthorizingRealm {
     @Value("${naruto.encrpyt.salt}")
     private String salt;
 
-
     @Autowired
     public UserPasswordRealm(PasswordCredentialsMatcher passwordCredentialsMatcher){
         this.setCredentialsMatcher(passwordCredentialsMatcher);

@@ -1,8 +1,11 @@
 package org.naruto.framework.article.controller;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.naruto.framework.article.domain.Article;
 import org.naruto.framework.article.service.ArticleService;
 import org.naruto.framework.core.web.ResultEntity;
+import org.naruto.framework.user.domain.User;
 import org.naruto.framework.utils.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,6 +35,9 @@ public class ArticleController {
     public ResponseEntity<ResultEntity> query(
             @RequestParam(required = false) Map map,
             HttpServletRequest request, HttpServletResponse response) {
+
+        Subject subject = SecurityUtils.getSubject();
+        User user = (User) subject.getPrincipal();
 
         Page page = articleService.queryPage(map);
         return ResponseEntity.ok(ResultEntity.ok(page.getContent(), PageUtils.wrapperPagination(page)));
