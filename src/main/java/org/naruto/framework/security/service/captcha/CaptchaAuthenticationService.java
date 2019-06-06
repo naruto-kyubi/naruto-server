@@ -5,10 +5,9 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.subject.Subject;
 import org.naruto.framework.core.exception.ServiceException;
-import org.naruto.framework.security.vo.LogonUser;
 import org.naruto.framework.security.exception.SecurityError;
 import org.naruto.framework.security.service.IAuthenticationService;
-import org.naruto.framework.user.domain.ThirdPartyUser;
+import org.naruto.framework.security.vo.LogonUser;
 import org.naruto.framework.user.domain.User;
 import org.springframework.stereotype.Component;
 
@@ -30,17 +29,13 @@ public class CaptchaAuthenticationService implements IAuthenticationService {
     }
 
     @Override
-    public ThirdPartyUser bind(User user, String bindType, String bindUid, String bindName) {
-        return null;
+    public User getCurrentUser() {
+        Subject subject = SecurityUtils.getSubject();
+        return (User) subject.getPrincipal();
     }
 
     @Override
-    public ThirdPartyUser bind(User user, String bindType, String authCode) {
-        return null;
-    }
-
-    @Override
-    public void unbind(User user, String authType) {
+    public void logout(User user) {
 
     }
 }

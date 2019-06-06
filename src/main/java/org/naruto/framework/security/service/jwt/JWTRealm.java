@@ -11,7 +11,7 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.naruto.framework.security.service.BaseAuthorizingRealm;
-import org.naruto.framework.user.domain.Role;
+import org.naruto.framework.security.domain.Role;
 import org.naruto.framework.user.domain.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

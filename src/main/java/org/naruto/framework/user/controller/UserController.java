@@ -11,7 +11,6 @@ import org.naruto.framework.user.domain.ThirdPartyUser;
 import org.naruto.framework.user.domain.User;
 import org.naruto.framework.user.service.ThirdPartyUserService;
 import org.naruto.framework.user.service.UserService;
-import org.naruto.framework.utils.ObjUtils;
 import org.naruto.framework.utils.PageUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Arrays;
@@ -146,6 +144,7 @@ public class UserController {
         String contentType = file.getContentType();
         String fileName = file.getOriginalFilename();
         uploadFile(file.getBytes(), location, fileName);
+
         Subject subject = SecurityUtils.getSubject();
         User sessionUser = (User) subject.getPrincipal();
 

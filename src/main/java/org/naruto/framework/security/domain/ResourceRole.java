@@ -1,4 +1,4 @@
-package org.naruto.framework.user.domain;
+package org.naruto.framework.security.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package org.naruto.framework.user.domain;
+package org.naruto.framework.security.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,24 +10,19 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name="permissions")
+@Table(name="roles")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class Permission implements Serializable {
+public class Role implements Serializable {
     @Id
     @GenericGenerator(name="idGenerator", strategy="uuid")
     @GeneratedValue(generator="idGenerator")
     @Column(length=40)
     private String id;
 
-    @Column(length = 200,unique = true)
-    private String resourceUrl;
-
-    @Column(length = 400,unique = true)
-    private String permission;
-
-    private Integer seq;
+    @Column(length = 20,unique = true)
+    private String name;
 
 }

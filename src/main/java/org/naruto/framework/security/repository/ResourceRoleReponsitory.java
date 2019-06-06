@@ -1,10 +1,8 @@
-package org.naruto.framework.user.repository;
+package org.naruto.framework.security.repository;
 
-import org.naruto.framework.user.domain.Function;
-import org.naruto.framework.user.domain.ResourceRole;
+import org.naruto.framework.security.domain.ResourceRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 import java.util.Map;

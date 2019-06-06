@@ -8,9 +8,10 @@ public interface IAuthenticationService {
 
     User authenticate(LogonUser logonUser);
 
-    ThirdPartyUser bind(User user, String bindType, String bindUid, String bindName);
+    User getCurrentUser();
 
-    ThirdPartyUser bind(User user, String bindType, String authCode);
+    void logout(User user);
 
-    void unbind(User user, String authType);
+
+
 }

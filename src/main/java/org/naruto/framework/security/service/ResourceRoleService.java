@@ -1,4 +1,4 @@
-package org.naruto.framework.user.service;
+package org.naruto.framework.security.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -6,11 +6,8 @@ import org.apache.shiro.spring.web.config.DefaultShiroFilterChainDefinition;
 import org.apache.shiro.web.filter.mgt.DefaultFilterChainManager;
 import org.apache.shiro.web.filter.mgt.PathMatchingFilterChainResolver;
 import org.apache.shiro.web.servlet.AbstractShiroFilter;
-import org.naruto.framework.user.domain.Function;
-import org.naruto.framework.user.domain.Permission;
-import org.naruto.framework.user.domain.ResourceRole;
-import org.naruto.framework.user.repository.PermissionReponsitory;
-import org.naruto.framework.user.repository.ResourceRoleReponsitory;
+import org.naruto.framework.security.domain.ResourceRole;
+import org.naruto.framework.security.repository.ResourceRoleReponsitory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

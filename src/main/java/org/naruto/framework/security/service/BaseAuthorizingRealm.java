@@ -6,14 +6,12 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.naruto.framework.user.domain.Role;
+import org.naruto.framework.security.domain.Role;
 import org.naruto.framework.user.domain.User;
 import org.naruto.framework.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public abstract class BaseAuthorizingRealm extends AuthorizingRealm {
     @Autowired
