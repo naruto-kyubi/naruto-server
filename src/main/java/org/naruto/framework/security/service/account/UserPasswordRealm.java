@@ -6,14 +6,10 @@ import org.apache.shiro.util.ByteSource;
 import org.naruto.framework.user.domain.User;
 import org.naruto.framework.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserPasswordRealm extends AuthenticatingRealm {
-
-    @Value("${naruto.encrpyt.salt}")
-    private String salt;
 
     @Autowired
     private UserService userService;
@@ -42,7 +38,7 @@ public class UserPasswordRealm extends AuthenticatingRealm {
         if(user == null)
             throw new AuthenticationException("Invalid userName or password");
 
-        return new SimpleAuthenticationInfo(user, user.getPassword(), ByteSource.Util.bytes(salt), this.getName());
+        return new SimpleAuthenticationInfo(user, user.getPassword(), ByteSource.Util.bytes(user.getPasswordSalt()), this.getName());
     }
 
 //    @Override

@@ -12,7 +12,6 @@ import org.apache.shiro.web.util.WebUtils;
 import org.naruto.framework.user.domain.User;
 import org.naruto.framework.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -32,9 +31,6 @@ public class JwtAuthOrRememberFilter extends AuthenticatingFilter {
 
     @Autowired
     private UserService userService;
-
-    @Value("${naruto.encrpyt.salt}")
-    private String salt;
 
     public JwtAuthOrRememberFilter(){
         this.setLoginUrl("/login");
@@ -108,7 +104,7 @@ public class JwtAuthOrRememberFilter extends AuthenticatingFilter {
             User user = (User) subject.getPrincipal();
             boolean shouldRefresh = shouldTokenRefresh(JwtUtils.getIssuedAt(jwtToken.getToken()));
             if(shouldRefresh) {
-                newToken = JwtUtils.sign(user.getId(),salt,3600);
+                newToken = JwtUtils.sign(user.getId(),user.getPasswordSalt(),3600);
             }
         }
         if(StringUtils.isNotBlank(newToken))

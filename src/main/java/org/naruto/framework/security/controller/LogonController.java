@@ -10,7 +10,6 @@ import org.naruto.framework.security.service.jwt.JwtUtils;
 import org.naruto.framework.security.vo.LogonUser;
 import org.naruto.framework.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -26,10 +25,6 @@ public class LogonController {
     @Autowired
     CaptchaService captchaService;
 
-
-    @Value("${naruto.encrpyt.salt}")
-    private String salt;
-
     @ResponseBody
     @RequestMapping(value = "/v1/logon/account", method = RequestMethod.POST ,produces ="application/json")
     public ResponseEntity<ResultEntity> logon(@Validated @RequestBody LogonUser logonUser, HttpServletResponse response) {
@@ -43,7 +38,7 @@ public class LogonController {
 //            bind
             logonService.bind(user,logonUser.getBindType(),logonUser.getBindUid(),logonUser.getBindName());
         }
-        String newToken = JwtUtils.sign(user.getId(),salt,3600);
+        String newToken = JwtUtils.sign(user.getId(),user.getPasswordSalt(),3600);
         response.setHeader("x-auth-token", newToken);
         return ResponseEntity.ok(ResultEntity.ok(user));
     }

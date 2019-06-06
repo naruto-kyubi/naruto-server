@@ -15,7 +15,6 @@ import org.naruto.framework.security.domain.Role;
 import org.naruto.framework.user.domain.User;
 import org.naruto.framework.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -23,9 +22,6 @@ import java.util.List;
 @Slf4j
 @Component
 public class JWTRealm extends AuthorizingRealm {
-
-    @Value("${naruto.encrpyt.salt}")
-    private String salt;
 
     @Autowired
     private UserService userService;
@@ -53,7 +49,7 @@ public class JWTRealm extends AuthorizingRealm {
         if(user == null)
             throw new AuthenticationException("token expired，please relogin.");
 
-        SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(user,salt,this.getName());
+        SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(user,user.getPasswordSalt(),this.getName());
         return authenticationInfo;
     }
 
