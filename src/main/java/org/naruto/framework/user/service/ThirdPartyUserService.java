@@ -19,12 +19,12 @@ public class ThirdPartyUserService {
         return thirdPartyUserRepository.save(thirdPartyUser);
     }
 
-    public ThirdPartyUser findThirdPartyUserByAuthTypeAndUid(String type,String uid){
-        return thirdPartyUserRepository.findThirdPartyUserByAuthTypeAndUid(type,uid);
+    public ThirdPartyUser queryThirdPartyUserByAuthTypeAndUid(String type, String uid){
+        return thirdPartyUserRepository.queryThirdPartyUserByAuthTypeAndUid(type,uid);
     }
 
-    public List<ThirdPartyUser> findThirdPartyUsersByUser(User user){
-        return  thirdPartyUserRepository.findThirdPartyUsersByUser(user);
+    public List<ThirdPartyUser> queryThirdPartyUsersByUser(User user){
+        return  thirdPartyUserRepository.queryThirdPartyUsersByUser(user);
     }
 
     @Transactional

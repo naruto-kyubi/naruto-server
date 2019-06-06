@@ -207,7 +207,7 @@ public class UserController {
 
         Subject subject = SecurityUtils.getSubject();
         User sessionUser = (User) subject.getPrincipal();
-        List<ThirdPartyUser> thirdPartyUserList = thirdPartyUserService.findThirdPartyUsersByUser(sessionUser);
+        List<ThirdPartyUser> thirdPartyUserList = thirdPartyUserService.queryThirdPartyUsersByUser(sessionUser);
         return ResponseEntity.ok(ResultEntity.ok(thirdPartyUserList));
     }
 }

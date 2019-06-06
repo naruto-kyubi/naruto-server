@@ -9,7 +9,7 @@ import java.util.Map;
 
 public interface PermissionReponsitory extends JpaRepository<Permission,String> {
 
-    List<Permission> getPermissionsByOrderBySeqAsc();
+    List<Permission> queryPermissionsByOrderBySeqAsc();
 
 
     @Query(value="SELECT basic_menu.* FROM basic_menu ,basic_user,basic_user_role,basic_role_menu where basic_user.id=basic_user_role.user_id and basic_user_role.role_id=basic_role_menu.role_id and basic_role_menu.menu_id=basic_menu.id and  basic_user.id=?1",nativeQuery = true)

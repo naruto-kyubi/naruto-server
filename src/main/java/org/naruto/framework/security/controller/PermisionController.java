@@ -24,7 +24,7 @@ public class PermisionController {
     private ResourceRoleService resourceRoleService;
 
     @RequestMapping(value = "/v1/logon/function", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
-    public ResponseEntity<ResultEntity> getFunctions() {
+    public ResponseEntity<ResultEntity> queryFunctions() {
         Subject subject = SecurityUtils.getSubject();
         User user = (User) subject.getPrincipal();
         List list = resourceRoleService.getUserFunctions(user.getId());

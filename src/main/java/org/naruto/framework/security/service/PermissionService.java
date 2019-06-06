@@ -62,7 +62,7 @@ public class PermissionService {
     }
 
     public DefaultShiroFilterChainDefinition loadFilterChainDefinitions() {
-        List<Permission> permissions = permissionReponsitory.getPermissionsByOrderBySeqAsc();
+        List<Permission> permissions = permissionReponsitory.queryPermissionsByOrderBySeqAsc();
         DefaultShiroFilterChainDefinition chainDefinition = new DefaultShiroFilterChainDefinition();
         for (Permission obj : permissions) {
             chainDefinition.addPathDefinition(obj.getResourceUrl(), obj.getPermission());

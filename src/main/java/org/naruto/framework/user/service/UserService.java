@@ -36,10 +36,10 @@ public class UserService {
         if(user == null) {
             throw new ServiceException(CommonError.PARAMETER_VALIDATION_ERROR);
         }
-        if(null != userRepository.getUserByMobile(user.getMobile())){
+        if(null != userRepository.queryUserByMobile(user.getMobile())){
             throw new ServiceException(UserError.USER_EXIST_ERROR);
         }
-        if(userRepository.getUsersByNickname(user.getNickname()).size() > 0){
+        if(userRepository.queryUsersByNickname(user.getNickname()).size() > 0){
             throw new ServiceException(UserError.NICKNAME_EXIST_ERROR);
         }
         captchaService.validateCaptcha(user.getMobile(), CaptchaType.SINGUP,user.getCaptcha());
@@ -53,7 +53,7 @@ public class UserService {
     }
 
     public User getUserByMobile(String mobile){
-        return userRepository.getUserByMobile(mobile);
+        return userRepository.queryUserByMobile(mobile);
     }
 
     public User resetPassword(User user){
@@ -61,7 +61,7 @@ public class UserService {
             throw new ServiceException(CommonError.PARAMETER_VALIDATION_ERROR);
         }
 
-        User current = userRepository.getUserByMobile(user.getMobile());
+        User current = userRepository.queryUserByMobile(user.getMobile());
         if(null == current){
             throw new ServiceException(UserError.USER_NOT_EXIST_ERROR);
         }

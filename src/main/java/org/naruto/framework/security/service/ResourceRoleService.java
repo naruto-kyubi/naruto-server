@@ -73,7 +73,7 @@ public class ResourceRoleService {
     }
 
     public List getUserFunctions(String userId){
-        List<Map> list = resourceRoleReponsitory.getUserFunctions(userId);
+        List<Map> list = resourceRoleReponsitory.queryUserFunctions(userId);
         return list;
     }
 }

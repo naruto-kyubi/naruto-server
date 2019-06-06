@@ -36,28 +36,15 @@ public class LogonService {
     }
 
     public ThirdPartyUser bind(User user , String bindType, String bindUid, String bindName){
-//        if(null==bindType) throw new ServiceException(SecurityError.PARAMETER_VALIDATION_ERROR);
-//        IOauthService oauthService = oAuthServiceMap.get(bindType.concat("OauthService"));
-//        if(null==oauthService) throw new ServiceException(SecurityError.PARAMETER_VALIDATION_ERROR);
 
         return getOAuthService(bindType).bind(user,bindType,bindUid,bindName);
     }
 
     public ThirdPartyUser bind(User user , String authType, String authCode){
-//        if(null==authType) throw new ServiceException(SecurityError.PARAMETER_VALIDATION_ERROR);
-//        IOauthService oauthService = oAuthServiceMap.get(authType.concat("OauthService"));
-//        if(null==oauthService) throw new ServiceException(SecurityError.PARAMETER_VALIDATION_ERROR);
-
         return getOAuthService(authType).bind(user,authType,authCode);
     }
 
     public void unbind(User user , String authType){
-//        if(null==authType) throw new ServiceException(SecurityError.PARAMETER_VALIDATION_ERROR);
-//        IAuthenticationService authenticationService = authenticationServiceMap.get(authType.concat("AuthenticationService"));
-//        if(null==authenticationService) throw new ServiceException(SecurityError.PARAMETER_VALIDATION_ERROR);
-//        if(null==authType) throw new ServiceException(SecurityError.PARAMETER_VALIDATION_ERROR);
-//        IOauthService oauthService = oAuthServiceMap.get(authType.concat("OauthService"));
-//        if(null==oauthService) throw new ServiceException(SecurityError.PARAMETER_VALIDATION_ERROR);
         getOAuthService(authType).unbind(user,authType);
     }
 

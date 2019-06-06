@@ -26,7 +26,7 @@ public class WeiboAuthorizingRealm extends AuthenticatingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         WeiboToken weiboToken = (WeiboToken) token;
 
-        ThirdPartyUser thirdPartyUser = thirdPartyUserService.findThirdPartyUserByAuthTypeAndUid(weiboToken.getType(),weiboToken.getUid());
+        ThirdPartyUser thirdPartyUser = thirdPartyUserService.queryThirdPartyUserByAuthTypeAndUid(weiboToken.getType(),weiboToken.getUid());
         if (null == thirdPartyUser) {
             throw new AuthenticationException(" weibo not binding with a main account");
         }
