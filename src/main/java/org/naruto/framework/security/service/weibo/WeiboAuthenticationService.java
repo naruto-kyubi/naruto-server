@@ -10,26 +10,12 @@ import org.naruto.framework.security.service.IOauthService;
 import org.naruto.framework.security.vo.LogonUser;
 import org.naruto.framework.security.vo.OauthUserInfo;
 import org.naruto.framework.user.domain.User;
-import org.naruto.framework.user.service.ThirdPartyUserService;
-import org.naruto.framework.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 
 @Component("weiboAuthenticationService")
 @Slf4j
 public class WeiboAuthenticationService implements IAuthenticationService {
-    @Autowired
-    private WeiboConfig weiboConfig;
-
-    @Autowired
-    private RestTemplate restTemplate;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private ThirdPartyUserService thirdPartyUserService;
 
     @Autowired
     private IOauthService weiboOauthService;
@@ -57,57 +43,10 @@ public class WeiboAuthenticationService implements IAuthenticationService {
         Subject subject = SecurityUtils.getSubject();
         return (User) subject.getPrincipal();
     }
-//
-//    @Override
-//    public ThirdPartyUser bind(User user,String bindType, String bindUid, String bindName) {
-//
-//        ThirdPartyUser thirdPartyUser = new ThirdPartyUser(null,bindType,bindUid,bindName,user);
-//        return thirdPartyUserService.save(thirdPartyUser);
-//    }
-//
-//    @Override
-//    public ThirdPartyUser bind(User user, String bindType, String authCode) {
-//
-//        Map<String,String> authInfo = this.getAuthInfo(authCode);
-//        return this.bind(user,bindType,authInfo.get("uid"),authInfo.get("name"));
-//    }
-//
-//    @Transactional
-//    @Override
-//    public void unbind(User user, String authType) {
-//
-//        thirdPartyUserService.unbind(user,authType);
-//    }
 
     @Override
     public void logout(User user) {
-
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
     }
-
-//    private Map<String,String> getAuthInfo(String authCode) {
-//
-//        MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
-//        map.add("code", authCode);
-//        map.add("client_id", weiboConfig.getClientId());
-//        map.add("client_secret", weiboConfig.getClientSecret());
-//        map.add("grant_type", weiboConfig.getGrantType());
-//        map.add("redirect_uri", weiboConfig.getRedirectUri());
-//
-//        JSONObject objToken = restTemplate.postForObject(weiboConfig.getTokenUrl(), map, JSONObject.class);
-//        String access_token = objToken.getString("access_token");
-//        String uid = objToken.getString("uid");
-//
-//        Map<String, String> userMap = new HashMap();
-//        userMap.put("access_token", access_token);
-//        userMap.put("uid", uid);
-//        String userUrl = weiboConfig.getUserUrl().concat("?access_token={access_token}&uid={uid}");
-//        JSONObject objUser = restTemplate.getForObject(userUrl,JSONObject.class,userMap);
-//        String name = objUser.getString("name");
-//
-//        Map mapInfo =new HashMap();
-//        mapInfo.put("uid",uid);
-//        mapInfo.put("name",name);
-//
-//        return mapInfo;
-//    }
 }

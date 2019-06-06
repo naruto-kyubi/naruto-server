@@ -9,13 +9,11 @@ import org.apache.shiro.spring.web.config.ShiroFilterChainDefinition;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
+import org.naruto.framework.security.domain.ResourceRole;
+import org.naruto.framework.security.repository.ResourceRoleReponsitory;
 import org.naruto.framework.security.service.AnyRolesAuthorizationFilter;
 import org.naruto.framework.security.service.jwt.JwtAuthFilter;
 import org.naruto.framework.security.service.jwt.JwtAuthOrRememberFilter;
-import org.naruto.framework.security.domain.ResourceRole;
-import org.naruto.framework.security.repository.PermissionReponsitory;
-import org.naruto.framework.security.repository.ResourceRoleReponsitory;
-import org.naruto.framework.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -31,12 +29,6 @@ public class ShiroConfig {
 
     @Autowired
     private List<Realm> authorizingRealmList;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private PermissionReponsitory permissionReponsitory;
 
     @Autowired
     private ResourceRoleReponsitory resourceRoleReponsitory;
@@ -136,7 +128,6 @@ public class ShiroConfig {
     @Bean
     public  ShiroFilterChainDefinition shiroFilterChainDefinition() {
 
-//        List<Permission> permissions = permissionReponsitory.getPermissionsByOrderBySeqAsc();
         List<ResourceRole> permissions = (List)resourceRoleReponsitory.findAll();
 
         DefaultShiroFilterChainDefinition chainDefinition = new DefaultShiroFilterChainDefinition();

@@ -1,19 +1,23 @@
 package org.naruto.framework.security.service.captcha;
 
-import org.apache.shiro.authc.*;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationInfo;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.realm.AuthenticatingRealm;
 import org.naruto.framework.captcha.CaptchaType;
 import org.naruto.framework.captcha.domain.Captcha;
 import org.naruto.framework.captcha.service.CaptchaService;
-import org.naruto.framework.security.service.BaseAuthorizingRealm;
 import org.naruto.framework.user.domain.User;
+import org.naruto.framework.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CaptchaRealm extends BaseAuthorizingRealm {
+public class CaptchaRealm extends AuthenticatingRealm {
 
-//    @Autowired
-//    private UserService userService;
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private CaptchaService captchaService;
@@ -40,9 +44,4 @@ public class CaptchaRealm extends BaseAuthorizingRealm {
     public boolean supports(AuthenticationToken token) {
         return token instanceof CaptchaToken;
     }
-
-//    @Override
-//    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-//        return null;
-//    }
 }

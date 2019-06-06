@@ -1,18 +1,22 @@
 package org.naruto.framework.security.service.account;
 
 import org.apache.shiro.authc.*;
+import org.apache.shiro.realm.AuthenticatingRealm;
 import org.apache.shiro.util.ByteSource;
-import org.naruto.framework.security.service.BaseAuthorizingRealm;
 import org.naruto.framework.user.domain.User;
+import org.naruto.framework.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserPasswordRealm extends BaseAuthorizingRealm {
+public class UserPasswordRealm extends AuthenticatingRealm {
 
     @Value("${naruto.encrpyt.salt}")
     private String salt;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     public UserPasswordRealm(PasswordCredentialsMatcher passwordCredentialsMatcher){

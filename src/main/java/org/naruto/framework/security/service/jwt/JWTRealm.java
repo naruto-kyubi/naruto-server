@@ -9,10 +9,12 @@ import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.naruto.framework.security.service.BaseAuthorizingRealm;
 import org.naruto.framework.security.domain.Role;
 import org.naruto.framework.user.domain.User;
+import org.naruto.framework.user.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -20,10 +22,13 @@ import java.util.List;
 
 @Slf4j
 @Component
-public class JWTRealm extends BaseAuthorizingRealm {
+public class JWTRealm extends AuthorizingRealm {
 
     @Value("${naruto.encrpyt.salt}")
     private String salt;
+
+    @Autowired
+    private UserService userService;
 
     public JWTRealm(){
         this.setCredentialsMatcher(new JWTCredentialsMatcher());

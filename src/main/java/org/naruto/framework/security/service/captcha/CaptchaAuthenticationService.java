@@ -36,6 +36,7 @@ public class CaptchaAuthenticationService implements IAuthenticationService {
 
     @Override
     public void logout(User user) {
-
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();;
     }
 }
