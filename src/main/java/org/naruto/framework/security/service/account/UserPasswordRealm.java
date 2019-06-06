@@ -40,18 +40,4 @@ public class UserPasswordRealm extends AuthenticatingRealm {
 
         return new SimpleAuthenticationInfo(user, user.getPassword(), ByteSource.Util.bytes(user.getPasswordSalt()), this.getName());
     }
-
-//    @Override
-//    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-//        SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-//        User user = (User) principals.getPrimaryPrincipal();
-//        List<String> roles = new ArrayList();
-////        if(CollectionUtils.isEmpty(roles)) {
-//        roles = userService.getUserRoles(user.getId());
-////            user.setRoles(roles);
-////        }
-//        if (roles != null)
-//            simpleAuthorizationInfo.addRoles(roles);
-//        return simpleAuthorizationInfo;
-//    }
 }

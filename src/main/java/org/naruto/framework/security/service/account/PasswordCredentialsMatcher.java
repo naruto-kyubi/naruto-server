@@ -6,7 +6,6 @@ import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
-import org.apache.shiro.util.ByteSource;
 import org.naruto.framework.core.encrpyt.IEncrpyt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,9 +21,9 @@ public class PasswordCredentialsMatcher implements CredentialsMatcher {
         UsernamePasswordToken userpasswordToken = (UsernamePasswordToken)token;
         String password = String.valueOf(userpasswordToken.getPassword());
 
-        ByteSource salt = ((SimpleAuthenticationInfo)info).getCredentialsSalt();
-
-        String pwdSalt = encrpytService.encrpyt(password,salt.toString());
+//        ByteSource salt = ((SimpleAuthenticationInfo)info).getCredentialsSalt();
+        String salt = new String(((SimpleAuthenticationInfo)info).getCredentialsSalt().getBytes());
+        String pwdSalt = encrpytService.encrpyt(password,salt);
 
         if(pwdSalt.equals(info.getCredentials())) return true;
         return false;
