@@ -9,7 +9,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -62,7 +61,7 @@ public class PageUtils {
         List list = new ArrayList();
         for (Object key : map.keySet()) {
             String param = (String)key;
-            String[] params =  param.split("\\-");
+            String[] params =  param.split("\\_");
             if(params.length>1){
                 list.add(new SearchItem(params[0], (String) map.get(key),params[1]));
             }else{
