@@ -18,7 +18,7 @@ public class CaptchaAuthenticationService implements IAuthenticationService {
     public User authenticate(LogonUser logonUser) {
 
         Subject subject = SecurityUtils.getSubject();
-        CaptchaToken token = new CaptchaToken(logonUser.getMobile(),logonUser.getCaptcha());
+        CaptchaToken token = new CaptchaToken(logonUser.getMobile(),logonUser.getCaptcha(),logonUser.isRememberMe());
         try {
             subject.login(token);
         } catch (AuthenticationException e) {

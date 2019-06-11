@@ -12,8 +12,8 @@ import org.apache.shiro.web.servlet.SimpleCookie;
 import org.naruto.framework.security.domain.ResourceRole;
 import org.naruto.framework.security.repository.ResourceRoleReponsitory;
 import org.naruto.framework.security.service.AnyRolesAuthorizationFilter;
+import org.naruto.framework.security.service.NarutoCookieRememberMeManager;
 import org.naruto.framework.security.service.jwt.JwtAuthFilter;
-import org.naruto.framework.security.service.jwt.JwtAuthOrRememberFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -35,9 +35,6 @@ public class ShiroConfig {
 
     @Autowired
     private JwtAuthFilter jwtAuthFilter;
-
-    @Autowired
-    private JwtAuthOrRememberFilter jwtAuthOrRememberFilter;
 
     @Autowired
     private AnyRolesAuthorizationFilter anyRolesAuthorizationFilter;
@@ -83,7 +80,7 @@ public class ShiroConfig {
     @Bean
     public CookieRememberMeManager rememberMeManager(){
         //System.out.println("ShiroConfiguration.rememberMeManager()");
-        CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
+        CookieRememberMeManager cookieRememberMeManager = new NarutoCookieRememberMeManager();
         cookieRememberMeManager.setCookie(rememberMeCookie());
         //rememberMe cookie加密的密钥 建议每个项目都不一样 默认AES算法 密钥长度(128 256 512 位)
         cookieRememberMeManager.setCipherKey(Base64.decode("2AvVhdsgUs0FSA3SDFAdag=="));
@@ -113,9 +110,6 @@ public class ShiroConfig {
         //token权限验证；
         filterMap.put("jwtAuthToken", jwtAuthFilter);
 
-        //token权限验证；
-        filterMap.put("jwtAuthOrRememberFilter", jwtAuthOrRememberFilter);
-
         //角色验证。
         filterMap.put("anyRole", anyRolesAuthorizationFilter);
 
@@ -134,8 +128,12 @@ public class ShiroConfig {
         for (ResourceRole permission : permissions) {
             chainDefinition.addPathDefinition(permission.getResourceUrl(), permission.getPermission());
         }
-        chainDefinition.addPathDefinition("/login","anon");
-        chainDefinition.addPathDefinition("/**","anon");
+        chainDefinition.addPathDefinition("/v1/user/currentUser","jwtAuthToken[RememberMe]");
+        chainDefinition.addPathDefinition("/v1/logon/function","jwtAuthToken[RememberMe]");
+
+        chainDefinition.addPathDefinition("/v1/logon/account","noSessionCreation,anon");
+        chainDefinition.addPathDefinition("/**","noSessionCreation,anon");
+
         return chainDefinition;
     }
 }

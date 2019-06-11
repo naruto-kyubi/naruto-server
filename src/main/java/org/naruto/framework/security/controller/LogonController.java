@@ -6,6 +6,7 @@ import org.naruto.framework.captcha.CaptchaType;
 import org.naruto.framework.captcha.service.CaptchaService;
 import org.naruto.framework.core.web.ResultEntity;
 import org.naruto.framework.security.service.LogonService;
+import org.naruto.framework.security.service.SessionUtils;
 import org.naruto.framework.security.service.jwt.JwtUtils;
 import org.naruto.framework.security.vo.LogonUser;
 import org.naruto.framework.user.domain.User;
@@ -22,6 +23,10 @@ import javax.servlet.http.HttpServletResponse;
 public class LogonController {
     @Autowired
     LogonService logonService;
+
+    @Autowired
+    SessionUtils sessionUtils;
+
     @Autowired
     CaptchaService captchaService;
 
@@ -48,8 +53,10 @@ public class LogonController {
     @RequestMapping(value = "/v1/logon/logout", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public ResponseEntity<ResultEntity> logout(HttpServletRequest request) {
 
+        User user = sessionUtils.getCurrentUser(request);
+        sessionUtils.logout(user);
 
-        logonService.logout(null);
+//        logonService.logout(null);
 //        //在这里执行退出系统前需要清空的数据
 //        Subject subject= SecurityUtils.getSubject();
 ////        ServletContext context= request.getServletContext();

@@ -27,7 +27,7 @@ public class WeiboAuthenticationService implements IAuthenticationService {
         Subject subject = SecurityUtils.getSubject();
         try {
             oauthUserInfo = weiboOauthService.getOAuthUserInfo(logonUser.getAuthCode());
-            WeiboToken token = new WeiboToken(logonUser.getAuthType(),oauthUserInfo.getUid());
+            WeiboToken token = new WeiboToken(logonUser.getAuthType(),oauthUserInfo.getUid(),logonUser.isRememberMe());
             subject.login(token);
         } catch (AuthenticationException e) {
             log.warn(e.getMessage());

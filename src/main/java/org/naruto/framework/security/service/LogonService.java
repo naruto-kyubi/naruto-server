@@ -22,7 +22,6 @@ public class LogonService {
     @Autowired
     private Map<String, IOauthService> oAuthServiceMap = new ConcurrentHashMap<>();
 
-
     public User authenticate(LogonUser logonUser){
         return getAuthenticationService(logonUser.getAuthType()).authenticate(logonUser);
     }
@@ -31,6 +30,7 @@ public class LogonService {
 
         return null;
     }
+
     public void logout(User user){
 //        return getAuthenticationService(logonUser.getAuthType()).
     }

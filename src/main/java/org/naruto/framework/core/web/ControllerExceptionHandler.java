@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.naming.AuthenticationException;
-
 @Slf4j
 @ControllerAdvice
 public class ControllerExceptionHandler {
@@ -39,6 +37,7 @@ public class ControllerExceptionHandler {
     @ResponseBody
     @ExceptionHandler(value = Exception.class)
     public ResultEntity exceptionHandler(Exception ex) {
+        ex.printStackTrace();
         log.error(ex.getMessage());
         return ResultEntity.fail(new ServiceException(CommonError.UNKNOWN_ERROR));
     }

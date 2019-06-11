@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.subject.Subject;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Arrays;
 import java.util.Date;
 
 @Component
@@ -28,6 +30,7 @@ import java.util.Date;
 public class JwtAuthFilter extends AuthenticatingFilter {
 
     private static final int tokenRefreshInterval = 300;
+
 
     @Autowired
     private UserService userService;
@@ -37,7 +40,7 @@ public class JwtAuthFilter extends AuthenticatingFilter {
     }
 
     @Override
-    protected boolean preHandle(ServletRequest request, ServletResponse response) throws Exception {
+    public boolean preHandle(ServletRequest request, ServletResponse response) throws Exception {
         HttpServletRequest httpServletRequest = WebUtils.toHttp(request);
         if (httpServletRequest.getMethod().equals(RequestMethod.OPTIONS.name())) //对于OPTION请求做拦截，不做token校验
             return false;
@@ -46,13 +49,13 @@ public class JwtAuthFilter extends AuthenticatingFilter {
     }
 
     @Override
-    protected void postHandle(ServletRequest request, ServletResponse response){
+    public void postHandle(ServletRequest request, ServletResponse response){
         this.fillCorsHeader(WebUtils.toHttp(request), WebUtils.toHttp(response));
         request.setAttribute("jwtShiroFilter.FILTERED", true);
     }
 
     @Override
-    protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
+    public boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
         //判断是否是登录的URL页面；
         if(this.isLoginRequest(request, response))
             return true;
@@ -68,11 +71,24 @@ public class JwtAuthFilter extends AuthenticatingFilter {
         }catch (Exception e) {
             log.error("Error occurs when login", e);
         }
+
+        boolean isRememberMe =false;
+        if(null!=mappedValue){
+            String[] array = (String[]) mappedValue;
+            isRememberMe = Arrays.asList(array).contains("RememberMe");
+        }
+
+        if(!allowed && isRememberMe) {
+            //
+            Subject subject = SecurityUtils.getSubject();
+            allowed = null!= subject.getPrincipals();
+        }
+
         return allowed || super.isPermissive(mappedValue);
     }
 
     @Override
-    protected AuthenticationToken createToken(ServletRequest servletRequest, ServletResponse servletResponse) {
+    public AuthenticationToken createToken(ServletRequest servletRequest, ServletResponse servletResponse) {
         String jwtToken = getAuthzHeader(servletRequest);
         if(StringUtils.isNotBlank(jwtToken)&&!JwtUtils.isTokenExpired(jwtToken))
             return new JWTToken(jwtToken);
@@ -81,7 +97,7 @@ public class JwtAuthFilter extends AuthenticatingFilter {
     }
 
     @Override
-    protected boolean onAccessDenied(ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
+    public boolean onAccessDenied(ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
         HttpServletResponse httpResponse = WebUtils.toHttp(servletResponse);
         httpResponse.setCharacterEncoding("UTF-8");
         httpResponse.setContentType("application/json;charset=UTF-8");
@@ -91,7 +107,7 @@ public class JwtAuthFilter extends AuthenticatingFilter {
     }
 
     @Override
-    protected boolean onLoginSuccess(AuthenticationToken token, Subject subject, ServletRequest request, ServletResponse response) throws Exception {
+    public boolean onLoginSuccess(AuthenticationToken token, Subject subject, ServletRequest request, ServletResponse response) throws Exception {
         HttpServletResponse httpResponse = WebUtils.toHttp(response);
         String newToken = null;
         if(token instanceof JWTToken){
@@ -109,10 +125,22 @@ public class JwtAuthFilter extends AuthenticatingFilter {
     }
 
     @Override
-    protected boolean onLoginFailure(AuthenticationToken token, AuthenticationException e, ServletRequest request, ServletResponse response) {
+    public boolean onLoginFailure(AuthenticationToken token, AuthenticationException e, ServletRequest request, ServletResponse response) {
         log.error("Validate token fail, token:{}, error:{}", token.toString(), e.getMessage());
         return false;
     }
+
+//    @Override
+//    protected boolean isRememberMe(ServletRequest request) {
+//        HttpServletRequest req = (HttpServletRequest) request;
+//        Cookie[] cookies = req.getCookies();
+//        if(null==cookies) return false;
+//
+//        for (Cookie cookie : cookies) {
+//            if("rememberMe".equals(cookie.getName())) return true;
+//        }
+//        return super.isRememberMe(request);
+//    }
 
     protected String getAuthzHeader(ServletRequest request) {
         HttpServletRequest httpRequest = WebUtils.toHttp(request);
