@@ -11,10 +11,11 @@ public class NarutoCookieRememberMeManager extends CookieRememberMeManager {
 
     @Override
     public void onSuccessfulLogin(Subject subject, AuthenticationToken token, AuthenticationInfo info) {
-        //now save the new identity:
+
         if (isRememberMe(token)) {
             //always clear any previous identity:
             forgetIdentity(subject);
+            //now save the new identity:
             rememberIdentity(subject, token, info);
         } else {
             if (log.isDebugEnabled()) {

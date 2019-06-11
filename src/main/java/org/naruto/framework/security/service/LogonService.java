@@ -9,7 +9,6 @@ import org.naruto.framework.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -24,15 +23,6 @@ public class LogonService {
 
     public User authenticate(LogonUser logonUser){
         return getAuthenticationService(logonUser.getAuthType()).authenticate(logonUser);
-    }
-
-    public User getCurrentUser(HttpServletRequest request){
-
-        return null;
-    }
-
-    public void logout(User user){
-//        return getAuthenticationService(logonUser.getAuthType()).
     }
 
     public ThirdPartyUser bind(User user , String bindType, String bindUid, String bindName){

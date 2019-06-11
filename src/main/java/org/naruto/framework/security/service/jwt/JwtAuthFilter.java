@@ -11,13 +11,12 @@ import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.AuthenticatingFilter;
 import org.apache.shiro.web.util.WebUtils;
 import org.naruto.framework.user.domain.User;
-import org.naruto.framework.user.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
@@ -31,12 +30,8 @@ public class JwtAuthFilter extends AuthenticatingFilter {
 
     private static final int tokenRefreshInterval = 300;
 
-
-    @Autowired
-    private UserService userService;
-
     public JwtAuthFilter(){
-        this.setLoginUrl("/login");
+        this.setLoginUrl("/v1/logon/account");
     }
 
     @Override
@@ -50,6 +45,7 @@ public class JwtAuthFilter extends AuthenticatingFilter {
 
     @Override
     public void postHandle(ServletRequest request, ServletResponse response){
+
         this.fillCorsHeader(WebUtils.toHttp(request), WebUtils.toHttp(response));
         request.setAttribute("jwtShiroFilter.FILTERED", true);
     }
@@ -57,11 +53,10 @@ public class JwtAuthFilter extends AuthenticatingFilter {
     @Override
     public boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
         //判断是否是登录的URL页面；
-        if(this.isLoginRequest(request, response))
-            return true;
+        if(this.isLoginRequest(request, response)) return true;
+
         Boolean afterFiltered = (Boolean)(request.getAttribute("jwtShiroFilter.FILTERED"));
-        if( BooleanUtils.isTrue(afterFiltered))
-        	return true;
+        if( BooleanUtils.isTrue(afterFiltered)) return true;
 
         boolean allowed = false;
         try {
@@ -118,9 +113,13 @@ public class JwtAuthFilter extends AuthenticatingFilter {
                 newToken = JwtUtils.sign(user.getId(),user.getPasswordSalt(),3600);
             }
         }
-        if(StringUtils.isNotBlank(newToken))
-            httpResponse.setHeader("x-auth-token", newToken);
-
+        if(StringUtils.isNotBlank(newToken)){
+            Cookie cToken = new Cookie("x-auth-token", newToken);
+            cToken.setMaxAge(259200);
+            cToken.setPath(((HttpServletRequest)request).getContextPath());
+            ((HttpServletResponse)response).addCookie(cToken);
+        }
+//            httpResponse.setHeader("x-auth-token", newToken);
         return true;
     }
 
@@ -130,22 +129,20 @@ public class JwtAuthFilter extends AuthenticatingFilter {
         return false;
     }
 
-//    @Override
-//    protected boolean isRememberMe(ServletRequest request) {
-//        HttpServletRequest req = (HttpServletRequest) request;
-//        Cookie[] cookies = req.getCookies();
-//        if(null==cookies) return false;
-//
-//        for (Cookie cookie : cookies) {
-//            if("rememberMe".equals(cookie.getName())) return true;
-//        }
-//        return super.isRememberMe(request);
-//    }
-
     protected String getAuthzHeader(ServletRequest request) {
         HttpServletRequest httpRequest = WebUtils.toHttp(request);
-        String header = httpRequest.getHeader("x-auth-token");
-        return StringUtils.removeStart(header, "Bearer ");
+//        String header = httpRequest.getHeader("x-auth-token");
+        Cookie[] cookies = httpRequest.getCookies();
+        String token = null;
+        if(null!= cookies && cookies.length>0){
+            for (Cookie cookie : cookies) {
+                if("x-auth-token".equals(cookie.getName())){
+                    token = cookie.getValue();
+                }
+            }
+        }
+//        return StringUtils.removeStart(header, "Bearer ");
+        return token;
     }
 
     protected boolean shouldTokenRefresh(Date issueAt){

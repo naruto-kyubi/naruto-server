@@ -1,13 +1,19 @@
 package org.naruto.framework.security;
 
 import org.apache.shiro.codec.Base64;
+import org.apache.shiro.mgt.DefaultSubjectDAO;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
+import org.apache.shiro.session.mgt.DefaultSessionManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.spring.web.config.DefaultShiroFilterChainDefinition;
 import org.apache.shiro.spring.web.config.ShiroFilterChainDefinition;
+import org.apache.shiro.subject.Subject;
+import org.apache.shiro.subject.SubjectContext;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.mgt.DefaultWebSessionStorageEvaluator;
+import org.apache.shiro.web.mgt.DefaultWebSubjectFactory;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.naruto.framework.security.domain.ResourceRole;
 import org.naruto.framework.security.repository.ResourceRoleReponsitory;
@@ -52,6 +58,28 @@ public class ShiroConfig {
 
         DefaultWebSecurityManager  securityManager = new DefaultWebSecurityManager ();
         securityManager.setRealms(authorizingRealmList);
+
+        securityManager.setSessionManager(new DefaultSessionManager() {
+            {
+                setSessionValidationSchedulerEnabled(false);
+            }
+        });
+        securityManager.setSubjectFactory(new DefaultWebSubjectFactory(){
+            public Subject createSubject(SubjectContext context) {
+                //不创建session
+                context.setSessionCreationEnabled(false);
+                return super.createSubject(context);
+            }
+        });
+        securityManager.setSubjectDAO(new DefaultSubjectDAO() {
+            {
+                setSessionStorageEvaluator(new DefaultWebSessionStorageEvaluator() {
+                    {
+                        setSessionStorageEnabled(false);
+                    }
+                });
+            }
+        });
 
         securityManager.setRememberMeManager(rememberMeManager());
         return securityManager;
@@ -131,7 +159,7 @@ public class ShiroConfig {
         chainDefinition.addPathDefinition("/v1/user/currentUser","jwtAuthToken[RememberMe]");
         chainDefinition.addPathDefinition("/v1/logon/function","jwtAuthToken[RememberMe]");
 
-        chainDefinition.addPathDefinition("/v1/logon/account","noSessionCreation,anon");
+        chainDefinition.addPathDefinition("/v1/logon/account","jwtAuthToken");
         chainDefinition.addPathDefinition("/**","noSessionCreation,anon");
 
         return chainDefinition;

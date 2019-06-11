@@ -7,7 +7,6 @@ import org.naruto.framework.captcha.service.CaptchaService;
 import org.naruto.framework.core.web.ResultEntity;
 import org.naruto.framework.security.service.LogonService;
 import org.naruto.framework.security.service.SessionUtils;
-import org.naruto.framework.security.service.jwt.JwtUtils;
 import org.naruto.framework.security.vo.LogonUser;
 import org.naruto.framework.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +31,7 @@ public class LogonController {
 
     @ResponseBody
     @RequestMapping(value = "/v1/logon/account", method = RequestMethod.POST ,produces ="application/json")
-    public ResponseEntity<ResultEntity> logon(@Validated @RequestBody LogonUser logonUser, HttpServletResponse response) {
+    public ResponseEntity<ResultEntity> logon(@Validated @RequestBody LogonUser logonUser, HttpServletRequest request,HttpServletResponse response) {
 
         User user = logonService.authenticate(logonUser);
         //if exists thrid party user info. bind it(weixin/weibo/taobo etc);
@@ -40,11 +39,10 @@ public class LogonController {
                 && StringUtils.isNotEmpty(logonUser.getBindUid())
                 && !logonUser.getAuthType().equals(logonUser.getBindType())
                 ){
-//            bind
             logonService.bind(user,logonUser.getBindType(),logonUser.getBindUid(),logonUser.getBindName());
         }
-        String newToken = JwtUtils.sign(user.getId(),user.getPasswordSalt(),3600);
-        response.setHeader("x-auth-token", newToken);
+        sessionUtils.logonOK(user,request,response);
+
         return ResponseEntity.ok(ResultEntity.ok(user));
     }
 
