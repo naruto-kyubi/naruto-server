@@ -72,8 +72,13 @@ public class ResourceRoleService {
         return chainDefinition;
     }
 
-    public List getUserFunctions(String userId){
+    public List queryUserFunctions(String userId){
         List<Map> list = resourceRoleReponsitory.queryUserFunctions(userId);
+        return list;
+    }
+
+    public List queryRoleFunctions(String roleId){
+        List<Map> list = resourceRoleReponsitory.queryRoleFunctions(roleId);
         return list;
     }
 }

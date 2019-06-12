@@ -18,17 +18,22 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-public class PermisionController {
+public class PermissionController {
 
     @Autowired
     private ResourceRoleService resourceRoleService;
 
     @RequestMapping(value = "/v1/logon/function", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public ResponseEntity<ResultEntity> queryFunctions() {
+
         Subject subject = SecurityUtils.getSubject();
         User user = (User) subject.getPrincipal();
-        List list = resourceRoleService.getUserFunctions(user.getId());
-
+        List list = null;
+        if(null!=user){
+            list = resourceRoleService.queryUserFunctions(user.getId());
+        }else{
+            list = resourceRoleService.queryRoleFunctions("guest");
+        }
         list = buildMenuMap(list,"-1");
 
         return ResponseEntity.ok(ResultEntity.ok(list));
@@ -55,6 +60,7 @@ public class PermisionController {
                 _menuMap.put("icon", _map.get("icon"));
                 _menuMap.put("locale", _map.get("locale"));
                 _menuMap.put("type", _map.get("type"));
+                _menuMap.put("seq", _map.get("seq"));
                 _list.add(_menuMap);
 //                if ("MENU".equals(_type)) {
                 List<Map> _rtnList = buildMenuMap(menuList, _id);
@@ -65,8 +71,6 @@ public class PermisionController {
         }
         return _list;
     }
-
-
 
     @GetMapping(value = "/v1/perm/reloadFilterChains")
     public ResponseEntity<String> reloadFilterChains() {

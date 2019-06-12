@@ -68,9 +68,11 @@ public class JwtAuthFilter extends AuthenticatingFilter {
         }
 
         boolean isRememberMe =false;
+//        boolean isAnon = false;
         if(null!=mappedValue){
             String[] array = (String[]) mappedValue;
             isRememberMe = Arrays.asList(array).contains("RememberMe");
+//            isAnon = Arrays.asList(array).contains("anon");
         }
 
         if(!allowed && isRememberMe) {
@@ -79,6 +81,7 @@ public class JwtAuthFilter extends AuthenticatingFilter {
             allowed = null!= subject.getPrincipals();
         }
 
+//        if(!allowed && isAnon)  allowed = true;
         return allowed || super.isPermissive(mappedValue);
     }
 

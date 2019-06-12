@@ -157,7 +157,7 @@ public class ShiroConfig {
             chainDefinition.addPathDefinition(permission.getResourceUrl(), permission.getPermission());
         }
         chainDefinition.addPathDefinition("/v1/user/currentUser","jwtAuthToken[RememberMe]");
-        chainDefinition.addPathDefinition("/v1/logon/function","jwtAuthToken[RememberMe]");
+        chainDefinition.addPathDefinition("/v1/logon/function","noSessionCreation,jwtAuthToken[RememberMe,permissive]");
 
         chainDefinition.addPathDefinition("/v1/logon/account","jwtAuthToken");
         chainDefinition.addPathDefinition("/**","noSessionCreation,anon");
