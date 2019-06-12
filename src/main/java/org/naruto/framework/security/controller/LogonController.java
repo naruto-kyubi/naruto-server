@@ -41,12 +41,8 @@ public class LogonController {
                 ){
             logonService.bind(user,logonUser.getBindType(),logonUser.getBindUid(),logonUser.getBindName());
         }
-        sessionUtils.logonOK(user,request,response);
-
         return ResponseEntity.ok(ResultEntity.ok(user));
     }
-
-
 
     @RequestMapping(value = "/v1/logon/logout", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public ResponseEntity<ResultEntity> logout(HttpServletRequest request) {
