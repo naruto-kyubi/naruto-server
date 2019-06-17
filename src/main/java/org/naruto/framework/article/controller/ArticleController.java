@@ -3,6 +3,7 @@ package org.naruto.framework.article.controller;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.naruto.framework.article.domain.Article;
+import org.naruto.framework.article.domain.Comment;
 import org.naruto.framework.article.service.ArticleService;
 import org.naruto.framework.core.web.ResultEntity;
 import org.naruto.framework.user.domain.User;
@@ -27,7 +28,7 @@ public class ArticleController {
 
     public ResponseEntity<ResultEntity> add(@Validated @RequestBody Article article){
 
-        return ResponseEntity.ok(ResultEntity.ok(articleService.save(article)));
+        return ResponseEntity.ok(ResultEntity.ok(articleService.saveArticle(article)));
     }
 
     @ResponseBody
@@ -36,17 +37,32 @@ public class ArticleController {
             @RequestParam(required = false) Map map,
             HttpServletRequest request, HttpServletResponse response) {
 
-        Subject subject = SecurityUtils.getSubject();
-        User user = (User) subject.getPrincipal();
-
-        Page page = articleService.queryPage(map);
+        Page page = articleService.queryArticleByPage(map);
         return ResponseEntity.ok(ResultEntity.ok(page.getContent(), PageUtils.wrapperPagination(page)));
     }
 
     @ResponseBody
     @RequestMapping(value = "/v1/articles/{id}", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
     public ResponseEntity<ResultEntity> queryById(@PathVariable("id") String id){
-        Article article = articleService.queryById(id);
+        Article article = articleService.queryArticleById(id);
         return ResponseEntity.ok(ResultEntity.ok(article));
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/v1/articles/comments", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    public ResponseEntity<ResultEntity> queryComments(
+            @RequestParam(required = false) Map map,
+            HttpServletRequest request, HttpServletResponse response) {
+        Page page = articleService.queryCommentByPage(map);
+        return ResponseEntity.ok(ResultEntity.ok(page.getContent(), PageUtils.wrapperPagination(page)));
+    }
+
+    @RequestMapping(value = "/v1/article/comment/add", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+
+    public ResponseEntity<ResultEntity> addComment(@Validated @RequestBody Comment comment){
+
+        return ResponseEntity.ok(ResultEntity.ok(articleService.saveComment(comment)));
+    }
+
+
 }
