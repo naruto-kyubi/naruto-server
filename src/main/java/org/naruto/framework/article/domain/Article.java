@@ -71,4 +71,7 @@ public class Article {
     private Date lastCommentAt;
 
     private String catalogId;
+
+    @Version
+    private Long version;
 }

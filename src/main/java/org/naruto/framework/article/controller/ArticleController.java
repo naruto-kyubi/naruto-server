@@ -1,11 +1,12 @@
 package org.naruto.framework.article.controller;
 
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.naruto.framework.article.domain.Article;
 import org.naruto.framework.article.domain.Comment;
+import org.naruto.framework.article.domain.Like;
+import org.naruto.framework.article.domain.Star;
 import org.naruto.framework.article.service.ArticleService;
 import org.naruto.framework.core.web.ResultEntity;
+import org.naruto.framework.security.service.SessionUtils;
 import org.naruto.framework.user.domain.User;
 import org.naruto.framework.utils.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,12 @@ import java.util.Map;
 public class ArticleController {
 
     @Autowired
+    private SessionUtils sessionUtils;
+
+    @Autowired
     private ArticleService articleService;
 
-    @RequestMapping(value = "/v1/article/add", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/v1/articles/add", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 
     public ResponseEntity<ResultEntity> add(@Validated @RequestBody Article article){
 
@@ -32,7 +36,7 @@ public class ArticleController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/v1/article/query", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    @RequestMapping(value = "/v1/articles/query", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
     public ResponseEntity<ResultEntity> query(
             @RequestParam(required = false) Map map,
             HttpServletRequest request, HttpServletResponse response) {
@@ -57,12 +61,59 @@ public class ArticleController {
         return ResponseEntity.ok(ResultEntity.ok(page.getContent(), PageUtils.wrapperPagination(page)));
     }
 
-    @RequestMapping(value = "/v1/article/comment/add", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-
+    @RequestMapping(value = "/v1/articles/comment/add", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public ResponseEntity<ResultEntity> addComment(@Validated @RequestBody Comment comment){
 
         return ResponseEntity.ok(ResultEntity.ok(articleService.saveComment(comment)));
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/v1/articles/likes/{type}/{targetId}", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    public ResponseEntity<ResultEntity> queryLikeById(@PathVariable("type") String type,@PathVariable("targetId") String targetId,HttpServletRequest request){
 
+        User user = sessionUtils.getCurrentUser(request);
+        Like like = articleService.queryLikeByUserIdAndTypeAndTargetId(user.getId(),type,targetId);
+        return ResponseEntity.ok(ResultEntity.ok(like));
+    }
+
+    @RequestMapping(value = "/v1/articles/likes/add", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    public ResponseEntity<ResultEntity> addLike(@Validated @RequestBody Like like,HttpServletRequest request){
+
+        User user = sessionUtils.getCurrentUser(request);
+        like.setUserId(user.getId());
+        return ResponseEntity.ok(ResultEntity.ok(articleService.saveLike(like)));
+    }
+
+    @RequestMapping(value = "/v1/articles/likes/delete/{type}/{targetId}", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    public ResponseEntity<ResultEntity> deleteLike(@PathVariable("type") String type,@PathVariable("targetId") String targetId,HttpServletRequest request){
+
+        User user = sessionUtils.getCurrentUser(request);
+        articleService.deleteLike(user.getId(),type,targetId);
+        return ResponseEntity.ok(ResultEntity.ok(null));
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/v1/articles/stars/{articleId}", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    public ResponseEntity<ResultEntity> queryStarById(@PathVariable("articleId") String articleId,HttpServletRequest request){
+
+        User user = sessionUtils.getCurrentUser(request);
+        Star star = articleService.queryStarByUserIdAndArticleId(user.getId(),articleId);
+        return ResponseEntity.ok(ResultEntity.ok(star));
+    }
+
+    @RequestMapping(value = "/v1/articles/stars/add", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    public ResponseEntity<ResultEntity> addStar(@Validated @RequestBody Star star,HttpServletRequest request){
+
+        User user = sessionUtils.getCurrentUser(request);
+        star.setUserId(user.getId());
+        return ResponseEntity.ok(ResultEntity.ok(articleService.saveStar(star)));
+    }
+
+    @RequestMapping(value = "/v1/articles/stars/delete/{articleId}", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    public ResponseEntity<ResultEntity> deleteStar(@PathVariable("articleId") String articleId,HttpServletRequest request){
+
+        User user = sessionUtils.getCurrentUser(request);
+        articleService.deleteStar(user.getId(),articleId);
+        return ResponseEntity.ok(ResultEntity.ok(null));
+    }
 }

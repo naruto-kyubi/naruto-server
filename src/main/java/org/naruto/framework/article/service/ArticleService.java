@@ -2,52 +2,35 @@ package org.naruto.framework.article.service;
 
 import org.naruto.framework.article.domain.Article;
 import org.naruto.framework.article.domain.Comment;
-import org.naruto.framework.article.repository.ArticleRepository;
-import org.naruto.framework.article.repository.CommentRepository;
-import org.naruto.framework.core.exception.CommonError;
-import org.naruto.framework.core.exception.ServiceException;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.naruto.framework.article.domain.Like;
+import org.naruto.framework.article.domain.Star;
 import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
-@Service
-public class ArticleService {
+public interface ArticleService {
 
-    @Autowired
-    private ArticleRepository articleRepository;
+    public Article saveArticle(Article article);
 
-    @Autowired
-    private CommentRepository commentRepository;
+    public Page<Article> queryArticleByPage(Map map);
 
-    public Article saveArticle(Article article){
-        if(article == null) {
-                throw new ServiceException(CommonError.PARAMETER_VALIDATION_ERROR);
-        }
+    public Article queryArticleById(String id);
 
-        return articleRepository.save(article);
-    }
+    public Comment saveComment(Comment comment);
 
+    public Page<Comment> queryCommentByPage(Map map);
 
-    public Page<Article> queryArticleByPage(Map map) {
-        return articleRepository.queryPageByCondition(map);
-    }
+    //like,zhan;
 
-    public Article queryArticleById(String id){
-        return  articleRepository.findById(id).get();
-    }
+    public Like queryLikeByUserIdAndTypeAndTargetId(String userId,String type,String targetId);
 
-    public Comment saveComment(Comment comment){
-        if(comment == null) {
-            throw new ServiceException(CommonError.PARAMETER_VALIDATION_ERROR);
-        }
+    public Like saveLike(Like like);
 
-        return commentRepository.save(comment);
-    }
+    public void deleteLike(String userId,String type,String targetId);
 
-    public Page<Comment> queryCommentByPage(Map map) {
-        return commentRepository.queryPageByCondition(map);
-    }
+    public Star queryStarByUserIdAndArticleId(String userId, String articleId);
 
+    public Star saveStar(Star star);
+
+    public void deleteStar(String userId,String articleId);
 }
