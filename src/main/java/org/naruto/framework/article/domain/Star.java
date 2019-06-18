@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
+import org.naruto.framework.article.listener.StarListener;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -18,9 +19,9 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
+@EntityListeners(value={AuditingEntityListener.class,StarListener.class})
 @ToString
-public class Star {
+public class Star implements  java.io.Serializable{
     @Id
     @GenericGenerator(name="idGenerator", strategy="uuid")
     @GeneratedValue(generator="idGenerator")
@@ -36,5 +37,17 @@ public class Star {
 
     @LastModifiedDate
     private Date updatedAt;
+
+//    @DomainEvents
+//    Collection<Object> domainEvents() {
+//        List<Object> events= new ArrayList<Object>();
+//        events.add(new StarSavedEvent(this.id,this));
+//        return events;
+//    }
+//
+//    @AfterDomainEventPublication
+//    void callbackMethod() {
+//        //
+//    }
 
 }

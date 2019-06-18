@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Map;
 
 @Service
+@Transactional
 public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
@@ -33,13 +34,12 @@ public class ArticleServiceImpl implements ArticleService {
     private StarRepository starRepository;
 
     public Article saveArticle(Article article){
+
         if(article == null) {
                 throw new ServiceException(CommonError.PARAMETER_VALIDATION_ERROR);
         }
-
         return articleRepository.save(article);
     }
-
 
     public Page<Article> queryArticleByPage(Map map) {
         return articleRepository.queryPageByCondition(map);
@@ -72,7 +72,6 @@ public class ArticleServiceImpl implements ArticleService {
         return likeRepository.save(like);
     }
 
-    @Transactional
     public void deleteLike(String userId,String type,String targetId){
         likeRepository.deleteLikeByUserIdAndTypeAndTargetId(userId,type,targetId);
     }
@@ -89,7 +88,6 @@ public class ArticleServiceImpl implements ArticleService {
         return starRepository.save(star);
     }
 
-    @Transactional
     @Override
     public void deleteStar(String userId, String articleId) {
 
