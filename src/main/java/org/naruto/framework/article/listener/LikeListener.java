@@ -1,6 +1,5 @@
 package org.naruto.framework.article.listener;
 
-import org.naruto.framework.article.domain.Article;
 import org.naruto.framework.article.domain.Like;
 import org.naruto.framework.article.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowire;
@@ -39,9 +38,10 @@ public class LikeListener {
     @PostPersist
     public void postPersist(Object source){
         Like like = (Like) source;
-        Article article = articleService.queryArticleById(like.getTargetId());
-        article.setLikeCount(article.getLikeCount()+1);
-        articleService.saveArticle(article);
+//        Article article = articleService.queryArticleById(like.getTargetId());
+//        article.setLikeCount(article.getLikeCount()+1);
+//        articleService.saveArticle(article);
+        articleService.increaseLikeCount(like.getTargetId(),1);
     }
 
 
@@ -49,12 +49,14 @@ public class LikeListener {
     public void preRemove(Object source){
         System.out.println("@preRemove：" + source);
     }
+
     @PostRemove
     public void postRemove(Object source){
         Like like = (Like) source;
-        String articleId= like.getTargetId();
-        Article article = articleService.queryArticleById(articleId);
-        article.setLikeCount(article.getLikeCount()-1);
-        articleService.saveArticle(article);
+//        String articleId= like.getTargetId();
+//        Article article = articleService.queryArticleById(articleId);
+//        article.setLikeCount(article.getLikeCount()-1);
+//        articleService.saveArticle(article);
+        articleService.increaseLikeCount(like.getTargetId(),-1);
     }
 }

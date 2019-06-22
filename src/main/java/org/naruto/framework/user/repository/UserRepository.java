@@ -12,4 +12,5 @@ public interface UserRepository extends CustomRepository<User,String> {
     public User queryUserByMobile(String mobile);
 
     public List<User> queryUsersByNickname(String nickname);
+
 }

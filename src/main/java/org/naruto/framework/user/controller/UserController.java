@@ -210,4 +210,11 @@ public class UserController {
         List<ThirdPartyUser> thirdPartyUserList = thirdPartyUserService.queryThirdPartyUsersByUser(sessionUser);
         return ResponseEntity.ok(ResultEntity.ok(thirdPartyUserList));
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/v1/users/{id}", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    public ResponseEntity<ResultEntity> queryById(@PathVariable("id") String id){
+        User user = userService.getUserById(id);
+        return ResponseEntity.ok(ResultEntity.ok(user));
+    }
 }

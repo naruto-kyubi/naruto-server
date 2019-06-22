@@ -89,7 +89,7 @@ public class ArticleController {
         User user = sessionUtils.getCurrentUser(request);
         like.setUserId(user.getId());
         articleService.saveLike(like);
-
+        articleService.increaseLikeCount(like.getTargetId(),1);
         Article article = articleService.queryArticleById(like.getTargetId());
         LikeVo vo = new LikeVo(like,article.getLikeCount());
 
@@ -102,10 +102,21 @@ public class ArticleController {
         User user = sessionUtils.getCurrentUser(request);
         articleService.deleteLike(user.getId(),type,targetId);
 
+        articleService.increaseLikeCount(targetId,-1);
         Article article = articleService.queryArticleById(targetId);
         LikeVo vo = new LikeVo(null,article.getLikeCount());
 
         return ResponseEntity.ok(ResultEntity.ok(vo));
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/v1/articles/stars/user/query", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    public ResponseEntity<ResultEntity> queryStar(
+            @RequestParam(required = false) Map map,
+            HttpServletRequest request, HttpServletResponse response) {
+
+        Page page = articleService.queryStarByPage(map);
+        return ResponseEntity.ok(ResultEntity.ok(page.getContent(), PageUtils.wrapperPagination(page)));
     }
 
     @ResponseBody
@@ -127,8 +138,8 @@ public class ArticleController {
         User user = sessionUtils.getCurrentUser(request);
         star.setUserId(user.getId());
         articleService.saveStar(star);
-
-        Article article = articleService.queryArticleById(star.getArticleId());
+        articleService.increaseStarCount(star.getArticle().getId(),1);
+        Article article = articleService.queryArticleById(star.getArticle().getId());
         StarVo vo = new StarVo(star,article.getStarCount());
 
         return ResponseEntity.ok(ResultEntity.ok(vo));
@@ -140,6 +151,7 @@ public class ArticleController {
         User user = sessionUtils.getCurrentUser(request);
         articleService.deleteStar(user.getId(),articleId);
 
+        articleService.increaseStarCount(articleId,-1);
         Article article = articleService.queryArticleById(articleId);
         StarVo vo = new StarVo(null,article.getStarCount());
 
