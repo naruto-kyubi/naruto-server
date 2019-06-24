@@ -14,7 +14,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="comments")
@@ -60,5 +62,11 @@ public class Comment {
 
     private String articleId;
 
+    private String replyId;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "parent_id")
+    @OrderBy("createdAt asc")
+    private List<Comment> children = new ArrayList<>();
 
 }
