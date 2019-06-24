@@ -5,9 +5,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name="follows")
@@ -23,8 +26,21 @@ public class Follow {
     @Column(length=40)
     private String id;
 
-    private String userId;
+//    private String userId;
+//
+//    private String followUserId;
 
-    private String followUserId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="user_id")
+    private User user;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="follow_user_id")
+    private User followUser;
+
+    @CreatedDate
+    private Date createdAt;
+
+    @LastModifiedDate
+    private Date updatedAt;
 }

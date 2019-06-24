@@ -2,18 +2,15 @@ package org.naruto.framework.article.listener;
 
 import org.naruto.framework.article.domain.Like;
 import org.naruto.framework.article.service.ArticleService;
-import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.PostPersist;
 import javax.persistence.PostRemove;
 import javax.persistence.PrePersist;
 import javax.persistence.PreRemove;
 
-@Configurable(autowire = Autowire.BY_TYPE, dependencyCheck = true)
-@Component
+//@Configurable(autowire = Autowire.BY_TYPE, dependencyCheck = true)
+//@Component
 public class LikeListener {
 
     @Autowired

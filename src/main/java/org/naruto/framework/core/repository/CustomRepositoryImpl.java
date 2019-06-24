@@ -10,7 +10,6 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-//自定义数据库接口实现
 public class CustomRepositoryImpl <T,ID extends Serializable>
         extends SimpleJpaRepository<T,ID>
         implements CustomRepository<T,ID>{

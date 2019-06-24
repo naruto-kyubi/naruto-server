@@ -132,13 +132,23 @@ public class ArticleController {
         return ResponseEntity.ok(ResultEntity.ok(vo));
     }
 
+
+//    @RequestMapping(value = "/v1/articles/add", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+//
+//    public ResponseEntity<ResultEntity> add(@Validated @RequestBody Article article){
+//
+//        return ResponseEntity.ok(ResultEntity.ok(articleService.saveArticle(article)));
+//    }
+
+
     @RequestMapping(value = "/v1/articles/stars/add", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public ResponseEntity<ResultEntity> addStar(@Validated @RequestBody Star star,HttpServletRequest request){
 
         User user = sessionUtils.getCurrentUser(request);
         star.setUserId(user.getId());
-        articleService.saveStar(star);
         articleService.increaseStarCount(star.getArticle().getId(),1);
+
+        articleService.saveStar(star);
         Article article = articleService.queryArticleById(star.getArticle().getId());
         StarVo vo = new StarVo(star,article.getStarCount());
 
@@ -149,9 +159,9 @@ public class ArticleController {
     public ResponseEntity<ResultEntity> deleteStar(@PathVariable("articleId") String articleId,HttpServletRequest request){
 
         User user = sessionUtils.getCurrentUser(request);
+        articleService.increaseStarCount(articleId,-1);
         articleService.deleteStar(user.getId(),articleId);
 
-        articleService.increaseStarCount(articleId,-1);
         Article article = articleService.queryArticleById(articleId);
         StarVo vo = new StarVo(null,article.getStarCount());
 

@@ -13,6 +13,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 import java.util.Date;
 
 
@@ -23,7 +24,7 @@ import java.util.Date;
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 @ToString
-public class Article {
+public class Article implements Serializable {
     @Id
     @GenericGenerator(name="idGenerator", strategy="uuid")
     @GeneratedValue(generator="idGenerator")
@@ -63,7 +64,7 @@ public class Article {
 
     private boolean recommend;
 
-    @OneToOne(fetch=FetchType.EAGER)
+    @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name = "owner")
     @Lazy(false)
     private User owner;
@@ -72,6 +73,9 @@ public class Article {
 
     private String catalogId;
 
-    @Version
-    private Long version;
+//    @Version
+//    private Long version;
+
+    public Article(String id){ this.id = id;}
+
 }
