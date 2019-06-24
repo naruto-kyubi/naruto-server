@@ -9,6 +9,7 @@ import org.naruto.framework.security.domain.Role;
 import org.naruto.framework.security.service.jwt.JwtUtils;
 import org.naruto.framework.user.domain.User;
 import org.naruto.framework.user.exception.UserError;
+import org.naruto.framework.user.repository.FollowRepository;
 import org.naruto.framework.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,6 +31,9 @@ public class UserService {
 
     @Autowired
     private IEncrpyt encrpytService;
+
+    @Autowired
+    private FollowRepository followRepository;
 
 //    @Value("${naruto.encrpyt.salt}")
 //    private String salt;

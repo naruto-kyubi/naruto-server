@@ -76,6 +76,10 @@ public class ArticleServiceImpl implements ArticleService {
         likeRepository.deleteLikeByUserIdAndTypeAndTargetId(userId,type,targetId);
     }
 
+    public Page<Star> queryStarByPage(Map map) {
+        return starRepository.queryPageByCondition(map);
+    }
+
     @Override
     public Star queryStarByUserIdAndArticleId(String userId, String articleId) {
 
@@ -92,5 +96,20 @@ public class ArticleServiceImpl implements ArticleService {
     public void deleteStar(String userId, String articleId) {
 
         starRepository.deleteByUserIdAndArticleId(userId,articleId);
+    }
+
+    @Override
+    public void increaseViewCount(String articleId) {
+        articleRepository.increaseViewCount(articleId);
+    }
+
+    @Override
+    public void increaseLikeCount(String articleId,Integer step) {
+        articleRepository.increaseLikeCount(articleId,step);
+    }
+
+    @Override
+    public void increaseStarCount(String articleId,Integer step) {
+        articleRepository.increaseStarCount(articleId,step);
     }
 }

@@ -1,27 +1,22 @@
-package org.naruto.framework.article.domain;
-
+package org.naruto.framework.user.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Date;
 
 @Entity
-@Table(name="likes")
+@Table(name="follows")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EntityListeners(value={AuditingEntityListener.class})
+@EntityListeners(AuditingEntityListener.class)
 @ToString
-public class Like implements Serializable{
+public class Follow {
     @Id
     @GenericGenerator(name="idGenerator", strategy="uuid")
     @GeneratedValue(generator="idGenerator")
@@ -30,14 +25,6 @@ public class Like implements Serializable{
 
     private String userId;
 
-    private String targetId;
-
-    private String type; //article and comment.
-
-    @CreatedDate
-    private Date createdAt;
-
-    @LastModifiedDate
-    private Date updatedAt;
+    private String followUserId;
 
 }

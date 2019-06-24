@@ -1,6 +1,5 @@
 package org.naruto.framework.article.listener;
 
-import org.naruto.framework.article.domain.Article;
 import org.naruto.framework.article.domain.Star;
 import org.naruto.framework.article.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowire;
@@ -42,9 +41,10 @@ public class StarListener {
     @PostPersist
     public void postPersist(Object source){
         Star star = (Star) source;
-        Article article = articleService.queryArticleById(star.getArticleId());
-        article.setStarCount(article.getStarCount()+1);
-        articleService.saveArticle(article);
+//        Article article = articleService.queryArticleById(star.getArticleId());
+//        article.setStarCount(article.getStarCount()+1);
+//        articleService.saveArticle(article);
+        articleService.increaseStarCount(star.getArticle().getId(),1);
     }
 
     @PreRemove
@@ -55,9 +55,10 @@ public class StarListener {
     @PostRemove
     public void postRemove(Object source){
         Star star = (Star) source;
-        String articleId= star.getArticleId();
-        Article article = articleService.queryArticleById(articleId);
-        article.setStarCount(article.getStarCount()-1);
-        articleService.saveArticle(article);
+//        String articleId= star.getArticleId();
+//        Article article = articleService.queryArticleById(articleId);
+//        article.setStarCount(article.getStarCount()-1);
+//        articleService.saveArticle(article);
+        articleService.increaseStarCount(star.getArticle().getId(),-1);
     }
 }

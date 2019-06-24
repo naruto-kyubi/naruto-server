@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
-import org.naruto.framework.article.listener.StarListener;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -19,7 +18,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EntityListeners(value={AuditingEntityListener.class,StarListener.class})
+@EntityListeners(value={AuditingEntityListener.class})
 @ToString
 public class Star implements  java.io.Serializable{
     @Id
@@ -30,7 +29,11 @@ public class Star implements  java.io.Serializable{
 
     private String userId;
 
-    private String articleId;
+//    private String articleId;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Article article;
+
 
     @CreatedDate
     private Date createdAt;
