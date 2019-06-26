@@ -1,6 +1,8 @@
 package org.naruto.framework.article.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -64,9 +66,17 @@ public class Comment {
 
     private String replyId;
 
+
+    @JsonBackReference
+    @ManyToOne(cascade= CascadeType.DETACH, fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
+    private Comment parent;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "parent_id")
     @OrderBy("createdAt asc")
     private List<Comment> children = new ArrayList<>();
+
+    public Comment(String id){this.id = id;}
 
 }
