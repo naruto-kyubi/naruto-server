@@ -1,13 +1,13 @@
 package org.naruto.framework.article.domain;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.ManyToAny;
 import org.naruto.framework.user.domain.User;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.annotation.CreatedDate;
@@ -27,11 +27,13 @@ import java.util.List;
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 @ToString
+
 public class Comment {
     @Id
     @GenericGenerator(name="idGenerator", strategy="uuid")
     @GeneratedValue(generator="idGenerator")
     @Column(length=40)
+//    private String id;
     private String id;
 
     @NotBlank(message = "The content cannot be blank ")
@@ -57,20 +59,20 @@ public class Comment {
 
     private boolean recommend;
 
-    @OneToOne(fetch=FetchType.EAGER)
+
+    @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name = "user_id")
-    @Lazy(false)
     private User userId;
 
     private String articleId;
 
     private String replyId;
 
-
     @JsonBackReference
     @ManyToOne(cascade= CascadeType.DETACH, fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     private Comment parent;
+
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "parent_id")

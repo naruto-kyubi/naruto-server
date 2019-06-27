@@ -64,7 +64,10 @@ public class ArticleController {
     }
 
     @RequestMapping(value = "/v1/articles/comment/add", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    public ResponseEntity<ResultEntity> addComment(@Validated @RequestBody Comment comment){
+    public ResponseEntity<ResultEntity> addComment(@Validated @RequestBody Comment comment,HttpServletRequest request){
+
+        User user = sessionUtils.getCurrentUser(request);
+        comment.setUserId(user);
 
         return ResponseEntity.ok(ResultEntity.ok(articleService.saveComment(comment)));
     }
