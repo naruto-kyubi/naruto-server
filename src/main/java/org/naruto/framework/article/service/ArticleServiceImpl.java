@@ -111,16 +111,19 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public void increaseViewCount(String articleId) {
-        articleRepository.increaseViewCount(articleId);
+        articleRepository.increateCount(articleId,"view_count",1L);
+//        articleRepository.increaseViewCount(articleId);
     }
 
     @Override
     public void increaseLikeCount(String articleId,Integer step) {
-        articleRepository.increaseLikeCount(articleId,step);
+        articleRepository.increateCount(articleId,"like_count",1L);
+//        articleRepository.increaseLikeCount(articleId,step);
     }
 
     @Override
     public void increaseStarCount(String articleId,Integer step) {
-        articleRepository.increaseStarCount(articleId,step);
+        articleRepository.increateCount(articleId,"star_count",1L);
+//        articleRepository.increaseStarCount(articleId,step);
     }
 }

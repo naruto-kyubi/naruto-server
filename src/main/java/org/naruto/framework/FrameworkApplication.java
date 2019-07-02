@@ -8,7 +8,6 @@ import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.servlet.MultipartConfigElement;
@@ -22,10 +21,6 @@ public class FrameworkApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(FrameworkApplication.class, args);
 	}
-//	@Bean
-//	public OpenEntityManagerInViewFilter openEntityManagerInViewFilter() {
-//		return new OpenEntityManagerInViewFilter();
-//	}
 
 	@Value("${uploadfile.tmp.location}")
 	private String uploadfilelocation;

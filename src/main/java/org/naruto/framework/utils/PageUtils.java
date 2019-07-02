@@ -18,7 +18,7 @@ public class PageUtils {
     public static Map prepareQueryPageMap(Map map) {
         if (null == map) map = new HashMap();
         Integer currentPage = null == map.get("currentPage") ? 1 : Integer.valueOf((String) map.get("currentPage"));
-        Integer pageSize = null == map.get("pageSize") ? 10 : Integer.valueOf((String) map.get("pageSize"));
+        Integer pageSize = null == map.get("pageSize") ? 5 : Integer.valueOf((String) map.get("pageSize"));
         currentPage = currentPage - 1;
         map.put("currentPage", currentPage);
         map.put("pageSize", pageSize);
@@ -33,16 +33,27 @@ public class PageUtils {
         Pageable pageable = new PageRequest(currentPage, pageSize);
 
         if (StringUtils.isNotEmpty(sorter)) {
-            String[] strs = sorter.split("_");
-            if ("ascend".equalsIgnoreCase(strs[1])) {
-                pageable = new PageRequest(currentPage, pageSize, new Sort(new Sort.Order(Sort.Direction.ASC, strs[0])));
+//            String[] strs = sorter.split("_");
+            int pos = sorter.lastIndexOf("_");
+            String s = sorter.substring(pos+1);
+            String column = sorter.substring(0,pos);
+
+            if ("ascend".equalsIgnoreCase(s)) {
+                pageable = new PageRequest(currentPage, pageSize, new Sort(new Sort.Order(Sort.Direction.ASC, column)));
             } else {
-                pageable = new PageRequest(currentPage, pageSize, new Sort(new Sort.Order(Sort.Direction.DESC, strs[0])));
+                pageable = new PageRequest(currentPage, pageSize, new Sort(new Sort.Order(Sort.Direction.DESC, column)));
             }
         }
         return pageable;
     }
-
+//public static void main(String[] args){
+//        String sorter = "update_at_desc";
+//    int pos = sorter.lastIndexOf("_");
+//    String s = sorter.substring(pos+1);
+//    String column = sorter.substring(0,pos);
+//    System.out.println(s);
+//    System.out.println(column);
+//}
     public static Map wrapperPagination(Page page){
         Pagination pagination = new Pagination(page.getSize(),page.getNumber()+1,page.getTotalElements());
         Map pageMap  = new HashMap();
