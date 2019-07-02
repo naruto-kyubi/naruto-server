@@ -38,7 +38,18 @@ public class ArticleServiceImpl implements ArticleService {
         if(article == null) {
                 throw new ServiceException(CommonError.PARAMETER_VALIDATION_ERROR);
         }
-        return articleRepository.save(article);
+        String id = article.getId();
+        if(id==null)
+         return articleRepository.save(article);
+        else {
+            Article lastVersion = articleRepository.findById(id).get();
+            lastVersion.setCatalogId(article.getCatalogId());
+            lastVersion.setContent(article.getContent());
+            lastVersion.setContentHtml(article.getContentHtml());
+            lastVersion.setTitle(article.getTitle());
+            return articleRepository.save(lastVersion);
+        }
+
     }
 
     public Page<Article> queryArticleByPage(Map map) {
