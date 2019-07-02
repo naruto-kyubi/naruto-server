@@ -21,4 +21,10 @@ public interface FollowService {
     List<Follow> queryByFollowUserId(String followUserId);
 
     Page queryUserByPage(Map map);
+
+    Page queryFollowByPage(Map map);
+
+    Page queryFollowByUserId(Map map);
+
+    Page queryFans(Map map);
 }

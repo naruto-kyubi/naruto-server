@@ -7,7 +7,6 @@ import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.query.Param;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Map;
 
 @NoRepositoryBean
@@ -15,4 +14,6 @@ public interface CustomRepository<T,ID
         extends Serializable>
         extends JpaRepository<T,ID>,JpaSpecificationExecutor<T> {
     Page<T> queryPageByCondition(@Param("condition") Map condition);
+
+    void increateCount(String id,String column,Long step);
 }

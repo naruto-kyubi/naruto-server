@@ -111,4 +111,23 @@ public class UserService {
         return userRepository.queryPageByCondition(map);
     }
 
+    public void increaseArticleCount(String userId,long step){
+        userRepository.increateCount(userId,"article_count",step);
+    }
+    public void increaseStarCount(String userId,Long step){
+        userRepository.increateCount(userId,"star_count",step);
+    }
+
+    public void increaseLikeCount(String userId,Long step){
+        userRepository.increateCount(userId,"like_count",step);
+    }
+
+    public void increaseFanCount(String userId,Long step){
+        userRepository.increateCount(userId,"fan_count",step);
+    }
+
+    public void increaseFollowCount(String userId,Long step){
+        userRepository.increateCount(userId,"follow_count",step);
+    }
+
 }

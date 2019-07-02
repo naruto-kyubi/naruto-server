@@ -62,31 +62,6 @@ public class CustomerSpecs {
                             predicates.add(criteriaBuilder.greaterThan(path, values[0]));
                         }
                     }
-//                    }else {
-////                    Attribute attr =  type.getAttribute(item.getKey());
-//                        if ("equal".equalsIgnoreCase(item.getRule())) {
-//                            predicates.add(criteriaBuilder.equal(root.get(item.getKey()), item.getValue()));
-//
-//                        } else if ("like".equalsIgnoreCase(item.getRule())) {
-//                            predicates.add(criteriaBuilder.like(root.get(item.getKey()), "%" + item.getValue() + "%"));
-//                        } else if ("between".equalsIgnoreCase(item.getRule())) {
-//                            //解析value值，数组；
-//                            String value = item.getValue();
-//                            String[] values = value.split(",");
-//
-//                            if (values.length > 1) {
-//                                if (StringUtils.isNotEmpty(values[0]) && StringUtils.isNotEmpty(values[1])) {
-//                                    predicates.add(criteriaBuilder.between(root.get(item.getKey()), values[0], values[1]));
-//                                } else if (StringUtils.isNotEmpty(values[0])) {
-//                                    predicates.add(criteriaBuilder.greaterThan(root.get(item.getKey()), values[0]));
-//                                } else if (StringUtils.isNotEmpty(values[1])) {
-//                                    predicates.add(criteriaBuilder.lessThan(root.get(item.getKey()), values[1]));
-//                                }
-//                            } else {
-//                                predicates.add(criteriaBuilder.greaterThan(root.get(item.getKey()), values[0]));
-//                            }
-//                        }
-//                    }
                 }
                 return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
             }

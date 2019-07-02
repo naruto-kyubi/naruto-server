@@ -36,12 +36,6 @@ public class ArticleReadedStatInterceptor implements HandlerInterceptor{
                 String id = (String) pathVariables.get("id");
 
                 articleService.increaseViewCount(id);
-//                Article article = articleService.queryArticleById(id);
-//
-//                article.setViewCount(article.getViewCount()+1);
-//
-//                articleService.saveArticle(article);
-
                 break;
             case "POST":
             case "PUT":

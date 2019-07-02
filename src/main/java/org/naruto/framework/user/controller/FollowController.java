@@ -3,9 +3,11 @@ package org.naruto.framework.user.controller;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.naruto.framework.core.web.ResultEntity;
+import org.naruto.framework.security.service.SessionUtils;
 import org.naruto.framework.user.domain.Follow;
 import org.naruto.framework.user.domain.User;
 import org.naruto.framework.user.service.FollowService;
+import org.naruto.framework.user.service.UserService;
 import org.naruto.framework.utils.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,6 +25,12 @@ public class FollowController {
 
     @Autowired
     private FollowService followService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private SessionUtils sessionUtils;
 
     @ResponseBody
     @RequestMapping(value = "/v1/follows/{id}", method = RequestMethod.GET)
@@ -44,10 +52,12 @@ public class FollowController {
             BindingResult bindingResult,
             HttpServletRequest request,
             HttpServletResponse response) {
-        Subject subject = SecurityUtils.getSubject();
-        User sessionUser = (User) subject.getPrincipal();
+        User user = sessionUtils.getCurrentUser(request);
 
-        follow.setUser(sessionUser);
+        userService.increaseFollowCount(user.getId(),1L);
+        userService.increaseFanCount(follow.getFollowUser().getId(),1L);
+
+        follow.setUser(user);
 
         return ResponseEntity.ok(ResultEntity.ok(followService.save(follow)));
     }
@@ -62,6 +72,9 @@ public class FollowController {
         Subject subject = SecurityUtils.getSubject();
         User sessionUser = (User) subject.getPrincipal();
 
+        userService.increaseFollowCount(sessionUser.getId(),-1L);
+        userService.increaseFanCount(id,-1L);
+
         followService.delete(sessionUser.getId(),id);
         return ResponseEntity.ok(ResultEntity.ok(null));
     }
@@ -72,7 +85,11 @@ public class FollowController {
             @RequestParam(required = false) Map map,
             HttpServletRequest request, HttpServletResponse response) {
 
-        Page page = followService.queryUserByPage(map);
+        User user =sessionUtils.getCurrentUser(request);
+        map.put("currentUserId",user.getId());
+
+//        Page page = followService.queryUserByPage(map);
+        Page page = followService.queryFans(map);
         return ResponseEntity.ok(ResultEntity.ok(page.getContent(), PageUtils.wrapperPagination(page)));
     }
 
@@ -82,9 +99,39 @@ public class FollowController {
             @RequestParam(required = false) Map map,
             HttpServletRequest request, HttpServletResponse response) {
 
-        Page page = followService.queryUserByPage(map);
+//        Page page = followService.queryUserByPage(map);
+
+        User user =sessionUtils.getCurrentUser(request);
+        map.put("currentUserId",user.getId());
+        Page page = followService.queryFollowByUserId(map);
+
         return ResponseEntity.ok(ResultEntity.ok(page.getContent(), PageUtils.wrapperPagination(page)));
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/v1/follows/conjunction", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    public ResponseEntity<ResultEntity> queryConjunctions(
+            @RequestParam(required = false) Map map,
+            HttpServletRequest request, HttpServletResponse response) {
+
+
+        Page page = followService.queryFollowByUserId(map);
+        return ResponseEntity.ok(ResultEntity.ok(page.getContent(), PageUtils.wrapperPagination(page)));
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/v1/follows/queryPage", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    public ResponseEntity<ResultEntity> queryPage(
+            @RequestParam(required = false) Map map,
+            HttpServletRequest request, HttpServletResponse response) {
+
+
+
+        Page page = followService.queryFollowByUserId(map);
+        return ResponseEntity.ok(ResultEntity.ok(page.getContent(), PageUtils.wrapperPagination(page)));
+    }
+
 
 //    @ResponseBody
 //    @RequestMapping(value = "/v1/follows/users/{id}", method = RequestMethod.GET)

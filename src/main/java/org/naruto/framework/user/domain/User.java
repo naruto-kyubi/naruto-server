@@ -67,6 +67,16 @@ public class User implements Serializable {
     @Transient
     private String captcha;
 
+    private Long articleCount = 0L;
+
+    private Long likeCount = 0L;
+
+    private Long starCount= 0L;
+
+    private Long fanCount =0L;
+
+    private Long followCount =0L;
+
     @CreatedDate
     private Date createdAt;
 

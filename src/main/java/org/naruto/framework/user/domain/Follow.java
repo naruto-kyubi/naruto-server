@@ -38,6 +38,8 @@ public class Follow {
     @JoinColumn(name="follow_user_id")
     private User followUser;
 
+    private String mutual;  //follow,both
+
     @CreatedDate
     private Date createdAt;
 
