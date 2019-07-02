@@ -32,6 +32,7 @@ public class FollowController {
     @Autowired
     private SessionUtils sessionUtils;
 
+//    用户之间关注（one - to -one）
     @ResponseBody
     @RequestMapping(value = "/v1/follows/{id}", method = RequestMethod.GET)
     public ResponseEntity<ResultEntity> query(@PathVariable("id") String id) {
@@ -45,6 +46,7 @@ public class FollowController {
         return ResponseEntity.ok(ResultEntity.ok(follow));
     }
 
+//    新增关注
     @ResponseBody
     @RequestMapping(value = "/v1/follows/add", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     public ResponseEntity<ResultEntity> add(
@@ -62,7 +64,7 @@ public class FollowController {
         return ResponseEntity.ok(ResultEntity.ok(followService.save(follow)));
     }
 
-    // 删除记录；
+    // 取消关注
     @ResponseBody
     @RequestMapping(value = "/v1/follows/delete/{id}", method = RequestMethod.GET)
     public ResponseEntity<ResultEntity> delete(
@@ -79,6 +81,21 @@ public class FollowController {
         return ResponseEntity.ok(ResultEntity.ok(null));
     }
 
+    //关注了
+    @ResponseBody
+    @RequestMapping(value = "/v1/follows/users", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    public ResponseEntity<ResultEntity> queryUsers(
+            @RequestParam(required = false) Map map,
+            HttpServletRequest request, HttpServletResponse response) {
+
+        User user =sessionUtils.getCurrentUser(request);
+        map.put("currentUserId",user.getId());
+        Page page = followService.queryFollowUsers(map);
+
+        return ResponseEntity.ok(ResultEntity.ok(page.getContent(), PageUtils.wrapperPagination(page)));
+    }
+
+    //用户粉丝
     @ResponseBody
     @RequestMapping(value = "/v1/follows/fans", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
     public ResponseEntity<ResultEntity> queryFans(
@@ -88,74 +105,8 @@ public class FollowController {
         User user =sessionUtils.getCurrentUser(request);
         map.put("currentUserId",user.getId());
 
-//        Page page = followService.queryUserByPage(map);
         Page page = followService.queryFans(map);
         return ResponseEntity.ok(ResultEntity.ok(page.getContent(), PageUtils.wrapperPagination(page)));
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/v1/follows/users", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
-    public ResponseEntity<ResultEntity> queryUsers(
-            @RequestParam(required = false) Map map,
-            HttpServletRequest request, HttpServletResponse response) {
-
-//        Page page = followService.queryUserByPage(map);
-
-        User user =sessionUtils.getCurrentUser(request);
-        map.put("currentUserId",user.getId());
-        Page page = followService.queryFollowByUserId(map);
-
-        return ResponseEntity.ok(ResultEntity.ok(page.getContent(), PageUtils.wrapperPagination(page)));
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/v1/follows/conjunction", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
-    public ResponseEntity<ResultEntity> queryConjunctions(
-            @RequestParam(required = false) Map map,
-            HttpServletRequest request, HttpServletResponse response) {
-
-
-        Page page = followService.queryFollowByUserId(map);
-        return ResponseEntity.ok(ResultEntity.ok(page.getContent(), PageUtils.wrapperPagination(page)));
-    }
-
-
-    @ResponseBody
-    @RequestMapping(value = "/v1/follows/queryPage", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
-    public ResponseEntity<ResultEntity> queryPage(
-            @RequestParam(required = false) Map map,
-            HttpServletRequest request, HttpServletResponse response) {
-
-
-
-        Page page = followService.queryFollowByUserId(map);
-        return ResponseEntity.ok(ResultEntity.ok(page.getContent(), PageUtils.wrapperPagination(page)));
-    }
-
-
-//    @ResponseBody
-//    @RequestMapping(value = "/v1/follows/users/{id}", method = RequestMethod.GET)
-//    public ResponseEntity<ResultEntity> queryUsers(@PathVariable("id") String id) {
-//
-////        Subject subject = SecurityUtils.getSubject();
-////        User sessionUser = (User) subject.getPrincipal();
-////        List<Follow> list = null;
-////        if(null!=sessionUser){
-//        List<Follow> list = followService.queryByUserId(id);
-////        }
-//        return ResponseEntity.ok(ResultEntity.ok(list));
-//    }
-//
-//    @ResponseBody
-//    @RequestMapping(value = "/v1/follows/fans/{id}", method = RequestMethod.GET)
-//    public ResponseEntity<ResultEntity> queryFollowUsers(@PathVariable("id") String id) {
-//
-//        Subject subject = SecurityUtils.getSubject();
-//        User sessionUser = (User) subject.getPrincipal();
-//        List<Follow> list = null;
-//        if(null!=sessionUser){
-//            list = followService.queryByFollowUserId(sessionUser.getId());
-//        }
-//        return ResponseEntity.ok(ResultEntity.ok(list));
-//    }
 }

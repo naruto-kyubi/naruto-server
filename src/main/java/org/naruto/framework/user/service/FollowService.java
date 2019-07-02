@@ -3,7 +3,6 @@ package org.naruto.framework.user.service;
 import org.naruto.framework.user.domain.Follow;
 import org.springframework.data.domain.Page;
 
-import java.util.List;
 import java.util.Map;
 
 
@@ -16,15 +15,7 @@ public interface FollowService {
 
     void delete(String userId,String followUserId);
 
-    List<Follow> queryByUserId(String userId);
-
-    List<Follow> queryByFollowUserId(String followUserId);
-
-    Page queryUserByPage(Map map);
-
-    Page queryFollowByPage(Map map);
-
-    Page queryFollowByUserId(Map map);
+    Page queryFollowUsers(Map map);
 
     Page queryFans(Map map);
 }
