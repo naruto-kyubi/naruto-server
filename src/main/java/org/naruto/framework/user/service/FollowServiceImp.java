@@ -1,6 +1,7 @@
 package org.naruto.framework.user.service;
 
 import org.naruto.framework.user.domain.Follow;
+import org.naruto.framework.user.domain.Mutual;
 import org.naruto.framework.user.repository.FollowRepository;
 import org.naruto.framework.utils.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ import java.util.Map;
 @Service
 public class FollowServiceImp implements FollowService {
 
+
+
     @Autowired
     private FollowRepository followRepository;
 
@@ -27,12 +30,12 @@ public class FollowServiceImp implements FollowService {
         Follow f = followRepository.queryFollowByUserIdAndFollowUserId(follow.getFollowUser().getId(),follow.getUser().getId());
         if(null==f){
             //only one follow；
-            follow.setMutual("follow");
+            follow.setMutual(Mutual.FOLLOW.getValue());
         }else{
             //both
-            f.setMutual("both");
+            f.setMutual(Mutual.BOTH.getValue());
             followRepository.save(f);
-            follow.setMutual("both");
+            follow.setMutual(Mutual.BOTH.getValue());
         }
         return followRepository.save(follow);
     }
@@ -40,7 +43,7 @@ public class FollowServiceImp implements FollowService {
     public void delete(String userId,String followUserId){
         Follow f = followRepository.queryFollowByUserIdAndFollowUserId(followUserId,userId);
         if(null!=f){
-            f.setMutual("follow");
+            f.setMutual(Mutual.FOLLOW.getValue());
             followRepository.save(f);
         }
         followRepository.deleteByUserIdAndFollowUserId(userId,followUserId);
