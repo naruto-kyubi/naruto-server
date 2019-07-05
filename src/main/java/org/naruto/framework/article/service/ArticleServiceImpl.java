@@ -11,6 +11,8 @@ import org.naruto.framework.article.repository.CommentRepository;
 import org.naruto.framework.article.repository.LikeRepository;
 import org.naruto.framework.article.repository.StarRepository;
 import org.naruto.framework.article.vo.ArticleVo;
+import org.naruto.framework.article.domain.*;
+import org.naruto.framework.article.repository.*;
 import org.naruto.framework.core.exception.CommonError;
 import org.naruto.framework.core.exception.ServiceException;
 import org.naruto.framework.elasticsearch.article.domain.EsArticle;
@@ -29,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.List;
 import java.util.Map;
 
@@ -49,13 +52,7 @@ public class ArticleServiceImpl implements ArticleService {
     private StarRepository starRepository;
 
     @Autowired
-    private ArticleEsRepository articleEsRepository;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private ElasticsearchTemplate elasticsearchTemplate;
+    private TagRepository tagRepository;
 
     public Article saveArticle(Article article){
 
@@ -76,9 +73,8 @@ public class ArticleServiceImpl implements ArticleService {
 
     }
 
-    public Page<ArticleVo> queryArticleByPage(Map map) {
-        Page page =  articleRepository.queryPageByCondition(map);
-        return PageUtils.wrapperVoPage(page,ArticleVo.class);
+    public Page<Article> queryArticleByPage(Map map) {
+        return articleRepository.queryPageByCondition(map);
     }
 
     public Article queryArticleById(String id){
@@ -137,16 +133,34 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public void increaseViewCount(String articleId) {
         articleRepository.increateCount(articleId,"view_count",1L);
+//        articleRepository.increaseViewCount(articleId);
     }
 
     @Override
     public void increaseLikeCount(String articleId,Integer step) {
         articleRepository.increateCount(articleId,"like_count",1L);
+//        articleRepository.increaseLikeCount(articleId,step);
     }
 
     @Override
     public void increaseStarCount(String articleId,Integer step) {
         articleRepository.increateCount(articleId,"star_count",1L);
+//        articleRepository.increaseStarCount(articleId,step);
+    }
+
+    @Override
+    public Tag saveTag(Tag tag) {
+        return tagRepository.save(tag);
+    }
+
+    @Override
+    public void deleteTag(Tag tag) {
+        tagRepository.delete(tag);
+    }
+
+    @Override
+    public List<Tag> queryTags() {
+        return tagRepository.findAll();
     }
 
     @Override

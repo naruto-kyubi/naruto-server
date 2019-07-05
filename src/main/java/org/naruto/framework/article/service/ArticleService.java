@@ -7,13 +7,14 @@ import org.naruto.framework.article.domain.Star;
 import org.naruto.framework.article.vo.ArticleVo;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
 import java.util.Map;
 
 public interface ArticleService {
 
     Article saveArticle(Article article);
 
-    Page<ArticleVo> queryArticleByPage(Map map);
+    Page<Article> queryArticleByPage(Map map);
 
     Article queryArticleById(String id);
 
@@ -44,5 +45,9 @@ public interface ArticleService {
     void increaseStarCount(String articleId,Integer step);
 
     Page<ArticleVo> search(Map map);
+
+    public Tag saveTag(Tag tag);
+    public void deleteTag(Tag tag);
+    public List<Tag> queryTags();
 
 }

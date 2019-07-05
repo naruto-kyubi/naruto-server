@@ -180,6 +180,25 @@ public class ArticleController {
 
         return ResponseEntity.ok(ResultEntity.ok(vo));
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/v1/articles/tag/add", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    public ResponseEntity<ResultEntity> addComment(@Validated @RequestBody Tag tag, HttpServletRequest request){
+
+
+        return ResponseEntity.ok(ResultEntity.ok(articleService.saveTag(tag)));
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/v1/articles/tags", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    public ResponseEntity<ResultEntity> queryTags(
+            @RequestParam(required = false) Map map,
+            HttpServletRequest request, HttpServletResponse response) {
+
+        return ResponseEntity.ok(ResultEntity.ok(articleService.queryTags()));
+    }
+
+
     @ResponseBody
     @RequestMapping(value = "/v1/articles/search", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
     public ResponseEntity<ResultEntity> search(
