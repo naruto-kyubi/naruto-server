@@ -1,13 +1,7 @@
 package org.naruto.framework.article.service;
 
-import org.naruto.framework.article.domain.Article;
-import org.naruto.framework.article.domain.Comment;
-import org.naruto.framework.article.domain.Like;
-import org.naruto.framework.article.domain.Star;
-import org.naruto.framework.article.repository.ArticleRepository;
-import org.naruto.framework.article.repository.CommentRepository;
-import org.naruto.framework.article.repository.LikeRepository;
-import org.naruto.framework.article.repository.StarRepository;
+import org.naruto.framework.article.domain.*;
+import org.naruto.framework.article.repository.*;
 import org.naruto.framework.core.exception.CommonError;
 import org.naruto.framework.core.exception.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -32,6 +27,9 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
     private StarRepository starRepository;
+
+    @Autowired
+    private TagRepository tagRepository;
 
     public Article saveArticle(Article article){
 
@@ -125,5 +123,20 @@ public class ArticleServiceImpl implements ArticleService {
     public void increaseStarCount(String articleId,Integer step) {
         articleRepository.increateCount(articleId,"star_count",1L);
 //        articleRepository.increaseStarCount(articleId,step);
+    }
+
+    @Override
+    public Tag saveTag(Tag tag) {
+        return tagRepository.save(tag);
+    }
+
+    @Override
+    public void deleteTag(Tag tag) {
+        tagRepository.delete(tag);
+    }
+
+    @Override
+    public List<Tag> queryTags() {
+        return tagRepository.findAll();
     }
 }

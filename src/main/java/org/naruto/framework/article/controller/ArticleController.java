@@ -1,9 +1,6 @@
 package org.naruto.framework.article.controller;
 
-import org.naruto.framework.article.domain.Article;
-import org.naruto.framework.article.domain.Comment;
-import org.naruto.framework.article.domain.Like;
-import org.naruto.framework.article.domain.Star;
+import org.naruto.framework.article.domain.*;
 import org.naruto.framework.article.service.ArticleService;
 import org.naruto.framework.article.vo.LikeVo;
 import org.naruto.framework.article.vo.StarVo;
@@ -180,4 +177,23 @@ public class ArticleController {
 
         return ResponseEntity.ok(ResultEntity.ok(vo));
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/v1/articles/tag/add", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    public ResponseEntity<ResultEntity> addComment(@Validated @RequestBody Tag tag, HttpServletRequest request){
+
+
+        return ResponseEntity.ok(ResultEntity.ok(articleService.saveTag(tag)));
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/v1/articles/tags", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    public ResponseEntity<ResultEntity> queryTags(
+            @RequestParam(required = false) Map map,
+            HttpServletRequest request, HttpServletResponse response) {
+
+        return ResponseEntity.ok(ResultEntity.ok(articleService.queryTags()));
+    }
+
+
 }

@@ -15,6 +15,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 
 @Entity
@@ -63,6 +64,13 @@ public class Article implements Serializable {
     private boolean deleted;
 
     private boolean recommend;
+
+
+    @OneToMany(fetch=FetchType.EAGER)
+    @JoinTable(name="article_tags",joinColumns={@JoinColumn(name="article_id")}
+            ,inverseJoinColumns={@JoinColumn(name="tag_id")})
+
+    private List<Tag> tags;
 
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name = "owner")
