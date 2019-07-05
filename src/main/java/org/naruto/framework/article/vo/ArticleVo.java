@@ -1,20 +1,51 @@
 package org.naruto.framework.article.vo;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.naruto.framework.user.domain.User;
 
 import java.util.Date;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ArticleVo {
+
     private String id;
-    private String owner;
+
     private String title;
-    private String avatar;
-    private Date updatedAt;
-    private Date createdAt;
-    private int likeCount;
-    private int starCount;
-    private int commentCount;
+
+    private String cover;
+
     private String content;
+
+    private String contentHtml;
+
+    private int commentCount = 0;
+
+    private int viewCount = 0;
+
+    private int starCount= 0;
+
+    private int likeCount = 0;
+
+    private boolean deleted;
+
+    private boolean recommend;
+
+    private String userId;
+
+    private User owner;
+
+    private Date lastCommentAt;
+
+    private String catalogId;
+
+    private Date createdAt;
+
+    private Date updatedAt;
+
+    public ArticleVo(String id){ this.id = id;}
 }

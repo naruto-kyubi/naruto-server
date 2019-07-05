@@ -4,6 +4,7 @@ import org.naruto.framework.article.domain.Article;
 import org.naruto.framework.article.domain.Comment;
 import org.naruto.framework.article.domain.Like;
 import org.naruto.framework.article.domain.Star;
+import org.naruto.framework.article.vo.ArticleVo;
 import org.springframework.data.domain.Page;
 
 import java.util.Map;
@@ -12,7 +13,7 @@ public interface ArticleService {
 
     Article saveArticle(Article article);
 
-    Page<Article> queryArticleByPage(Map map);
+    Page<ArticleVo> queryArticleByPage(Map map);
 
     Article queryArticleById(String id);
 
@@ -41,5 +42,7 @@ public interface ArticleService {
     void increaseLikeCount(String articleId,Integer step);
 
     void increaseStarCount(String articleId,Integer step);
+
+    Page<ArticleVo> search(Map map);
 
 }

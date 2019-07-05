@@ -1,6 +1,7 @@
 package org.naruto.framework.user.domain;
 
 public enum Mutual{
+
     BOTH("both"),FOLLOW("follow")
     ;
 
@@ -17,5 +18,4 @@ public enum Mutual{
     public String toString() {
         return this.value;
     }
-
 }

@@ -180,4 +180,13 @@ public class ArticleController {
 
         return ResponseEntity.ok(ResultEntity.ok(vo));
     }
+    @ResponseBody
+    @RequestMapping(value = "/v1/articles/search", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    public ResponseEntity<ResultEntity> search(
+            @RequestParam(required = false) Map map,
+            HttpServletRequest request, HttpServletResponse response) {
+
+        Page page = articleService.search(map);
+        return ResponseEntity.ok(ResultEntity.ok(page.getContent(), PageUtils.wrapperPagination(page)));
+    }
 }
