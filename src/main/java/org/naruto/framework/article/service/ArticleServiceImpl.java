@@ -2,17 +2,9 @@ package org.naruto.framework.article.service;
 
 import org.elasticsearch.index.query.MultiMatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.naruto.framework.article.domain.Article;
-import org.naruto.framework.article.domain.Comment;
-import org.naruto.framework.article.domain.Like;
-import org.naruto.framework.article.domain.Star;
-import org.naruto.framework.article.repository.ArticleRepository;
-import org.naruto.framework.article.repository.CommentRepository;
-import org.naruto.framework.article.repository.LikeRepository;
-import org.naruto.framework.article.repository.StarRepository;
-import org.naruto.framework.article.vo.ArticleVo;
 import org.naruto.framework.article.domain.*;
 import org.naruto.framework.article.repository.*;
+import org.naruto.framework.article.vo.ArticleVo;
 import org.naruto.framework.core.exception.CommonError;
 import org.naruto.framework.core.exception.ServiceException;
 import org.naruto.framework.elasticsearch.article.domain.EsArticle;
@@ -25,13 +17,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.List;
 import java.util.Map;
 
@@ -53,6 +43,12 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
     private TagRepository tagRepository;
+
+    @Autowired
+    private ArticleEsRepository articleEsRepository;
+
+    @Autowired
+    private UserService userService;
 
     public Article saveArticle(Article article){
 

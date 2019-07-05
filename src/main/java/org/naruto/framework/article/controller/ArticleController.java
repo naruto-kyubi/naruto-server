@@ -1,9 +1,6 @@
 package org.naruto.framework.article.controller;
 
-import org.naruto.framework.article.domain.Article;
-import org.naruto.framework.article.domain.Comment;
-import org.naruto.framework.article.domain.Like;
-import org.naruto.framework.article.domain.Star;
+import org.naruto.framework.article.domain.*;
 import org.naruto.framework.article.service.ArticleService;
 import org.naruto.framework.article.vo.LikeVo;
 import org.naruto.framework.article.vo.StarVo;

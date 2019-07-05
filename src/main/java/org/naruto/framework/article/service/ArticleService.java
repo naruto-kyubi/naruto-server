@@ -1,9 +1,6 @@
 package org.naruto.framework.article.service;
 
-import org.naruto.framework.article.domain.Article;
-import org.naruto.framework.article.domain.Comment;
-import org.naruto.framework.article.domain.Like;
-import org.naruto.framework.article.domain.Star;
+import org.naruto.framework.article.domain.*;
 import org.naruto.framework.article.vo.ArticleVo;
 import org.springframework.data.domain.Page;
 
