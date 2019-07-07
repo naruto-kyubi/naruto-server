@@ -66,9 +66,9 @@ public class Article implements Serializable {
     private boolean recommend;
 
 
-    @OneToMany(fetch=FetchType.EAGER)
+    @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(name="article_tags",joinColumns={@JoinColumn(name="article_id")}
-            ,inverseJoinColumns={@JoinColumn(name="tag_id")})
+            ,inverseJoinColumns={@JoinColumn(name="tag_id",nullable =false, updatable = false)})
 
     private List<Tag> tags;
 

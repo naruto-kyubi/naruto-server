@@ -45,6 +45,7 @@ public class ArticleServiceImpl implements ArticleService {
             lastVersion.setContent(article.getContent());
             lastVersion.setContentHtml(article.getContentHtml());
             lastVersion.setTitle(article.getTitle());
+            lastVersion.setTags(article.getTags());
             return articleRepository.save(lastVersion);
         }
 
