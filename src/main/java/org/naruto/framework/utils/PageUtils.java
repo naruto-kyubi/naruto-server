@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.naruto.framework.core.repository.SearchItem;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,6 +63,12 @@ public class PageUtils {
         if(map.containsKey("pageSize")) map.remove("pageSize");
         if(map.containsKey("sorter")) map.remove("sorter");
         return map;
+    }
+
+    public static Page wrapperVoPage(Page page,Class clazz){
+        List list = page.getContent();
+        List voList = ObjUtils.transformerClass(list, clazz);
+        return new PageImpl(voList,page.getPageable(),page.getTotalElements());
     }
 
     public static List<SearchItem> getSearchItems(Map map){

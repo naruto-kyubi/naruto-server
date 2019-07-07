@@ -1,6 +1,7 @@
 package org.naruto.framework.article.service;
 
 import org.naruto.framework.article.domain.*;
+import org.naruto.framework.article.vo.ArticleVo;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -39,6 +40,8 @@ public interface ArticleService {
     void increaseLikeCount(String articleId,Integer step);
 
     void increaseStarCount(String articleId,Integer step);
+
+    Page<ArticleVo> search(Map map);
 
     public Tag saveTag(Tag tag);
     public void deleteTag(Tag tag);

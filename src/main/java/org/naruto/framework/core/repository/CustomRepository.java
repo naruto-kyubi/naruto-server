@@ -13,7 +13,7 @@ import java.util.Map;
 public interface CustomRepository<T,ID
         extends Serializable>
         extends JpaRepository<T,ID>,JpaSpecificationExecutor<T> {
-    Page<T> queryPageByCondition(@Param("condition") Map condition);
+    Page queryPageByCondition(@Param("condition") Map condition);
 
     void increateCount(String id,String column,Long step);
 }
