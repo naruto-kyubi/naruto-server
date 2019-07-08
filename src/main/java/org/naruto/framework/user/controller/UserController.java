@@ -40,13 +40,15 @@ public class UserController {
     private UserService userService;
 
     @Autowired
-    LogonService logonService;
+    private LogonService logonService;
 
     @Autowired
     private ThirdPartyUserService thirdPartyUserService;
 
     @Autowired
-    CaptchaService captchaService;
+    private CaptchaService captchaService;
+
+
 
     @RequestMapping(value = "/v1/user/register", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public ResponseEntity<ResultEntity> register(@Validated @RequestBody User user){
@@ -216,5 +218,15 @@ public class UserController {
     public ResponseEntity<ResultEntity> queryById(@PathVariable("id") String id){
         User user = userService.getUserById(id);
         return ResponseEntity.ok(ResultEntity.ok(user));
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/v1/users/search", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    public ResponseEntity<ResultEntity> search(
+            @RequestParam(required = false) Map map,
+            HttpServletRequest request, HttpServletResponse response) {
+
+        Page page = userService.search(map);
+        return ResponseEntity.ok(ResultEntity.ok(page.getContent(), PageUtils.wrapperPagination(page)));
     }
 }

@@ -4,9 +4,11 @@ package org.naruto.framework.article.vo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.naruto.framework.article.domain.Tag;
 import org.naruto.framework.user.domain.User;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -46,6 +48,8 @@ public class ArticleVo {
     private Date createdAt;
 
     private Date updatedAt;
+
+    private List<Tag> tags;
 
     public ArticleVo(String id){ this.id = id;}
 }

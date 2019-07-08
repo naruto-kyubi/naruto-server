@@ -5,12 +5,14 @@ import org.naruto.framework.captcha.service.CaptchaService;
 import org.naruto.framework.core.encrpyt.IEncrpyt;
 import org.naruto.framework.core.exception.CommonError;
 import org.naruto.framework.core.exception.ServiceException;
+import org.naruto.framework.elasticsearch.user.service.UserEsService;
 import org.naruto.framework.security.domain.Role;
 import org.naruto.framework.security.service.jwt.JwtUtils;
 import org.naruto.framework.user.domain.User;
 import org.naruto.framework.user.exception.UserError;
 import org.naruto.framework.user.repository.FollowRepository;
 import org.naruto.framework.user.repository.UserRepository;
+import org.naruto.framework.user.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -34,6 +36,9 @@ public class UserService {
 
     @Autowired
     private FollowRepository followRepository;
+
+    @Autowired
+    private UserEsService userEsService;
 
 //    @Value("${naruto.encrpyt.salt}")
 //    private String salt;
@@ -130,4 +135,8 @@ public class UserService {
         userRepository.increateCount(userId,"follow_count",step);
     }
 
+    public Page<UserVo> search(Map map) {
+
+        return userEsService.search(map);
+    }
 }

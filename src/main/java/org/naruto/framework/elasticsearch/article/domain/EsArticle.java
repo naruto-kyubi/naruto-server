@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.naruto.framework.article.domain.Tag;
 import org.naruto.framework.user.domain.User;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -15,6 +16,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.EntityListeners;
 import javax.persistence.Id;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -57,6 +59,7 @@ public class EsArticle {
     @Field(type = FieldType.Keyword)
     private String userId;
 
+    @Field(ignoreFields = {"owner"})
     private User owner;
 
     @Field(type = FieldType.Keyword)
@@ -72,5 +75,8 @@ public class EsArticle {
     @Field(type = FieldType.Date)
     @LastModifiedDate
     private Date updatedAt;
+
+    @Field(type=FieldType.Nested)
+    private List<Tag> tags;
 
 }
