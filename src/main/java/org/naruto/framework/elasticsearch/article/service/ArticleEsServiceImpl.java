@@ -4,6 +4,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.naruto.framework.article.vo.ArticleVo;
 import org.naruto.framework.core.elasticsearch.HighLightResultMapper;
+import org.naruto.framework.elasticsearch.ElasticSearchHighlightConfig;
 import org.naruto.framework.elasticsearch.article.domain.EsArticle;
 import org.naruto.framework.user.domain.User;
 import org.naruto.framework.user.service.UserService;
@@ -19,9 +20,9 @@ import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class ArticleEsServiceImpl implements ArticleEsService{
@@ -34,6 +35,9 @@ public class ArticleEsServiceImpl implements ArticleEsService{
     @Autowired
     private ElasticsearchTemplate elasticsearchTemplate;
 
+    @Autowired
+    private ElasticSearchHighlightConfig elasticSearchHighlightConfig;
+
     @Override
     public Page<ArticleVo> search(Map map) {
 
@@ -41,14 +45,11 @@ public class ArticleEsServiceImpl implements ArticleEsService{
         Pageable pageable = PageUtils.createPageable(_map);
         String keyWord = (String) map.get("keyword");
 
-        String preTag = "<font color='#dd4b39'>";//google的色值
-        String postTag = "</font>";
-
         SearchQuery searchQuery = new NativeSearchQueryBuilder().
                 withQuery(QueryBuilders.multiMatchQuery(keyWord, "title","contentHtml")).
         withHighlightFields(
-            new HighlightBuilder.Field("title").preTags(preTag).postTags(postTag),
-            new HighlightBuilder.Field("contentHtml").preTags(preTag).postTags(postTag)
+            new HighlightBuilder.Field("title").preTags(elasticSearchHighlightConfig.getPreTag()).postTags(elasticSearchHighlightConfig.getPostTag()),
+            new HighlightBuilder.Field("contentHtml").preTags(elasticSearchHighlightConfig.getPreTag()).postTags(elasticSearchHighlightConfig.getPostTag())
         ).withMinScore(0.9F).
                         build();
         searchQuery.setPageable(pageable);
@@ -85,23 +86,18 @@ public class ArticleEsServiceImpl implements ArticleEsService{
 //            }
 //        });
 
-
-
 //        MultiMatchQueryBuilder query = QueryBuilders.multiMatchQuery(keyWord, "title","content").fields(searchMap);
 //        query.minimumShouldMatch("90%");
 //        Page<EsArticle> page = articleEsRepository.search(query,pageable);
         List<EsArticle> list = page.getContent();
 
-        List articleList = new ArrayList();
+        List voList = list.stream().map(item-> {
+                String userId = item.getUserId();
+                User user = userService.findById(userId);
+                item.setOwner(user);
+                return ObjUtils.convert(item,ArticleVo.class);
+            }).collect(Collectors.toList());
 
-        for (EsArticle article : list) {
-            String userId = article.getUserId();
-            User user = userService.findById(userId);
-            article.setOwner(user);
-            articleList.add(article);
-        }
-
-        List voList = ObjUtils.transformerClass(articleList, ArticleVo.class);
         return new PageImpl(voList,page.getPageable(),page.getTotalElements());
     }
 }

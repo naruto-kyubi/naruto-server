@@ -3,6 +3,7 @@ package org.naruto.framework.elasticsearch.user.service;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.naruto.framework.core.elasticsearch.HighLightResultMapper;
+import org.naruto.framework.elasticsearch.ElasticSearchHighlightConfig;
 import org.naruto.framework.elasticsearch.user.domain.EsUser;
 import org.naruto.framework.user.vo.UserVo;
 import org.naruto.framework.utils.ObjUtils;
@@ -29,6 +30,9 @@ public class UserEsServiceImpl implements UserEsService{
     @Autowired
     private ElasticsearchTemplate elasticsearchTemplate;
 
+    @Autowired
+    private ElasticSearchHighlightConfig elasticSearchHighlightConfig;
+
     @Override
     public Page<UserVo> search(Map map) {
 
@@ -36,14 +40,11 @@ public class UserEsServiceImpl implements UserEsService{
         Pageable pageable = PageUtils.createPageable(_map);
         String keyWord = (String) map.get("keyword");
 
-        String preTag = "<font color='#dd4b39'>";//google的色值
-        String postTag = "</font>";
-
         SearchQuery searchQuery = new NativeSearchQueryBuilder().
                 withQuery(QueryBuilders.multiMatchQuery(keyWord, "nickname","profile")).
                 withHighlightFields(
-                        new HighlightBuilder.Field("nickname").preTags(preTag).postTags(postTag),
-                        new HighlightBuilder.Field("profile").preTags(preTag).postTags(postTag)
+                        new HighlightBuilder.Field("nickname").preTags(elasticSearchHighlightConfig.getPreTag()).postTags(elasticSearchHighlightConfig.getPostTag()),
+                        new HighlightBuilder.Field("profile").preTags(elasticSearchHighlightConfig.getPreTag()).postTags(elasticSearchHighlightConfig.getPostTag())
                 ).withMinScore(0.4F).
                 build();
         searchQuery.setPageable(pageable);

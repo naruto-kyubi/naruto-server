@@ -21,7 +21,13 @@ public class FollowServiceImp implements FollowService {
     @Autowired
     private FollowRepository followRepository;
 
-    public Follow query(String userId,String followUserId){
+
+    @Override
+    public Follow queryFollowByUserIdAndFollowUserId(String userId, String followUserId) {
+        return followRepository.queryFollowByUserIdAndFollowUserId(userId,followUserId);
+    }
+
+    public Follow query(String userId, String followUserId){
        return followRepository.queryFollowByUserIdAndFollowUserId(userId,followUserId);
     }
 

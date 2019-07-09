@@ -1,6 +1,7 @@
 package org.naruto.framework.core.repository;
 
-import org.hibernate.annotations.common.util.ReflectHelper;
+import org.hibernate.Session;
+import org.hibernate.jpa.HibernateEntityManager;
 import org.naruto.framework.utils.PageUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +14,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class CustomRepositoryImpl <T,ID extends Serializable>
         extends SimpleJpaRepository<T,ID>
@@ -21,9 +23,10 @@ public class CustomRepositoryImpl <T,ID extends Serializable>
 //    @PersistenceContext
     EntityManager entityManager;
 
-    public CustomRepositoryImpl(Class<T> domainClass,EntityManager entityManager){
+    public CustomRepositoryImpl(Class<T> domainClass, EntityManager entityManager){
         super(domainClass,entityManager);
         this.entityManager = entityManager;
+
     }
 
     @SuppressWarnings("unchecked")

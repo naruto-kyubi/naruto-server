@@ -2,7 +2,7 @@ package org.naruto.framework.user.domain;
 
 public enum Mutual{
 
-    BOTH("both"),FOLLOW("follow")
+    BOTH("both"),FOLLOW("follow"),NONE("none")
     ;
 
     private String value;

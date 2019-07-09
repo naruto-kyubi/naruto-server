@@ -8,6 +8,7 @@ import java.util.Map;
 
 public interface FollowService {
 
+    Follow queryFollowByUserIdAndFollowUserId(String userId,String followUserId);
 
     Follow query(String userId,String followUserId);
 

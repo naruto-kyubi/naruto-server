@@ -16,4 +16,5 @@ public interface CustomRepository<T,ID
     Page queryPageByCondition(@Param("condition") Map condition);
 
     void increateCount(String id,String column,Long step);
+
 }

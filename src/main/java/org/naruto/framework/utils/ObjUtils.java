@@ -41,6 +41,19 @@ public class ObjUtils {
         }
     }
 
+    public static Object convert(Object src,Class clazz)  {
+        try {
+            Object instance = clazz.newInstance();
+            copyProperties(src,instance);
+            return instance;
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static List transformerClass(List srcList, Class clazz)  {
         List list = new ArrayList();
 
