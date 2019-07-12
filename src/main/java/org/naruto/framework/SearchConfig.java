@@ -37,10 +37,10 @@ public class SearchConfig {
 //                .settings(settings)
 //                .build()
 //                .addTransportAddressddress(new InetSocketTransportAddress(InetAddress.getByName(esHost), esPort));
-//        if (StringUtils.isNotEmpty(esHost2)) {
+//        if (ElasticSearchUtils.isNotEmpty(esHost2)) {
 //            transportClient.addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(esHost2), esPort));
 //        }
-//        if (StringUtils.isNotEmpty(esHost3)) {
+//        if (ElasticSearchUtils.isNotEmpty(esHost3)) {
 //            transportClient.addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(esHost3), esPort));
 //        }
         return client;

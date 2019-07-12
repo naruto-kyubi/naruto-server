@@ -144,7 +144,7 @@ public class JwtAuthFilter extends AuthenticatingFilter {
                 }
             }
         }
-//        return StringUtils.removeStart(header, "Bearer ");
+//        return ElasticSearchUtils.removeStart(header, "Bearer ");
         return token;
     }
 

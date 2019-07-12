@@ -1,13 +1,22 @@
 package org.naruto.framework.utils;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ObjUtils {
-    public static void copyMap2Obj(Map map, Object obj){
+    public static Object copyMap2Obj(Map map, Class clazz){
+        try {
+            Object obj = clazz.newInstance();
+            return copyMap2Obj(map,obj);
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Object copyMap2Obj(Map map, Object obj){
         Iterator<Map.Entry<String, Object>> entries = map.entrySet().iterator();
         while (entries.hasNext()) {
             Map.Entry entry = (Map.Entry) entries.next();
@@ -15,6 +24,9 @@ public class ObjUtils {
             Object value = entry.getValue();
             try {
                 Field f = obj.getClass().getDeclaredField(key);
+                if(f.getType() == Date.class){
+                    value = new Date((long)value);
+                }
                 f.setAccessible(true);
                 f.set(obj, value);
             } catch (NoSuchFieldException e) {
@@ -23,6 +35,7 @@ public class ObjUtils {
                 e.printStackTrace();
             }
         }
+        return obj;
     }
 
     public static void copyProperties(Object src,Object target)  {

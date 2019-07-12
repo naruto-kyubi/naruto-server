@@ -51,5 +51,7 @@ public class ArticleVo {
 
     private List<Tag> tags;
 
+    private String _type;
+
     public ArticleVo(String id){ this.id = id;}
 }

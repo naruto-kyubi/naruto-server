@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.naruto.framework.article.domain.Tag;
 import org.naruto.framework.user.domain.User;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
@@ -69,11 +67,9 @@ public class EsArticle {
     private Date lastCommentAt;
 
     @Field(type = FieldType.Date)
-    @CreatedDate
     private Date createdAt;
 
     @Field(type = FieldType.Date)
-    @LastModifiedDate
     private Date updatedAt;
 
     @Field(type=FieldType.Nested)

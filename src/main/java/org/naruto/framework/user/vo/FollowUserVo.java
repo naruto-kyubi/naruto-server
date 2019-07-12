@@ -23,4 +23,6 @@ public class FollowUserVo {
 
     private Date updatedAt;
 
+    private String _type;
+
 }

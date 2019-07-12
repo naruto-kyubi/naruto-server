@@ -9,9 +9,9 @@ import org.elasticsearch.action.get.MultiGetItemResponse;
 import org.elasticsearch.action.get.MultiGetResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.document.DocumentField;
-import org.elasticsearch.common.text.Text;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
+import org.naruto.framework.utils.ElasticSearchUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.ElasticsearchException;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -98,14 +98,6 @@ public class HighLightResultMapper extends AbstractResultMapper {
                 maxScore);
     }
 
-    private String concat(Text[] texts) {
-        StringBuilder sb = new StringBuilder();
-        for (Text text : texts) {
-            sb.append(text.toString());
-        }
-        return sb.toString();
-    }
-
 
     private <T> void populateScriptFields(T result, SearchHit hit) {
         if (hit.getFields() != null && !hit.getFields().isEmpty() && result != null) {
@@ -131,7 +123,7 @@ public class HighLightResultMapper extends AbstractResultMapper {
 
         for (HighlightField field : hit.getHighlightFields().values()) {
             try {
-                PropertyUtils.setProperty(result, field.getName(), concat(field.fragments()));
+                PropertyUtils.setProperty(result, field.getName(), ElasticSearchUtils.concat(field.fragments()));
             } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
                 throw new ElasticsearchException("failed to set highlighted value for field: " + field.getName()
                         + " with value: " + Arrays.toString(field.getFragments()), e);
