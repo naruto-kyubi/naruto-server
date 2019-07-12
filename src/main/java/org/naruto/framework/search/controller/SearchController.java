@@ -61,7 +61,8 @@ public class SearchController {
             HttpServletRequest request, HttpServletResponse response) {
 
         Page<Map> page = searchEsService.searchMutiIndices(map);
-        final String currentUserId = sessionUtils.getCurrentUser(request).getId();
+//        final String currentUserId = sessionUtils.getCurrentUser(request).getId();
+        final User currentUser = sessionUtils.getCurrentUser(request);
 
         List<Object> list = page.getContent().stream().map(item->{
             String type = (String) item.get("_type");
@@ -75,7 +76,11 @@ public class SearchController {
                 return vo;
             }else if("user".equals(type)){
                 String userId = (String) item.get("id");
-                Follow f = followService.queryFollowByUserIdAndFollowUserId(currentUserId,userId);
+                Follow f = null;
+                if(null!=currentUser){
+                    f = followService.queryFollowByUserIdAndFollowUserId(currentUser.getId(),userId);
+                }
+
                 if(null==f){
                     item.put("mutual",Mutual.NONE.getValue());
                 }else{
@@ -115,18 +120,20 @@ public class SearchController {
         List<UserVo> list = page.getContent();
 
         List<FollowUserVo> followList = list.stream().map(item ->{
-
-            Follow f = followService.queryFollowByUserIdAndFollowUserId(user.getId(),item.getId());
+            Follow f = null;
+            if(null!=user){
+                f = followService.queryFollowByUserIdAndFollowUserId(user.getId(),item.getId());
+            }
             Follow follow = null;
             if(null!=f) follow =(Follow) ObjUtils.convert(f,Follow.class);
             FollowUserVo followUserVo = new FollowUserVo();
 
             ObjUtils.copyProperties(item,followUserVo);
             if(null==follow){
-                User u = userService.findById(item.getId());
+//                User u = userService.findById(item.getId());
                 followUserVo.setMutual(Mutual.NONE.getValue());
             }else{
-                User u = follow.getFollowUser();
+//                User u = follow.getFollowUser();
                 followUserVo.setMutual(follow.getMutual());
             }
             return followUserVo;
