@@ -39,7 +39,7 @@ public class FileController {
 //
 //        }
 
-        return ResponseEntity.ok(ResultEntity.ok("/api/images/" + fileName));
+        return ResponseEntity.ok(ResultEntity.ok("/images/" + fileName));
     }
 
     @ResponseBody

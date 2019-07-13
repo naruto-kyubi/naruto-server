@@ -23,6 +23,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -141,7 +143,7 @@ public class UserController {
 
     @ResponseBody
     @RequestMapping(value = "/v1/user/avatar", method = RequestMethod.POST)
-    public ResponseEntity<ResultEntity> uploadFile(@RequestParam("file") MultipartFile file) throws Exception{
+    public ResponseEntity<ResultEntity> uploadFile(@RequestParam("file") MultipartFile file, ServletRequest request, ServletResponse response) throws Exception{
         //首先进行文件上传
         String contentType = file.getContentType();
         String fileName = file.getOriginalFilename();
@@ -150,8 +152,9 @@ public class UserController {
         Subject subject = SecurityUtils.getSubject();
         User sessionUser = (User) subject.getPrincipal();
 
+
         User user = userService.findById(sessionUser.getId());
-        String imageUrl = "/naruto/api/images/" + fileName;
+        String imageUrl = "/images/".concat(fileName);
         user.setAvatar(imageUrl);
         userService.save(user);
         return ResponseEntity.ok(ResultEntity.ok(imageUrl));
