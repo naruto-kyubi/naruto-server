@@ -15,7 +15,7 @@ public class PageUtils {
     public static Map prepareQueryPageMap(Map map) {
         if (null == map) map = new HashMap();
         Integer currentPage = null == map.get("currentPage") ? 1 : Integer.valueOf((String) map.get("currentPage"));
-        Integer pageSize = null == map.get("pageSize") ? 5 : Integer.valueOf((String) map.get("pageSize"));
+        Integer pageSize = null == map.get("pageSize") ? 10 : Integer.valueOf((String) map.get("pageSize"));
         currentPage = currentPage - 1;
         map.put("currentPage", currentPage);
         map.put("pageSize", pageSize);

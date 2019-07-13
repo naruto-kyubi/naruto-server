@@ -6,13 +6,9 @@ import org.naruto.framework.core.web.ResultEntity;
 import org.naruto.framework.elasticsearch.user.service.UserEsService;
 import org.naruto.framework.security.service.SessionUtils;
 import org.naruto.framework.user.domain.Follow;
-import org.naruto.framework.user.domain.Mutual;
 import org.naruto.framework.user.domain.User;
 import org.naruto.framework.user.service.FollowService;
 import org.naruto.framework.user.service.UserService;
-import org.naruto.framework.user.vo.FollowUserVo;
-import org.naruto.framework.user.vo.UserVo;
-import org.naruto.framework.utils.ObjUtils;
 import org.naruto.framework.utils.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,9 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 public class FollowController {
@@ -120,71 +114,7 @@ public class FollowController {
         return ResponseEntity.ok(ResultEntity.ok(page.getContent(), PageUtils.wrapperPagination(page)));
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/v1/follows/search", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
-    public ResponseEntity<ResultEntity> search(
-            @RequestParam(required = false) Map map,
-            HttpServletRequest request, HttpServletResponse response) {
 
-        //query elasticsearch users;
-        Page<UserVo> page = userEsService.search(map);
-        User user =sessionUtils.getCurrentUser(request);
-        List<UserVo> list = page.getContent();
 
-        List<FollowUserVo> followList = list.stream().map(item ->{
 
-            Follow f = followService.queryFollowByUserIdAndFollowUserId(user.getId(),item.getId());
-            Follow follow = null;
-            if(null!=f) follow =(Follow) ObjUtils.convert(f,Follow.class);
-            FollowUserVo followUserVo = new FollowUserVo();
-
-            ObjUtils.copyProperties(item,followUserVo);
-            if(null==follow){
-                User u = userService.findById(item.getId());
-                followUserVo.setMutual(Mutual.NONE.getValue());
-//
-//
-//
-//                User inner_user = (User) ObjUtils.convert(u,User.class);
-//                follow = new Follow();
-//                inner_user.setNickname(item.getNickname());
-//                inner_user.setProfile(item.getProfile());
-//                follow.setFollowUser(inner_user);
-//                follow.setMutual(Mutual.NONE.getValue());
-            }else{
-                User u = follow.getFollowUser();
-                followUserVo.setMutual(follow.getMutual());
-
-//                follow.setFollowUser(fUser);
-//                User fUser = (User) ObjUtils.convert(u,User.class);
-//                fUser.setNickname(item.getNickname());
-//                fUser.setProfile(item.getProfile());
-            }
-                return followUserVo;
-            }).collect(Collectors.toList());
-
-//        List followList = new ArrayList();
-//        for (UserVo item : list) {
-//            Follow f = followService.queryFollowByUserIdAndFollowUserId(user.getId(),item.getId());
-//            Follow follow = null;
-//            if(null!=f) follow =(Follow) ObjUtils.convert(f,Follow.class);
-//            if(null==follow){
-//                User u = userService.findById(item.getId());
-//                User inner_user = (User) ObjUtils.convert(u,User.class);
-//                follow = new Follow();
-//                inner_user.setNickname(item.getNickname());
-//                inner_user.setProfile(item.getProfile());
-//                follow.setFollowUser(inner_user);
-//                follow.setMutual(Mutual.NONE.getValue());
-//            }else{
-//                User u = follow.getFollowUser();
-//                User fUser = (User) ObjUtils.convert(u,User.class);
-//                fUser.setNickname(item.getNickname());
-//                fUser.setProfile(item.getProfile());
-//                follow.setFollowUser(fUser);
-//            }
-//            followList.add(follow);
-//        }
-        return ResponseEntity.ok(ResultEntity.ok(followList, PageUtils.wrapperPagination(page)));
-    }
 }

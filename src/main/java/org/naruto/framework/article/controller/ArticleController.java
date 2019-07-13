@@ -81,12 +81,12 @@ public class ArticleController {
     public ResponseEntity<ResultEntity> queryLikeById(@PathVariable("type") String type,@PathVariable("targetId") String targetId,HttpServletRequest request){
 
         User user = sessionUtils.getCurrentUser(request);
-        Like like = articleService.queryLikeByUserIdAndTypeAndTargetId(user.getId(),type,targetId);
-
+        Like like = null;
+        if(null!=user){
+            like = articleService.queryLikeByUserIdAndTypeAndTargetId(user.getId(),type,targetId);
+        }
         Article article = articleService.queryArticleById(targetId);
         LikeVo vo = new LikeVo(like,article.getLikeCount());
-
-
         return ResponseEntity.ok(ResultEntity.ok(vo));
     }
 
@@ -137,8 +137,10 @@ public class ArticleController {
     public ResponseEntity<ResultEntity> queryStarById(@PathVariable("articleId") String articleId,HttpServletRequest request){
 
         User user = sessionUtils.getCurrentUser(request);
-        Star star = articleService.queryStarByUserIdAndArticleId(user.getId(),articleId);
-
+        Star star = null;
+        if(null!=user) {
+            star = articleService.queryStarByUserIdAndArticleId(user.getId(), articleId);
+        }
         Article article = articleService.queryArticleById(articleId);
         StarVo vo = new StarVo(star,article.getStarCount());
 
@@ -196,13 +198,4 @@ public class ArticleController {
     }
 
 
-    @ResponseBody
-    @RequestMapping(value = "/v1/articles/search", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
-    public ResponseEntity<ResultEntity> search(
-            @RequestParam(required = false) Map map,
-            HttpServletRequest request, HttpServletResponse response) {
-
-        Page page = articleService.search(map);
-        return ResponseEntity.ok(ResultEntity.ok(page.getContent(), PageUtils.wrapperPagination(page)));
-    }
 }
