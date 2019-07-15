@@ -7,8 +7,10 @@ import org.naruto.framework.core.exception.CommonError;
 import org.naruto.framework.core.exception.ServiceException;
 import org.naruto.framework.elasticsearch.article.service.ArticleEsService;
 import org.naruto.framework.user.service.UserService;
+import org.naruto.framework.utils.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -184,5 +186,19 @@ public class ArticleServiceImpl implements ArticleService {
     public Page<ArticleVo> search(Map map) {
 
        return articleEsService.search(map);
+    }
+
+    @Override
+    public Page<Article> queryHotList(Map map) {
+
+        return articleRepository.queryPageByCondition(map);
+    }
+
+    @Override
+    public Page<Article> queryFollowArticles(Map map) {
+        String currentUserId = (String) map.get("currentUserId");
+        Map _map = PageUtils.prepareQueryPageMap(map);
+        Pageable pageable = PageUtils.createPageable(_map);
+        return articleRepository.queryArticlesByFollows(currentUserId,pageable);
     }
 }

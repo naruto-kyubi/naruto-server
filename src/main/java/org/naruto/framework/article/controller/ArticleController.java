@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
 
 @RestController
@@ -197,5 +200,33 @@ public class ArticleController {
         return ResponseEntity.ok(ResultEntity.ok(articleService.queryTags()));
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/v1/articles/hot", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    public ResponseEntity<ResultEntity> queryHostList(
+            @RequestParam(required = false) Map map,
+            HttpServletRequest request, HttpServletResponse response) {
 
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Calendar c = Calendar.getInstance();
+        Date currentDate = c.getTime();
+        c.add(Calendar.DATE, - 7);
+        Date beforeDate = c.getTime();
+        format.format(currentDate);
+        map.put("sorter","viewCount_desc,updatedAt_desc");
+        map.put("updatedAt_between",format.format(beforeDate) + "," + format.format(currentDate));
+
+        Page page = articleService.queryArticleByPage(map);
+        return ResponseEntity.ok(ResultEntity.ok(page.getContent(), PageUtils.wrapperPagination(page)));
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/v1/follows/articles", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    public ResponseEntity<ResultEntity> queryFollowArticles(
+            @RequestParam(required = false) Map map,
+            HttpServletRequest request, HttpServletResponse response) {
+        User user = sessionUtils.getCurrentUser(request);
+        map. put("currentUserId",user.getId());
+        Page page = articleService.queryFollowArticles(map);
+        return ResponseEntity.ok(ResultEntity.ok(page.getContent(), PageUtils.wrapperPagination(page)));
+    }
 }

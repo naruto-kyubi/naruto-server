@@ -6,10 +6,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.naruto.framework.core.repository.SearchItem;
 import org.springframework.data.domain.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class PageUtils {
     public static Map prepareQueryPageMap(Map map) {
@@ -27,22 +25,60 @@ public class PageUtils {
         Integer pageSize  = (Integer) map.get("pageSize");
         String sorter = (String) map.get("sorter");
         //分页信息
-        Pageable pageable = new PageRequest(currentPage, pageSize);
+        Pageable pageable = PageRequest.of(currentPage, pageSize);
 
         if (StringUtils.isNotEmpty(sorter)) {
-//            String[] strs = sorter.split("_");
-            int pos = sorter.lastIndexOf("_");
-            String s = sorter.substring(pos+1);
-            String column = sorter.substring(0,pos);
-
-            if ("ascend".equalsIgnoreCase(s)) {
-                pageable = new PageRequest(currentPage, pageSize, new Sort(new Sort.Order(Sort.Direction.ASC, column)));
-            } else {
-                pageable = new PageRequest(currentPage, pageSize, new Sort(new Sort.Order(Sort.Direction.DESC, column)));
+            String[] sorters = sorter.split(",");
+            if(null==sorters || sorters.length<0){
+                sorters=new String[1];
+                sorters[0] = sorter;
             }
+            Sort sort = null;
+            for (String obj : sorters) {
+                int pos = obj.lastIndexOf("_");
+                String s = obj.substring(pos+1);
+                String column = obj.substring(0,pos);
+
+                Sort.Direction direction ="ascend".equalsIgnoreCase(s)? Sort.Direction.ASC : Sort.Direction.DESC;
+
+//                if ("ascend".equalsIgnoreCase(s)) {
+//                    direction =Sort.Direction.ASC;
+//                    if(null==sort){
+//                        sort = new Sort(Sort.Direction.ASC, column);
+//                    }else{
+//                        sort = sort.and(new Sort(Sort.Direction.ASC, column));
+//                    }
+//                } else {
+//                    direction = Sort.Direction.DESC;
+//                    if(null==sort){
+//                        sort = new Sort(Sort.Direction.DESC, column);
+//                    }else{
+//                        sort = sort.and(new Sort(Sort.Direction.DESC, column));
+//                    }
+//                }
+
+                sort = null==sort?new Sort(direction, column) : sort.and(new Sort(direction, column));
+            }
+            pageable = PageRequest.of(currentPage, pageSize, sort);
         }
         return pageable;
     }
+
+    public static void main(String[] args){
+        Map map = new HashMap();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Calendar c = Calendar.getInstance();
+        Date currentDate = c.getTime();
+        c.add(Calendar.DATE, - 7);
+        Date beforeDate = c.getTime();
+        format.format(currentDate);
+//        map.put("sorter","viewCount_desc");
+        map.put("between",format.format(beforeDate) + "," + format.format(currentDate));
+        map =prepareQueryPageMap(map);
+        Pageable pageable = createPageable(map);
+        System.out.println(pageable.toString());
+    }
+
 //public static void main(String[] args){
 //        String sorter = "update_at_desc";
 //    int pos = sorter.lastIndexOf("_");
