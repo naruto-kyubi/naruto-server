@@ -47,4 +47,9 @@ public interface ArticleService {
     public void deleteTag(Tag tag);
     public List<Tag> queryTags();
 
+
+    Page<Article> queryHotList(Map map);
+
+    Page<Article> queryFollowArticles(Map map);
+
 }
