@@ -32,7 +32,7 @@ public class ArticleController {
     private UserService userService;
 
     @ResponseBody
-    @RequestMapping(value = "/v1/articles/add", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/v1/articles/save", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public ResponseEntity<ResultEntity> add(@Validated @RequestBody Article article,HttpServletRequest request){
         User user = sessionUtils.getCurrentUser(request);
         userService.increaseArticleCount(user.getId(),1L);

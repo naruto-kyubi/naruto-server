@@ -33,8 +33,6 @@ public class Article implements Serializable {
     private String id;
 
     @Column(length=500)
-    @NotBlank(message = "The title cannot be blank ")
-
     private String title;
 
     @Column(length=500)
