@@ -1,10 +1,13 @@
 package org.naruto.framework.article.controller;
 
+import org.naruto.framework.article.domain.Tag;
 import org.naruto.framework.article.domain.UserTag;
 import org.naruto.framework.article.service.TagService;
+import org.naruto.framework.article.vo.TagVo;
 import org.naruto.framework.core.web.ResultEntity;
 import org.naruto.framework.security.service.SessionUtils;
 import org.naruto.framework.user.domain.User;
+import org.naruto.framework.utils.ObjUtils;
 import org.naruto.framework.utils.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,7 +18,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 public class TagController {
@@ -38,9 +43,8 @@ public class TagController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/v1/users/{userId}/tags", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    @RequestMapping(value = "/v1/tags/usertags", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
     public ResponseEntity<ResultEntity> queryUserTags(
-                @PathVariable("userId") String userId,
                 @RequestParam(required = false) Integer currentPage,
                 @RequestParam(required = false) Integer pageSize,
                 HttpServletRequest request,
@@ -51,14 +55,18 @@ public class TagController {
         map.put("pageSize",pageSize);
 
         User user = sessionUtils.getCurrentUser(request);
-        Page page = tagService.queryUserTags(userId,user.getId(),map);
-
-        return ResponseEntity.ok(ResultEntity.ok(page.getContent(), PageUtils.wrapperPagination(page)));
+        Page<Tag> page = tagService.queryUserTags(user.getId(),map);
+        List<TagVo> voList = page.getContent().stream().map(item->{
+            TagVo vo = (TagVo) ObjUtils.convert(item, TagVo.class);
+            vo.setUserId(user.getId());
+            return vo;
+        }).collect(Collectors.toList());
+        return ResponseEntity.ok(ResultEntity.ok(voList, PageUtils.wrapperPagination(page)));
     }
 
     @ResponseBody
-    @RequestMapping(value = "/v1/users/tags", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
-    public ResponseEntity<ResultEntity> queryTags(
+    @RequestMapping(value = "/v1/tags/all", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    public ResponseEntity<ResultEntity> queryAllTags(
             @RequestParam(required = false) Integer currentPage,
             @RequestParam(required = false) Integer pageSize,
             HttpServletRequest request

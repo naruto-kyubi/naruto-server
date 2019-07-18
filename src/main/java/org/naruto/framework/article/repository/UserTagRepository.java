@@ -19,7 +19,7 @@ public interface UserTagRepository extends CustomRepository<UserTag,String> {
 
     @Query(value="select t from Tag t ,UserTag u where t=u.tag and u.userId=?1",
             countQuery = "select count(t) from Tag t ,UserTag u where t=u.tag and u.userId=?1")
-    Page<Tag> queryUserTag(String userId, Pageable pageable);
+    Page<Tag> queryUserTags(String userId, Pageable pageable);
 
     @Query(value="select t.*,ut.userId from tags t left join (select user_id as userId,tag_id from user_tags where user_id=?1) ut on t.id=ut.tag_id",
             countQuery = "select count(*) from tags t left join (select user_id,tag_id from user_tags where user_id=?1) ut on t.id=ut.tag_id",

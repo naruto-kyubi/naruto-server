@@ -44,7 +44,7 @@ public class TagServiceImpl implements TagService{
     public Page<Tag> queryUserTags(String userId, Map map) {
         Map _map = PageUtils.prepareQueryPageMap(map);
         Pageable pageable = PageUtils.createPageable(_map);
-        return userTagRepository.queryUserTag(userId,pageable);
+        return userTagRepository.queryUserTags(userId,pageable);
     }
 
     @Override
