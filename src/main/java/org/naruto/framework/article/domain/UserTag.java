@@ -1,40 +1,42 @@
 package org.naruto.framework.article.domain;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
-@Table(name="tags")
+@Table(name="user_tags")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 @ToString
-public class Tag {
+public class UserTag {
     @Id
     @GenericGenerator(name="idGenerator", strategy="uuid")
     @GeneratedValue(generator="idGenerator")
     @Column(length=40)
     private String id;
 
-    @Column(length = 20,unique = true)
-    private String name;
+    private String userId;
 
-    @Column(length = 20)
-    private String color;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "tag_id")
+    @Lazy(false)
+    private Tag tag;
 
-    @Column(length = 255)
-    private String avatar;
+    @CreatedDate
+    private Date createdAt;
 
-    public Tag(String id){
-        this.id = id;
-    }
-
+    @LastModifiedDate
+    private Date updatedAt;
 }

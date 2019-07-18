@@ -12,8 +12,27 @@ import java.util.*;
 public class PageUtils {
     public static Map prepareQueryPageMap(Map map) {
         if (null == map) map = new HashMap();
-        Integer currentPage = null == map.get("currentPage") ? 1 : Integer.valueOf((String) map.get("currentPage"));
-        Integer pageSize = null == map.get("pageSize") ? 10 : Integer.valueOf((String) map.get("pageSize"));
+
+        Integer currentPage = 1;
+        if(null!=map.get("currentPage")){
+            if(map.get("currentPage").getClass()==String.class){
+                currentPage = Integer.valueOf((String)map.get("currentPage"));
+            }else{
+                currentPage = (Integer) map.get("currentPage");
+            }
+        }
+
+        Integer pageSize = 10;
+        if(null!=map.get("pageSize")){
+            if(map.get("pageSize").getClass()==String.class){
+                pageSize = Integer.valueOf((String)map.get("pageSize"));
+            }else{
+                pageSize = (Integer) map.get("pageSize");
+            }
+        }
+
+//        Integer currentPage = null == map.get("currentPage") ? 1 : (Integer)map.get("currentPage");
+//        Integer pageSize = null == map.get("pageSize") ? 10 : (Integer)map.get("pageSize");
         currentPage = currentPage - 1;
         map.put("currentPage", currentPage);
         map.put("pageSize", pageSize);
