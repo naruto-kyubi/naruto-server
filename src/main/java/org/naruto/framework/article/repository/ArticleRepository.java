@@ -8,19 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface ArticleRepository extends CustomRepository<Article,String> {
 
-//    @Query(value = "select ar.id," +
-//            "ar.title," +
-//            "ar.cover," +
-//            "ar.content," +
-//            "ar.content_html as contentHtml," +
-//            "ar.updatedAt," +
-//            "ar.owner " +
-//            "from articles ar,follows fw where ar.owner = fw.follow_user_id and fw.user_id=?1",
-//            countQuery="select count(*) from articles ar,follows fw where ar.owner = fw.follow_user_id and fw.user_id=?1",
-//            nativeQuery = true)
-
-
-    @Query(value="select ar from Article ar,Follow fw where ar.owner=fw.followUser and fw.user.id=?1",
-            countQuery="select count(ar) from Article ar,Follow fw where ar.owner=fw.followUser and fw.user.id=?1")
+    @Query(value="select distinct ar from Article ar,Follow fw, UserTag uTag where (ar.owner=fw.followUser and fw.user.id=?1) or (uTag.tag member of ar.tags and uTag.userId=?1) ",
+            countQuery="select count(distinct ar) from Article ar,Follow fw, UserTag uTag where (ar.owner=fw.followUser and fw.user.id=?1) or (uTag.tag member of ar.tags and uTag.userId=?1)")
     Page<Article> queryArticlesByFollows(String userId, Pageable pageable);
+
 }

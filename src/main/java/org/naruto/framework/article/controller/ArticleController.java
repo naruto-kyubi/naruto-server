@@ -215,7 +215,7 @@ public class ArticleController {
 
     @ResponseBody
     @RequestMapping(value = "/v1/articles/hot", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
-    public ResponseEntity<ResultEntity> queryHostList(
+    public ResponseEntity<ResultEntity> queryHotList(
             @RequestParam(required = false) Map map,
             HttpServletRequest request, HttpServletResponse response) {
 
