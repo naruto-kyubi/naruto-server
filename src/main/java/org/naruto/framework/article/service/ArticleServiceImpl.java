@@ -71,6 +71,11 @@ public class ArticleServiceImpl implements ArticleService {
         return  articleRepository.findById(id).get();
     }
 
+    @Override
+    public void deleteArticleById(String id) {
+        articleRepository.deleteById(id);
+    }
+
     public Comment saveComment(Comment comment){
         if(comment == null) {
             throw new ServiceException(CommonError.PARAMETER_VALIDATION_ERROR);

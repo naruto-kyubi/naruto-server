@@ -79,8 +79,11 @@ public class Article implements Serializable {
 
     private String catalogId;
 
-//    @Version
-//    private Long version;
+    // draft publish
+    private String status;
+
+    // the article id which has been published, current record is the copy.
+    private String publishedVersion;
 
     public Article(String id){ this.id = id;}
 
