@@ -39,9 +39,9 @@ public interface ArticleService {
 
     void increaseViewCount(String articleId);
 
-    void increaseLikeCount(String articleId,Integer step);
+    void increaseLikeCount(String articleId,Long step);
 
-    void increaseStarCount(String articleId,Integer step);
+    void increaseStarCount(String articleId,Long step);
 
     Page<ArticleVo> search(Map map);
 

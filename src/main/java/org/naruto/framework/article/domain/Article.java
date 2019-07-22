@@ -51,13 +51,13 @@ public class Article implements Serializable {
     @LastModifiedDate
     private Date updatedAt;
 
-    private int commentCount = 0;
+    private long commentCount = 0;
 
-    private int viewCount = 0;
+    private long viewCount = 0;
 
-    private int starCount= 0;
+    private long starCount= 0;
 
-    private int likeCount = 0;
+    private long likeCount = 0;
 
     private boolean deleted;
 

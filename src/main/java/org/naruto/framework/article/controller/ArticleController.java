@@ -114,7 +114,7 @@ public class ArticleController {
 
         User user = sessionUtils.getCurrentUser(request);
 
-        articleService.increaseLikeCount(like.getTargetId(),1);
+        articleService.increaseLikeCount(like.getTargetId(),1L);
         userService.increaseLikeCount(user.getId(),1L);
 
         like.setUserId(user.getId());
@@ -133,7 +133,7 @@ public class ArticleController {
         articleService.deleteLike(user.getId(),type,targetId);
         userService.increaseLikeCount(user.getId(),-1L);
 
-        articleService.increaseLikeCount(targetId,-1);
+        articleService.increaseLikeCount(targetId,-1L);
         Article article = articleService.queryArticleById(targetId);
         LikeVo vo = new LikeVo(null,article.getLikeCount());
 

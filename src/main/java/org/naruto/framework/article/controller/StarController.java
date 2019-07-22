@@ -63,7 +63,7 @@ public class StarController {
         User user = sessionUtils.getCurrentUser(request);
         star.setUserId(user.getId());
 
-        articleService.increaseStarCount(star.getArticle().getId(),1);
+        articleService.increaseStarCount(star.getArticle().getId(),1L);
         userService.increaseStarCount(user.getId(),1L);
 
         articleService.saveStar(star);
@@ -79,7 +79,7 @@ public class StarController {
 
         User user = sessionUtils.getCurrentUser(request);
 
-        articleService.increaseStarCount(articleId,-1);
+        articleService.increaseStarCount(articleId,-1L);
         userService.increaseStarCount(user.getId(),-1L);
 
         articleService.deleteStar(user.getId(),articleId);

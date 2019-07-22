@@ -12,5 +12,5 @@ import org.naruto.framework.article.domain.Like;
 @ToString
 public class LikeVo {
     private Like like;
-    private Integer likeCount;
+    private Long likeCount;
 }

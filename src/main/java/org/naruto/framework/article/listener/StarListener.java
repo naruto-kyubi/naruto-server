@@ -40,7 +40,7 @@ public class StarListener {
 //        Article article = articleService.queryArticleById(star.getArticleId());
 //        article.setStarCount(article.getStarCount()+1);
 //        articleService.saveArticle(article);
-        articleService.increaseStarCount(star.getArticle().getId(),1);
+        articleService.increaseStarCount(star.getArticle().getId(),1L);
     }
 
     @PreRemove
@@ -55,6 +55,6 @@ public class StarListener {
 //        Article article = articleService.queryArticleById(articleId);
 //        article.setStarCount(article.getStarCount()-1);
 //        articleService.saveArticle(article);
-        articleService.increaseStarCount(star.getArticle().getId(),-1);
+        articleService.increaseStarCount(star.getArticle().getId(),-1L);
     }
 }

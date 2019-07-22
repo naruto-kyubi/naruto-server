@@ -38,7 +38,7 @@ public class LikeListener {
 //        Article article = articleService.queryArticleById(like.getTargetId());
 //        article.setLikeCount(article.getLikeCount()+1);
 //        articleService.saveArticle(article);
-        articleService.increaseLikeCount(like.getTargetId(),1);
+        articleService.increaseLikeCount(like.getTargetId(),1L);
     }
 
 
@@ -54,6 +54,6 @@ public class LikeListener {
 //        Article article = articleService.queryArticleById(articleId);
 //        article.setLikeCount(article.getLikeCount()-1);
 //        articleService.saveArticle(article);
-        articleService.increaseLikeCount(like.getTargetId(),-1);
+        articleService.increaseLikeCount(like.getTargetId(),-1L);
     }
 }
