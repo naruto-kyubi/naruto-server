@@ -56,6 +56,19 @@ public class ArticleController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/v1/articles/draft/query", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    public ResponseEntity<ResultEntity> queryDraft(
+            @RequestParam(required = false) Map map,
+            HttpServletRequest request, HttpServletResponse response) {
+
+      //  User user = sessionUtils.getCurrentUser(request);
+        Page page = articleService.queryArticleByPage(map);
+        return ResponseEntity.ok(ResultEntity.ok(page.getContent(), PageUtils.wrapperPagination(page)));
+    }
+
+
+
+    @ResponseBody
     @RequestMapping(value = "/v1/articles/{id}", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
     public ResponseEntity<ResultEntity> queryById(@PathVariable("id") String id){
         Article article = articleService.queryArticleById(id);
@@ -173,5 +186,12 @@ public class ArticleController {
         map. put("currentUserId",user.getId());
         Page page = articleService.queryFollowArticles(map);
         return ResponseEntity.ok(ResultEntity.ok(page.getContent(), PageUtils.wrapperPagination(page)));
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/v1/articles/delete/{targetId}", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    public ResponseEntity<ResultEntity> deleteArticle(@PathVariable("targetId") String targetId,HttpServletRequest request){
+        articleService.deleteArticleById(targetId);
+        return ResponseEntity.ok(ResultEntity.ok(targetId));
     }
 }
