@@ -30,9 +30,6 @@ public class PageUtils {
                 pageSize = (Integer) map.get("pageSize");
             }
         }
-
-//        Integer currentPage = null == map.get("currentPage") ? 1 : (Integer)map.get("currentPage");
-//        Integer pageSize = null == map.get("pageSize") ? 10 : (Integer)map.get("pageSize");
         currentPage = currentPage - 1;
         map.put("currentPage", currentPage);
         map.put("pageSize", pageSize);
@@ -59,23 +56,6 @@ public class PageUtils {
                 String column = obj.substring(0,pos);
 
                 Sort.Direction direction ="ascend".equalsIgnoreCase(s)? Sort.Direction.ASC : Sort.Direction.DESC;
-
-//                if ("ascend".equalsIgnoreCase(s)) {
-//                    direction =Sort.Direction.ASC;
-//                    if(null==sort){
-//                        sort = new Sort(Sort.Direction.ASC, column);
-//                    }else{
-//                        sort = sort.and(new Sort(Sort.Direction.ASC, column));
-//                    }
-//                } else {
-//                    direction = Sort.Direction.DESC;
-//                    if(null==sort){
-//                        sort = new Sort(Sort.Direction.DESC, column);
-//                    }else{
-//                        sort = sort.and(new Sort(Sort.Direction.DESC, column));
-//                    }
-//                }
-
                 sort = null==sort?new Sort(direction, column) : sort.and(new Sort(direction, column));
             }
             pageable = PageRequest.of(currentPage, pageSize, sort);
@@ -91,21 +71,12 @@ public class PageUtils {
         c.add(Calendar.DATE, - 7);
         Date beforeDate = c.getTime();
         format.format(currentDate);
-//        map.put("sorter","viewCount_desc");
         map.put("between",format.format(beforeDate) + "," + format.format(currentDate));
         map =prepareQueryPageMap(map);
         Pageable pageable = createPageable(map);
         System.out.println(pageable.toString());
     }
 
-//public static void main(String[] args){
-//        String sorter = "update_at_desc";
-//    int pos = sorter.lastIndexOf("_");
-//    String s = sorter.substring(pos+1);
-//    String column = sorter.substring(0,pos);
-//    System.out.println(s);
-//    System.out.println(column);
-//}
     public static Map wrapperPagination(Page page){
         Pagination pagination = new Pagination(page.getSize(),page.getNumber()+1,page.getTotalElements());
         Map pageMap  = new HashMap();
