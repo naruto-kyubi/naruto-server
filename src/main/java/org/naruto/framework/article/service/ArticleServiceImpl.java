@@ -8,12 +8,14 @@ import org.naruto.framework.core.exception.ServiceException;
 import org.naruto.framework.elasticsearch.article.service.ArticleEsService;
 import org.naruto.framework.user.service.UserService;
 import org.naruto.framework.utils.PageUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -51,13 +53,23 @@ public class ArticleServiceImpl implements ArticleService {
         String id = article.getId();
         if(id==null)
          return articleRepository.save(article);
+
+
         else {
-            Article lastVersion = articleRepository.findById(id).get();
+            Article lastVersion = null;
+            if(article.getPublishedVersion()!=null && article.getStatus().equals("publish")){
+                lastVersion = articleRepository.findById(article.getPublishedVersion()).get();
+                articleRepository.deleteById(article.getId());
+            }else {
+                lastVersion = articleRepository.findById(id).get();
+            }
             lastVersion.setCatalogId(article.getCatalogId());
             lastVersion.setContent(article.getContent());
             lastVersion.setContentHtml(article.getContentHtml());
             lastVersion.setTitle(article.getTitle());
             lastVersion.setTags(article.getTags());
+            lastVersion.setStatus(article.getStatus());
+
             return articleRepository.save(lastVersion);
         }
 
@@ -69,6 +81,24 @@ public class ArticleServiceImpl implements ArticleService {
 
     public Article queryArticleById(String id){
         return  articleRepository.findById(id).get();
+    }
+
+    public Article queryDraftById(String id){
+        Article article =  articleRepository.findArticleByPublishedVersion(id);
+        if(null != article){
+            return article;
+        }
+        article = articleRepository.findById(id).get();
+        Article draft = new Article();
+        List<Tag> tags = new ArrayList<Tag>();
+        tags.addAll(article.getTags());
+        BeanUtils.copyProperties(article,draft);
+        draft.setPublishedVersion(article.getId());
+        draft.setStatus("draft");
+        draft.setId(null);
+        draft.setTags(tags);
+        draft = articleRepository.save(draft);
+        return draft;
     }
 
     @Override

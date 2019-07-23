@@ -67,11 +67,20 @@ public class ArticleController {
 
 
     @ResponseBody
+    @RequestMapping(value = "/v1/articles/draft/{id}", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    public ResponseEntity<ResultEntity> queryDraftById(@PathVariable("id") String id){
+        Article draft = articleService.queryDraftById(id);
+        return ResponseEntity.ok(ResultEntity.ok(draft));
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/v1/articles/{id}", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
     public ResponseEntity<ResultEntity> queryById(@PathVariable("id") String id){
         Article article = articleService.queryArticleById(id);
         return ResponseEntity.ok(ResultEntity.ok(article));
     }
+
+
 
     @ResponseBody
     @RequestMapping(value = "/v1/articles/comments", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
