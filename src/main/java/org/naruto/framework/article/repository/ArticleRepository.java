@@ -12,4 +12,6 @@ public interface ArticleRepository extends CustomRepository<Article,String> {
             countQuery="select count(distinct ar) from Article ar,Follow fw, UserTag uTag where (ar.owner=fw.followUser and fw.user.id=?1) or (uTag.tag member of ar.tags and uTag.userId=?1)")
     Page<Article> queryArticlesByFollows(String userId, Pageable pageable);
 
+    Article findArticleByPublishedVersion(String publishedVersion);
+
 }

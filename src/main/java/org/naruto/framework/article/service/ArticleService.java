@@ -15,6 +15,8 @@ public interface ArticleService {
 
     Article queryArticleById(String id);
 
+    Article queryDraftById(String id);
+
     public void deleteArticleById(String id);
 
     Comment saveComment(Comment comment);
