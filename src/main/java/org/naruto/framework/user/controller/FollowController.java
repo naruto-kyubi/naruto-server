@@ -39,7 +39,7 @@ public class FollowController {
 
 //    用户之间关注（one - to -one）
     @ResponseBody
-    @RequestMapping(value = "/v1/follows/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/v1/user/follow/{id}", method = RequestMethod.GET)
     public ResponseEntity<ResultEntity> query(@PathVariable("id") String id) {
 
         Subject subject = SecurityUtils.getSubject();
