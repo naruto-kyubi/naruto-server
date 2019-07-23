@@ -88,42 +88,9 @@ public class ArticleServiceImpl implements ArticleService {
         return commentRepository.queryPageByCondition(map);
     }
 
-    //like,zhan;
 
-    public Like queryLikeByUserIdAndTypeAndTargetId(String userId,String type,String targetId){
 
-        return likeRepository.queryLikeByUserIdAndTypeAndTargetId(userId,type,targetId);
-    }
 
-    public Like saveLike(Like like){
-        return likeRepository.save(like);
-    }
-
-    public void deleteLike(String userId,String type,String targetId){
-        likeRepository.deleteLikeByUserIdAndTypeAndTargetId(userId,type,targetId);
-    }
-
-    public Page<Star> queryStarByPage(Map map) {
-        return starRepository.queryPageByCondition(map);
-    }
-
-    @Override
-    public Star queryStarByUserIdAndArticleId(String userId, String articleId) {
-
-        return starRepository.queryStarByUserIdAndArticleId(userId,articleId);
-    }
-
-    @Override
-    public Star saveStar(Star star) {
-
-        return starRepository.save(star);
-    }
-
-    @Override
-    public void deleteStar(String userId, String articleId) {
-
-        starRepository.deleteByUserIdAndArticleId(userId,articleId);
-    }
 
     @Override
     public void increaseViewCount(String articleId) {

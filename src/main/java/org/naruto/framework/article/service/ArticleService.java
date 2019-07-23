@@ -21,21 +21,9 @@ public interface ArticleService {
 
     Page<Comment> queryCommentByPage(Map map);
 
-    //like,zhan;
 
-    Like queryLikeByUserIdAndTypeAndTargetId(String userId,String type,String targetId);
 
-    Like saveLike(Like like);
 
-    void deleteLike(String userId,String type,String targetId);
-
-    Page<Star> queryStarByPage(Map map);
-
-    Star queryStarByUserIdAndArticleId(String userId, String articleId);
-
-    Star saveStar(Star star);
-
-    public void deleteStar(String userId,String articleId);
 
     void increaseViewCount(String articleId);
 

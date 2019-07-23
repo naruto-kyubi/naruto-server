@@ -2,10 +2,8 @@ package org.naruto.framework.article.controller;
 
 import org.naruto.framework.article.domain.Article;
 import org.naruto.framework.article.domain.Comment;
-import org.naruto.framework.article.domain.Like;
 import org.naruto.framework.article.domain.Tag;
 import org.naruto.framework.article.service.ArticleService;
-import org.naruto.framework.article.vo.LikeVo;
 import org.naruto.framework.core.web.ResultEntity;
 import org.naruto.framework.security.service.SessionUtils;
 import org.naruto.framework.user.domain.User;
@@ -92,52 +90,6 @@ public class ArticleController {
         comment.setUserId(user);
 
         return ResponseEntity.ok(ResultEntity.ok(articleService.saveComment(comment)));
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/v1/articles/likes/{type}/{targetId}", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
-    public ResponseEntity<ResultEntity> queryLikeById(@PathVariable("type") String type,@PathVariable("targetId") String targetId,HttpServletRequest request){
-
-        User user = sessionUtils.getCurrentUser(request);
-        Like like = null;
-        if(null!=user){
-            like = articleService.queryLikeByUserIdAndTypeAndTargetId(user.getId(),type,targetId);
-        }
-        Article article = articleService.queryArticleById(targetId);
-        LikeVo vo = new LikeVo(like,article.getLikeCount());
-        return ResponseEntity.ok(ResultEntity.ok(vo));
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/v1/articles/likes/add", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    public ResponseEntity<ResultEntity> addLike(@Validated @RequestBody Like like,HttpServletRequest request){
-
-        User user = sessionUtils.getCurrentUser(request);
-
-        articleService.increaseLikeCount(like.getTargetId(),1L);
-        userService.increaseLikeCount(user.getId(),1L);
-
-        like.setUserId(user.getId());
-        articleService.saveLike(like);
-        Article article = articleService.queryArticleById(like.getTargetId());
-        LikeVo vo = new LikeVo(like,article.getLikeCount());
-
-        return ResponseEntity.ok(ResultEntity.ok(vo));
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/v1/articles/likes/delete/{type}/{targetId}", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
-    public ResponseEntity<ResultEntity> deleteLike(@PathVariable("type") String type,@PathVariable("targetId") String targetId,HttpServletRequest request){
-
-        User user = sessionUtils.getCurrentUser(request);
-        articleService.deleteLike(user.getId(),type,targetId);
-        userService.increaseLikeCount(user.getId(),-1L);
-
-        articleService.increaseLikeCount(targetId,-1L);
-        Article article = articleService.queryArticleById(targetId);
-        LikeVo vo = new LikeVo(null,article.getLikeCount());
-
-        return ResponseEntity.ok(ResultEntity.ok(vo));
     }
 
 

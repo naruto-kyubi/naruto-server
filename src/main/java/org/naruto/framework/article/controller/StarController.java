@@ -3,6 +3,7 @@ package org.naruto.framework.article.controller;
 import org.naruto.framework.article.domain.Article;
 import org.naruto.framework.article.domain.Star;
 import org.naruto.framework.article.service.ArticleService;
+import org.naruto.framework.article.service.StarService;
 import org.naruto.framework.article.vo.StarVo;
 import org.naruto.framework.core.web.ResultEntity;
 import org.naruto.framework.security.service.SessionUtils;
@@ -23,6 +24,9 @@ import java.util.Map;
 public class StarController {
 
     @Autowired
+    private StarService starService;
+
+    @Autowired
     private ArticleService articleService;
 
     @Autowired
@@ -37,7 +41,7 @@ public class StarController {
             @RequestParam(required = false) Map map,
             HttpServletRequest request, HttpServletResponse response) {
 
-        Page page = articleService.queryStarByPage(map);
+        Page page = starService.queryStarByPage(map);
         return ResponseEntity.ok(ResultEntity.ok(page.getContent(), PageUtils.wrapperPagination(page)));
     }
 
@@ -48,7 +52,7 @@ public class StarController {
         User user = sessionUtils.getCurrentUser(request);
         Star star = null;
         if(null!=user) {
-            star = articleService.queryStarByUserIdAndArticleId(user.getId(), articleId);
+            star = starService.queryStarByUserIdAndArticleId(user.getId(), articleId);
         }
         Article article = articleService.queryArticleById(articleId);
         StarVo vo = new StarVo(star,article.getStarCount());
@@ -66,7 +70,7 @@ public class StarController {
         articleService.increaseStarCount(star.getArticle().getId(),1L);
         userService.increaseStarCount(user.getId(),1L);
 
-        articleService.saveStar(star);
+        starService.saveStar(star);
         Article article = articleService.queryArticleById(star.getArticle().getId());
         StarVo vo = new StarVo(star,article.getStarCount());
 
@@ -82,7 +86,7 @@ public class StarController {
         articleService.increaseStarCount(articleId,-1L);
         userService.increaseStarCount(user.getId(),-1L);
 
-        articleService.deleteStar(user.getId(),articleId);
+        starService.deleteStar(user.getId(),articleId);
         Article article = articleService.queryArticleById(articleId);
         StarVo vo = new StarVo(null,article.getStarCount());
 
