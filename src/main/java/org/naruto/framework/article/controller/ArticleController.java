@@ -1,6 +1,7 @@
 package org.naruto.framework.article.controller;
 
 import org.naruto.framework.article.domain.Article;
+import org.naruto.framework.article.domain.ArticleStatus;
 import org.naruto.framework.article.domain.Comment;
 import org.naruto.framework.article.service.ArticleService;
 import org.naruto.framework.core.web.ResultEntity;
@@ -113,6 +114,7 @@ public class ArticleController {
         Date beforeDate = c.getTime();
         format.format(currentDate);
         map.put("sorter","viewCount_desc,updatedAt_desc");
+        map.put("status_equal", ArticleStatus.PUBLISH);
         map.put("updatedAt_between",format.format(beforeDate) + "," + format.format(currentDate));
 
         Page page = articleService.queryArticleByPage(map);

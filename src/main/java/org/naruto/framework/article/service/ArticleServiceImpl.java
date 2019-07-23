@@ -1,12 +1,15 @@
 package org.naruto.framework.article.service;
 
-import org.naruto.framework.article.domain.*;
-import org.naruto.framework.article.repository.*;
+import org.naruto.framework.article.domain.Article;
+import org.naruto.framework.article.domain.ArticleStatus;
+import org.naruto.framework.article.domain.Comment;
+import org.naruto.framework.article.domain.Tag;
+import org.naruto.framework.article.repository.ArticleRepository;
+import org.naruto.framework.article.repository.CommentRepository;
 import org.naruto.framework.article.vo.ArticleVo;
 import org.naruto.framework.core.exception.CommonError;
 import org.naruto.framework.core.exception.ServiceException;
 import org.naruto.framework.elasticsearch.article.service.ArticleEsService;
-import org.naruto.framework.user.service.UserService;
 import org.naruto.framework.utils.PageUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,18 +33,6 @@ public class ArticleServiceImpl implements ArticleService {
     private CommentRepository commentRepository;
 
     @Autowired
-    private LikeRepository likeRepository;
-
-    @Autowired
-    private StarRepository starRepository;
-
-    @Autowired
-    private TagRepository tagRepository;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
     private ArticleEsService articleEsService;
 
 
@@ -57,7 +48,7 @@ public class ArticleServiceImpl implements ArticleService {
 
         else {
             Article lastVersion = null;
-            if(article.getPublishedVersion()!=null && article.getStatus().equals("publish")){
+            if(article.getPublishedVersion()!=null && article.getStatus().equals(ArticleStatus.PUBLISH.toString())){
                 lastVersion = articleRepository.findById(article.getPublishedVersion()).get();
                 articleRepository.deleteById(article.getId());
             }else {
@@ -72,7 +63,6 @@ public class ArticleServiceImpl implements ArticleService {
 
             return articleRepository.save(lastVersion);
         }
-
     }
 
     public Page<Article> queryArticleByPage(Map map) {
@@ -94,7 +84,7 @@ public class ArticleServiceImpl implements ArticleService {
         tags.addAll(article.getTags());
         BeanUtils.copyProperties(article,draft);
         draft.setPublishedVersion(article.getId());
-        draft.setStatus("draft");
+        draft.setStatus(ArticleStatus.DRAFT.toString());
         draft.setId(null);
         draft.setTags(tags);
         draft = articleRepository.save(draft);
@@ -115,60 +105,27 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     public Page<Comment> queryCommentByPage(Map map) {
+
         return commentRepository.queryPageByCondition(map);
     }
 
-
-
-
-
     @Override
     public void increaseViewCount(String articleId) {
+
         articleRepository.increateCount(articleId,"view_count",1L);
-//        articleRepository.increaseViewCount(articleId);
     }
 
     @Override
     public void increaseLikeCount(String articleId,Long step) {
+
         articleRepository.increateCount(articleId,"like_count",step);
-//        articleRepository.increaseLikeCount(articleId,step);
     }
 
     @Override
     public void increaseStarCount(String articleId,Long step) {
+
         articleRepository.increateCount(articleId,"star_count",step);
-//        articleRepository.increaseStarCount(articleId,step);
     }
-
-
-//    @Override
-//    public Page<ArticleVo> search(Map map) {
-//
-//        Map _map = PageUtils.prepareQueryPageMap(map);
-//        Pageable pageable = PageUtils.createPageable(_map);
-//        String keyWord = (String) map.get("keyword");
-//
-//        Map searchMap = new HashMap();
-//        searchMap.put("title",1F);
-//        searchMap.put("contentHtml",1F);
-//
-//        MultiMatchQueryBuilder query = QueryBuilders.multiMatchQuery(keyWord, "title","content").fields(searchMap);
-//        query.minimumShouldMatch("40%");
-//        Page<EsArticle> page = articleEsRepository.search(query,pageable);
-//        List<EsArticle> list = page.getContent();
-//
-//        List articleList = new ArrayList();
-//
-//        for (EsArticle article : list) {
-//            String userId = article.getUserId();
-//            User user = userService.findById(userId);
-//            article.setOwner(user);
-//            articleList.add(article);
-//        }
-//
-//        List voList = ObjUtils.transformerClass(articleList, ArticleVo.class);
-//        return new PageImpl(voList,page.getPageable(),page.getTotalElements());
-//    }
 
     @Override
     public Page<ArticleVo> search(Map map) {

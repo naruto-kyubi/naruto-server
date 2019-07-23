@@ -17,7 +17,7 @@ public interface ArticleService {
 
     Article queryDraftById(String id);
 
-    public void deleteArticleById(String id);
+    void deleteArticleById(String id);
 
     Comment saveComment(Comment comment);
 
@@ -30,8 +30,6 @@ public interface ArticleService {
     void increaseStarCount(String articleId,Long step);
 
     Page<ArticleVo> search(Map map);
-
-
 
     Page<Article> queryHotList(Map map);
 
