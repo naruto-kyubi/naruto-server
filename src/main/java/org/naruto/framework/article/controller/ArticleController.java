@@ -114,7 +114,7 @@ public class ArticleController {
         Date beforeDate = c.getTime();
         format.format(currentDate);
         map.put("sorter","viewCount_desc,updatedAt_desc");
-        map.put("status_equal", ArticleStatus.PUBLISH);
+        map.put("status_equal", ArticleStatus.PUBLISH.toString());
         map.put("updatedAt_between",format.format(beforeDate) + "," + format.format(currentDate));
 
         Page page = articleService.queryArticleByPage(map);
