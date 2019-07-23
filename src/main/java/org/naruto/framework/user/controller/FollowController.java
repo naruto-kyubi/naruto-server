@@ -53,7 +53,7 @@ public class FollowController {
 
 //    新增关注
     @ResponseBody
-    @RequestMapping(value = "/v1/follows/add", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
+    @RequestMapping(value = "/v1/user/follows/add", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     public ResponseEntity<ResultEntity> add(
             @Validated @RequestBody Follow follow,
             BindingResult bindingResult,
@@ -71,7 +71,7 @@ public class FollowController {
 
     // 取消关注
     @ResponseBody
-    @RequestMapping(value = "/v1/follows/delete/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/v1/user/follows/delete/{id}", method = RequestMethod.GET)
     public ResponseEntity<ResultEntity> delete(
             @PathVariable("id") String id,
             HttpServletRequest request,
@@ -88,7 +88,7 @@ public class FollowController {
 
     //关注了
     @ResponseBody
-    @RequestMapping(value = "/v1/follows/users", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    @RequestMapping(value = "/v1/user/follows", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
     public ResponseEntity<ResultEntity> queryUsers(
             @RequestParam(required = false) Map map,
             HttpServletRequest request, HttpServletResponse response) {
@@ -102,7 +102,7 @@ public class FollowController {
 
     //用户粉丝
     @ResponseBody
-    @RequestMapping(value = "/v1/follows/fans", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    @RequestMapping(value = "/v1/user/fans", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
     public ResponseEntity<ResultEntity> queryFans(
             @RequestParam(required = false) Map map,
             HttpServletRequest request, HttpServletResponse response) {
