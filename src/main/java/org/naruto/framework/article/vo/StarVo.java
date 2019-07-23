@@ -11,5 +11,5 @@ import org.naruto.framework.article.domain.Star;
 @ToString
 public class StarVo {
     private Star star;
-    private Integer starCount;
+    private Long starCount;
 }
