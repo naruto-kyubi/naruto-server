@@ -43,7 +43,7 @@ public class TagController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/v1/tags/usertags", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    @RequestMapping(value = "/v1/user/tags/subscribed", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
     public ResponseEntity<ResultEntity> queryUserTags(
                 @RequestParam(required = false) Integer currentPage,
                 @RequestParam(required = false) Integer pageSize,
@@ -82,7 +82,23 @@ public class TagController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/v1/users/tags/add", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/v1/articles/tag/add", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    public ResponseEntity<ResultEntity> addComment(@Validated @RequestBody Tag tag, HttpServletRequest request){
+
+        return ResponseEntity.ok(ResultEntity.ok(tagService.saveTag(tag)));
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/v1/articles/tags", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    public ResponseEntity<ResultEntity> queryTags(
+            @RequestParam(required = false) Map map,
+            HttpServletRequest request, HttpServletResponse response) {
+
+        return ResponseEntity.ok(ResultEntity.ok(tagService.queryTags()));
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/v1/user/tag/subscribe", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public ResponseEntity<ResultEntity> addUserTag(@Validated @RequestBody UserTag userTag, HttpServletRequest request){
 
         User user = sessionUtils.getCurrentUser(request);
@@ -93,7 +109,7 @@ public class TagController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/v1/users/tags/{tagId}/delete", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    @RequestMapping(value = "/v1/user/tag/{tagId}/unsubscribe", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
     public ResponseEntity<ResultEntity> deleteUserTags(@PathVariable("tagId") String tagId,HttpServletRequest request){
 
         User user = sessionUtils.getCurrentUser(request);

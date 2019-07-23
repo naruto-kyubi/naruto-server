@@ -4,9 +4,16 @@ import org.naruto.framework.article.domain.Tag;
 import org.naruto.framework.article.domain.UserTag;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
 import java.util.Map;
 
 public interface TagService {
+
+    Tag saveTag(Tag tag);
+
+    void deleteTag(Tag tag);
+
+    List<Tag> queryTags();
 
     UserTag save(UserTag userTag);
 

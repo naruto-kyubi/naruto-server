@@ -32,7 +32,7 @@ public class LikeController {
     private SessionUtils sessionUtils;
 
     @ResponseBody
-    @RequestMapping(value = "/v1/articles/likes/{type}/{targetId}", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    @RequestMapping(value = "/v1/articles/{type}/{targetId}/likes", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
     public ResponseEntity<ResultEntity> queryLikeById(@PathVariable("type") String type,@PathVariable("targetId") String targetId,HttpServletRequest request){
 
         User user = sessionUtils.getCurrentUser(request);
@@ -63,7 +63,7 @@ public class LikeController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/v1/articles/likes/delete/{type}/{targetId}", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    @RequestMapping(value = "/v1/articles/{type}/{targetId}/likes/delete", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
     public ResponseEntity<ResultEntity> deleteLike(@PathVariable("type") String type, @PathVariable("targetId") String targetId, HttpServletRequest request){
 
         User user = sessionUtils.getCurrentUser(request);

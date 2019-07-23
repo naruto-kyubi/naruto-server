@@ -114,7 +114,4 @@ public class FollowController {
         return ResponseEntity.ok(ResultEntity.ok(page.getContent(), PageUtils.wrapperPagination(page)));
     }
 
-
-
-
 }

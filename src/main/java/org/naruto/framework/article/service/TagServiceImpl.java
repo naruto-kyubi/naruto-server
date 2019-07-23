@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -22,6 +23,22 @@ public class TagServiceImpl implements TagService{
 
     @Autowired
     private UserTagRepository userTagRepository;
+
+
+    @Override
+    public Tag saveTag(Tag tag) {
+        return tagRepository.save(tag);
+    }
+
+    @Override
+    public void deleteTag(Tag tag) {
+        tagRepository.delete(tag);
+    }
+
+    @Override
+    public List<Tag> queryTags() {
+        return tagRepository.findAll();
+    }
 
     @Override
     public UserTag save(UserTag userTag) {

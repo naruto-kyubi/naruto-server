@@ -1,6 +1,7 @@
 package org.naruto.framework.article.service;
 
-import org.naruto.framework.article.domain.*;
+import org.naruto.framework.article.domain.Article;
+import org.naruto.framework.article.domain.Comment;
 import org.naruto.framework.article.repository.*;
 import org.naruto.framework.article.vo.ArticleVo;
 import org.naruto.framework.core.exception.CommonError;
@@ -14,7 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -110,20 +110,6 @@ public class ArticleServiceImpl implements ArticleService {
 //        articleRepository.increaseStarCount(articleId,step);
     }
 
-    @Override
-    public Tag saveTag(Tag tag) {
-        return tagRepository.save(tag);
-    }
-
-    @Override
-    public void deleteTag(Tag tag) {
-        tagRepository.delete(tag);
-    }
-
-    @Override
-    public List<Tag> queryTags() {
-        return tagRepository.findAll();
-    }
 
 //    @Override
 //    public Page<ArticleVo> search(Map map) {

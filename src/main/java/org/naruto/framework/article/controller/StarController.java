@@ -36,7 +36,7 @@ public class StarController {
     private SessionUtils sessionUtils;
 
     @ResponseBody
-    @RequestMapping(value = "/v1/articles/stars/user/query", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    @RequestMapping(value = "/v1/articles/stars", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
     public ResponseEntity<ResultEntity> queryStar(
             @RequestParam(required = false) Map map,
             HttpServletRequest request, HttpServletResponse response) {
@@ -46,7 +46,7 @@ public class StarController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/v1/articles/stars/{articleId}", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    @RequestMapping(value = "/v1/articles/{articleId}/stars", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
     public ResponseEntity<ResultEntity> queryStarById(@PathVariable("articleId") String articleId,HttpServletRequest request){
 
         User user = sessionUtils.getCurrentUser(request);
@@ -78,16 +78,16 @@ public class StarController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/v1/articles/stars/delete/{articleId}", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
-    public ResponseEntity<ResultEntity> deleteStar(@PathVariable("articleId") String articleId,HttpServletRequest request){
+    @RequestMapping(value = "/v1/articles/{id}/stars/delete", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    public ResponseEntity<ResultEntity> deleteStar(@PathVariable("id") String id,HttpServletRequest request){
 
         User user = sessionUtils.getCurrentUser(request);
 
-        articleService.increaseStarCount(articleId,-1L);
+        articleService.increaseStarCount(id,-1L);
         userService.increaseStarCount(user.getId(),-1L);
 
-        starService.deleteStar(user.getId(),articleId);
-        Article article = articleService.queryArticleById(articleId);
+        starService.deleteStar(user.getId(),id);
+        Article article = articleService.queryArticleById(id);
         StarVo vo = new StarVo(null,article.getStarCount());
 
         return ResponseEntity.ok(ResultEntity.ok(vo));
