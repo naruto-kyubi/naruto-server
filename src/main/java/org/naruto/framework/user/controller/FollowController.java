@@ -113,5 +113,4 @@ public class FollowController {
         Page page = followService.queryFans(map);
         return ResponseEntity.ok(ResultEntity.ok(page.getContent(), PageUtils.wrapperPagination(page)));
     }
-
 }
