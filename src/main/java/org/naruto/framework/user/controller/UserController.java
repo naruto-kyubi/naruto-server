@@ -1,12 +1,11 @@
 package org.naruto.framework.user.controller;
 
 
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.naruto.framework.captcha.CaptchaType;
 import org.naruto.framework.captcha.service.CaptchaService;
 import org.naruto.framework.core.web.ResultEntity;
 import org.naruto.framework.security.service.LogonService;
+import org.naruto.framework.security.service.SessionUtils;
 import org.naruto.framework.user.domain.ThirdPartyUser;
 import org.naruto.framework.user.domain.User;
 import org.naruto.framework.user.service.ThirdPartyUserService;
@@ -23,8 +22,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -50,6 +47,8 @@ public class UserController {
     @Autowired
     private CaptchaService captchaService;
 
+    @Autowired
+    private SessionUtils sessionUtils;
 
 
     @RequestMapping(value = "/v1/user/register", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
@@ -110,7 +109,7 @@ public class UserController {
 
 //        if (null == id || "".equals(id)) return null;
         if (null==user) return null;
-        User dbUser = userService.findById(id);
+        User dbUser = userService.queryUserById(id);
 
         BeanUtils.copyProperties(user,dbUser,"mobile","password","passwordSalt","avatar","weibo","roles");
         return ResponseEntity.ok(ResultEntity.ok(userService.save(dbUser)));
@@ -135,25 +134,22 @@ public class UserController {
     @RequestMapping(value = "/v1/user/currentUser", method = RequestMethod.GET)
     public ResponseEntity<ResultEntity> getCurrentUser(
             HttpServletRequest request, HttpServletResponse response) {
-        Subject subject = SecurityUtils.getSubject();
-        User sessionUser = (User) subject.getPrincipal();
-        User localUser = userService.findById(sessionUser.getId());
+        User sessionUser = sessionUtils.getCurrentUser(request);
+        User localUser = userService.queryUserById(sessionUser.getId());
         return ResponseEntity.ok(ResultEntity.ok(localUser));
     }
 
     @ResponseBody
     @RequestMapping(value = "/v1/user/avatar", method = RequestMethod.POST)
-    public ResponseEntity<ResultEntity> uploadFile(@RequestParam("file") MultipartFile file, ServletRequest request, ServletResponse response) throws Exception{
+    public ResponseEntity<ResultEntity> uploadFile(@RequestParam("file") MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws Exception{
         //首先进行文件上传
         String contentType = file.getContentType();
         String fileName = file.getOriginalFilename();
         uploadFile(file.getBytes(), location, fileName);
 
-        Subject subject = SecurityUtils.getSubject();
-        User sessionUser = (User) subject.getPrincipal();
+        User sessionUser = sessionUtils.getCurrentUser(request);
 
-
-        User user = userService.findById(sessionUser.getId());
+        User user = userService.queryUserById(sessionUser.getId());
         String imageUrl = "/images/".concat(fileName);
         user.setAvatar(imageUrl);
         userService.save(user);
@@ -187,8 +183,7 @@ public class UserController {
             HttpServletRequest request,
             HttpServletResponse response) {
 
-        Subject subject = SecurityUtils.getSubject();
-        User sessionUser = (User) subject.getPrincipal();
+        User sessionUser = sessionUtils.getCurrentUser(request);
         ThirdPartyUser thirdPartyUser = logonService.bind(sessionUser,authType,authCode);
         return ResponseEntity.ok(ResultEntity.ok(thirdPartyUser));
     }
@@ -200,18 +195,16 @@ public class UserController {
             HttpServletRequest request,
             HttpServletResponse response) {
 
-        Subject subject = SecurityUtils.getSubject();
-        User sessionUser = (User) subject.getPrincipal();
+        User sessionUser = sessionUtils.getCurrentUser(request);
         logonService.unbind(sessionUser,authType);
         return ResponseEntity.ok(ResultEntity.ok(null));
     }
 
     @ResponseBody
     @RequestMapping(value = "/v1/user/queryBinds", method = RequestMethod.GET)
-    public ResponseEntity<ResultEntity> queryBinds() {
+    public ResponseEntity<ResultEntity> queryBinds(HttpServletRequest request,HttpServletResponse response) {
 
-        Subject subject = SecurityUtils.getSubject();
-        User sessionUser = (User) subject.getPrincipal();
+        User sessionUser = sessionUtils.getCurrentUser(request);
         List<ThirdPartyUser> thirdPartyUserList = thirdPartyUserService.queryThirdPartyUsersByUser(sessionUser);
         return ResponseEntity.ok(ResultEntity.ok(thirdPartyUserList));
     }
