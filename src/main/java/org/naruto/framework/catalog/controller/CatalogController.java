@@ -1,13 +1,10 @@
 package org.naruto.framework.catalog.controller;
 
 
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
-import org.naruto.framework.article.domain.Article;
+
 import org.naruto.framework.catalog.domain.Catalog;
 import org.naruto.framework.catalog.service.CatalogService;
 import org.naruto.framework.core.web.ResultEntity;
-import org.naruto.framework.user.domain.User;
 import org.naruto.framework.utils.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
