@@ -39,17 +39,17 @@ public class EsArticle {
     @Field(type = FieldType.Text, searchAnalyzer = "ik_max_word", analyzer = "ik_smart")
     private String contentHtml;
 
-    @Field(type = FieldType.Integer)
-    private int commentCount = 0;
+    @Field(type = FieldType.Long)
+    private long commentCount = 0;
 
-    @Field(type = FieldType.Integer)
-    private int viewCount = 0;
+    @Field(type = FieldType.Long)
+    private long viewCount = 0;
 
-    @Field(type = FieldType.Integer)
-    private int starCount= 0;
+    @Field(type = FieldType.Long)
+    private long starCount= 0;
 
-    @Field(type = FieldType.Integer)
-    private int likeCount = 0;
+    @Field(type = FieldType.Long)
+    private long likeCount = 0;
 
     @Field(type = FieldType.Boolean)
     private boolean recommend;
