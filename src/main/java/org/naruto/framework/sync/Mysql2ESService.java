@@ -24,11 +24,13 @@ public class Mysql2ESService {
     @Autowired
     private UserSyncService userSyncService;
 
+    @Autowired
+    private CanalConfig canalConfig;
 
     public  void sync(){
         // 创建链接
-        CanalConnector connector = CanalConnectors.newSingleConnector(new InetSocketAddress("192.168.3.28",
-                11111), "example", "liuhy", "");
+        CanalConnector connector = CanalConnectors.newSingleConnector(new InetSocketAddress(canalConfig.getAddress(),
+                canalConfig.getPort()), canalConfig.getDestination(), canalConfig.getUsername(), canalConfig.getPassword());
         int batchSize = 1000;
         int emptyCount = 0;
         try {
@@ -87,7 +89,7 @@ public class Mysql2ESService {
             String db = entry.getHeader().getSchemaName();
             String table = entry.getHeader().getTableName();
 
-            if("naruto".equals(db)){
+            if(canalConfig.getDatabase().equals(db)){
                 if("articles".equals(table)){
 
                     articleSyncService.sync(rowChage);
