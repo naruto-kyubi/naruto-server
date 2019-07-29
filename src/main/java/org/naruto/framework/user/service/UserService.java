@@ -5,8 +5,7 @@ import org.naruto.framework.captcha.service.CaptchaService;
 import org.naruto.framework.core.encrpyt.IEncrpyt;
 import org.naruto.framework.core.exception.CommonError;
 import org.naruto.framework.core.exception.ServiceException;
-import org.naruto.framework.elasticsearch.user.service.UserEsService;
-import org.naruto.framework.security.domain.Role;
+import org.naruto.framework.search.user.service.UserEsService;
 import org.naruto.framework.security.service.jwt.JwtUtils;
 import org.naruto.framework.user.domain.User;
 import org.naruto.framework.user.exception.UserError;
@@ -20,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @Service
 public class UserService {
@@ -83,10 +81,10 @@ public class UserService {
         return userRepository.save(current);
     }
 
-    @Transactional
-    public Set<Role> getUserRoles(String id) {
-        return userRepository.findById(id).get().getRoles();
-    }
+//    @Transactional
+//    public Set<Role> getUserRoles(String id) {
+//        return userRepository.findById(id).get().getRoles();
+//    }
 
     @Transactional
     public User getUserById(String id){ return this.userRepository.findById(id).get(); }
@@ -108,7 +106,7 @@ public class UserService {
     }
 
     //查找单条记录；
-    public User findById(String id){
+    public User queryUserById(String id){
         return this.userRepository.findById(id).get();
     }
 

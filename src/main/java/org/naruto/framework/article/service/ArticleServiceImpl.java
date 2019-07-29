@@ -6,10 +6,8 @@ import org.naruto.framework.article.domain.Comment;
 import org.naruto.framework.article.domain.Tag;
 import org.naruto.framework.article.repository.ArticleRepository;
 import org.naruto.framework.article.repository.CommentRepository;
-import org.naruto.framework.article.vo.ArticleVo;
 import org.naruto.framework.core.exception.CommonError;
 import org.naruto.framework.core.exception.ServiceException;
-import org.naruto.framework.elasticsearch.article.service.ArticleEsService;
 import org.naruto.framework.utils.PageUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +30,8 @@ public class ArticleServiceImpl implements ArticleService {
     @Autowired
     private CommentRepository commentRepository;
 
-    @Autowired
-    private ArticleEsService articleEsService;
+//    @Autowired
+//    private ArticleEsService articleEsService;
 
 
     public Article saveArticle(Article article){
@@ -127,11 +125,11 @@ public class ArticleServiceImpl implements ArticleService {
         articleRepository.increateCount(articleId,"star_count",step);
     }
 
-    @Override
-    public Page<ArticleVo> search(Map map) {
-
-       return articleEsService.search(map);
-    }
+//    @Override
+//    public Page<ArticleVo> search(Map map) {
+//
+//       return articleEsService.search(map);
+//    }
 
     @Override
     public Page<Article> queryHotList(Map map) {

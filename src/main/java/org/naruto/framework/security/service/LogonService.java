@@ -2,6 +2,8 @@ package org.naruto.framework.security.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.naruto.framework.core.exception.ServiceException;
+import org.naruto.framework.core.security.IAuthenticationService;
+import org.naruto.framework.core.security.IOauthService;
 import org.naruto.framework.security.exception.SecurityError;
 import org.naruto.framework.security.vo.LogonUser;
 import org.naruto.framework.user.domain.ThirdPartyUser;

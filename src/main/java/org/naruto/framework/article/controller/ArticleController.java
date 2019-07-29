@@ -5,7 +5,7 @@ import org.naruto.framework.article.domain.ArticleStatus;
 import org.naruto.framework.article.domain.Comment;
 import org.naruto.framework.article.service.ArticleService;
 import org.naruto.framework.core.web.ResultEntity;
-import org.naruto.framework.security.service.SessionUtils;
+import org.naruto.framework.core.security.SessionUtils;
 import org.naruto.framework.user.domain.User;
 import org.naruto.framework.user.service.UserService;
 import org.naruto.framework.utils.PageUtils;

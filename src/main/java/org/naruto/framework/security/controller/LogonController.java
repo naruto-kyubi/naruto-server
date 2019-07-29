@@ -6,7 +6,7 @@ import org.naruto.framework.captcha.CaptchaType;
 import org.naruto.framework.captcha.service.CaptchaService;
 import org.naruto.framework.core.web.ResultEntity;
 import org.naruto.framework.security.service.LogonService;
-import org.naruto.framework.security.service.SessionUtils;
+import org.naruto.framework.core.security.SessionUtils;
 import org.naruto.framework.security.vo.LogonUser;
 import org.naruto.framework.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;

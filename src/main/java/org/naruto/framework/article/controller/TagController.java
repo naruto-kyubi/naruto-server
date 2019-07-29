@@ -5,7 +5,7 @@ import org.naruto.framework.article.domain.UserTag;
 import org.naruto.framework.article.service.TagService;
 import org.naruto.framework.article.vo.TagVo;
 import org.naruto.framework.core.web.ResultEntity;
-import org.naruto.framework.security.service.SessionUtils;
+import org.naruto.framework.core.security.SessionUtils;
 import org.naruto.framework.user.domain.User;
 import org.naruto.framework.utils.ObjUtils;
 import org.naruto.framework.utils.PageUtils;

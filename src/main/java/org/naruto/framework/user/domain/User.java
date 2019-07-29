@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
-import org.naruto.framework.security.domain.Role;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -15,8 +14,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 
 @Entity
@@ -83,9 +80,9 @@ public class User implements Serializable {
     @LastModifiedDate
     private Date updatedAt;
 
-    @ManyToMany(fetch=FetchType.EAGER)
-    @JoinTable(name= "user_roles", joinColumns = {@JoinColumn(name = "user_id", nullable = false, updatable = false) },inverseJoinColumns = { @JoinColumn(name = "role_id", nullable =false, updatable = false) })
-    private Set<Role> roles= new HashSet<>();
+//    @ManyToMany(fetch=FetchType.EAGER)
+//    @JoinTable(name= "user_roles", joinColumns = {@JoinColumn(name = "user_id", nullable = false, updatable = false) },inverseJoinColumns = { @JoinColumn(name = "role_id", nullable =false, updatable = false) })
+//    private Set<Role> roles= new HashSet<>();
 
     @JsonIgnore
     public String getPassword() {

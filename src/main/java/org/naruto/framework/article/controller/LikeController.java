@@ -6,7 +6,7 @@ import org.naruto.framework.article.service.ArticleService;
 import org.naruto.framework.article.service.LikeService;
 import org.naruto.framework.article.vo.LikeVo;
 import org.naruto.framework.core.web.ResultEntity;
-import org.naruto.framework.security.service.SessionUtils;
+import org.naruto.framework.core.security.SessionUtils;
 import org.naruto.framework.user.domain.User;
 import org.naruto.framework.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

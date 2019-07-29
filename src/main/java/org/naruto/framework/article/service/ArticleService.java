@@ -2,7 +2,6 @@ package org.naruto.framework.article.service;
 
 import org.naruto.framework.article.domain.Article;
 import org.naruto.framework.article.domain.Comment;
-import org.naruto.framework.article.vo.ArticleVo;
 import org.springframework.data.domain.Page;
 
 import java.util.Map;
@@ -29,7 +28,7 @@ public interface ArticleService {
 
     void increaseStarCount(String articleId,Long step);
 
-    Page<ArticleVo> search(Map map);
+//    Page<ArticleVo> search(Map map);
 
     Page<Article> queryHotList(Map map);
 

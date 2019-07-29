@@ -1,13 +1,12 @@
 package org.naruto.framework.search.controller;
 
-import org.naruto.framework.article.service.ArticleService;
 import org.naruto.framework.article.vo.ArticleVo;
+import org.naruto.framework.core.security.SessionUtils;
 import org.naruto.framework.core.web.ResultEntity;
-import org.naruto.framework.elasticsearch.article.domain.EsArticle;
-import org.naruto.framework.elasticsearch.article.service.ArticleEsService;
-import org.naruto.framework.elasticsearch.search.service.SearchEsService;
-import org.naruto.framework.elasticsearch.user.service.UserEsService;
-import org.naruto.framework.security.service.SessionUtils;
+import org.naruto.framework.search.article.domain.EsArticle;
+import org.naruto.framework.search.article.service.ArticleEsService;
+import org.naruto.framework.search.search.service.SearchEsService;
+import org.naruto.framework.search.user.service.UserEsService;
 import org.naruto.framework.user.domain.Follow;
 import org.naruto.framework.user.domain.Mutual;
 import org.naruto.framework.user.domain.User;
@@ -44,9 +43,6 @@ public class SearchController {
     private ArticleEsService articleEsService;
 
     @Autowired
-    private ArticleService articleService;
-
-    @Autowired
     private SearchEsService searchEsService;
 
     @Autowired
@@ -70,7 +66,7 @@ public class SearchController {
             if("article".equals(type)){
                 String articleId = (String) item.get("id");
                 String userId = (String) item.get("userId");
-                User user = userService.findById(userId);
+                User user = userService.queryUserById(userId);
                 ArticleVo vo = (ArticleVo) ObjUtils.copyMap2Obj(item,ArticleVo.class);
                 vo.setOwner(user);
                 return vo;
@@ -103,7 +99,8 @@ public class SearchController {
             @RequestParam(required = false) Map map,
             HttpServletRequest request, HttpServletResponse response) {
 
-        Page page = articleService.search(map);
+//        Page page = articleService.search(map);
+        Page page = articleEsService.search(map);
         return ResponseEntity.ok(ResultEntity.ok(page.getContent(), PageUtils.wrapperPagination(page)));
     }
 
@@ -114,7 +111,7 @@ public class SearchController {
             @RequestParam(required = false) Map map,
             HttpServletRequest request, HttpServletResponse response) {
 
-        //query elasticsearch users;
+        //query search users;
         Page<UserVo> page = userEsService.search(map);
         User user =sessionUtils.getCurrentUser(request);
         List<UserVo> list = page.getContent();
@@ -130,7 +127,7 @@ public class SearchController {
 
             ObjUtils.copyProperties(item,followUserVo);
             if(null==follow){
-//                User u = userService.findById(item.getId());
+//                User u = userService.queryUserById(item.getId());
                 followUserVo.setMutual(Mutual.NONE.getValue());
             }else{
 //                User u = follow.getFollowUser();
@@ -150,7 +147,7 @@ public class SearchController {
         Page<EsArticle> page = searchEsService.searchLikeThis(map);
 
         List<ArticleVo> voList =  page.getContent().stream().map(item->{
-            User user = userService.findById(item.getUserId());
+            User user = userService.queryUserById(item.getUserId());
             ArticleVo vo = (ArticleVo) ObjUtils.convert(item,ArticleVo.class);
             vo.setOwner(user);
             return vo;

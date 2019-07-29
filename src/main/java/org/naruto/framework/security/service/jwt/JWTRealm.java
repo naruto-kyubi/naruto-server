@@ -12,6 +12,7 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.naruto.framework.security.domain.Role;
+import org.naruto.framework.security.service.UserRoleService;
 import org.naruto.framework.user.domain.User;
 import org.naruto.framework.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class JWTRealm extends AuthorizingRealm {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserRoleService userRoleService;
 
     public JWTRealm(){
         this.setCredentialsMatcher(new JWTCredentialsMatcher());
@@ -61,7 +65,7 @@ public class JWTRealm extends AuthorizingRealm {
 //        Set<Role> roles = userService.getUserRoles(user.getId());
 
         //获取集合某一对象属性集合；
-        List<String> roleList = (List<String>) CollectionUtils.collect(user.getRoles(), new Transformer() {
+        List<String> roleList = (List<String>) CollectionUtils.collect(userRoleService.queryRolesByUserId(user.getId()), new Transformer() {
             @Override
             public Object transform(Object o) {
                 Role role = (Role) o;
