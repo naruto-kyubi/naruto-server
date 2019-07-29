@@ -1,5 +1,10 @@
 package org.naruto.framework;
 
+import org.apache.shiro.spring.boot.autoconfigure.ShiroAnnotationProcessorAutoConfiguration;
+import org.apache.shiro.spring.boot.autoconfigure.ShiroAutoConfiguration;
+import org.apache.shiro.spring.boot.autoconfigure.ShiroBeanAutoConfiguration;
+import org.apache.shiro.spring.config.web.autoconfigure.ShiroWebAutoConfiguration;
+import org.apache.shiro.spring.config.web.autoconfigure.ShiroWebFilterConfiguration;
 import org.naruto.framework.core.repository.CustomRepositoryFactoryBean;
 import org.naruto.framework.sync.Mysql2ESService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +19,14 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-@SpringBootApplication
+@SpringBootApplication(exclude = {ShiroAutoConfiguration.class,ShiroWebAutoConfiguration.class, ShiroBeanAutoConfiguration.class, ShiroAnnotationProcessorAutoConfiguration.class,ShiroWebFilterConfiguration.class})
 @EnableJpaAuditing
 @EnableTransactionManagement(proxyTargetClass = true)
 @EnableJpaRepositories(repositoryFactoryBeanClass = CustomRepositoryFactoryBean.class)
 @ComponentScan(excludeFilters={
         @ComponentScan.Filter(type= FilterType.ANNOTATION,classes={SpringBootApplication.class, Controller.class}),
-        @ComponentScan.Filter(type = FilterType.REGEX, pattern = "org.naruto.framework.security.*")
+        @ComponentScan.Filter(type = FilterType.REGEX, pattern = "org.naruto.framework.security.*"),
+        @ComponentScan.Filter(type = FilterType.REGEX, pattern = "org.naruto.framework.WebAppConfigurer")
     })
 public class Mysql2EsSyncApplication implements CommandLineRunner {
 
