@@ -17,7 +17,10 @@ import java.net.InetAddress;
 public class SearchConfig {
 
     @Value("${elasticsearch.host}")
-    private String esHost;// master node
+    private String host;// master node
+
+    @Value("${elasticsearch.port}")
+    private int port;// master node
 
     @Value("${elasticsearch.cluster.name}")
     private String esClusterName;
@@ -31,7 +34,7 @@ public class SearchConfig {
 
 
         TransportClient client  = new PreBuiltTransportClient(settings)
-                .addTransportAddress(new TransportAddress(InetAddress.getByName(esHost), 9300));
+                .addTransportAddress(new TransportAddress(InetAddress.getByName(host), port));
 
 //        TransportClient transportClient = TransportClient.builder()
 //                .settings(settings)
