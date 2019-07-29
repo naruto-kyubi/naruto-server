@@ -43,3 +43,9 @@ dependencies {
 	compile group: 'com.github.dozermapper', name: 'dozer-spring-boot-starter', version: '6.2.0'
 }
 
+bootJar {
+	manifest {
+		attributes 'Start-Class': 'org.naruto.framework.FrameworkApplication'
+	}
+}
+
