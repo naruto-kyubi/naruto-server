@@ -1,8 +1,8 @@
 package org.naruto.framework.user.controller;
 
 
-import org.naruto.framework.captcha.CaptchaType;
-import org.naruto.framework.captcha.service.CaptchaService;
+import org.naruto.framework.common.captcha.CaptchaType;
+import org.naruto.framework.common.captcha.service.CaptchaService;
 import org.naruto.framework.core.web.ResultEntity;
 import org.naruto.framework.security.service.LogonService;
 import org.naruto.framework.core.security.SessionUtils;
@@ -10,7 +10,7 @@ import org.naruto.framework.user.domain.ThirdPartyUser;
 import org.naruto.framework.user.domain.User;
 import org.naruto.framework.user.service.ThirdPartyUserService;
 import org.naruto.framework.user.service.UserService;
-import org.naruto.framework.utils.PageUtils;
+import org.naruto.framework.common.utils.PageUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

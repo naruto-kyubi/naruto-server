@@ -3,7 +3,7 @@ package org.naruto.framework.user.service;
 import org.naruto.framework.user.domain.Follow;
 import org.naruto.framework.user.domain.Mutual;
 import org.naruto.framework.user.repository.FollowRepository;
-import org.naruto.framework.utils.PageUtils;
+import org.naruto.framework.common.utils.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

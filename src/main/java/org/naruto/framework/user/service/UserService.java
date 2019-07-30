@@ -1,7 +1,7 @@
 package org.naruto.framework.user.service;
 
-import org.naruto.framework.captcha.CaptchaType;
-import org.naruto.framework.captcha.service.CaptchaService;
+import org.naruto.framework.common.captcha.CaptchaType;
+import org.naruto.framework.common.captcha.service.CaptchaService;
 import org.naruto.framework.core.encrpyt.IEncrpyt;
 import org.naruto.framework.core.exception.CommonError;
 import org.naruto.framework.core.exception.ServiceException;

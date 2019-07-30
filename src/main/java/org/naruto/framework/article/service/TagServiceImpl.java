@@ -4,7 +4,7 @@ import org.naruto.framework.article.domain.Tag;
 import org.naruto.framework.article.domain.UserTag;
 import org.naruto.framework.article.repository.TagRepository;
 import org.naruto.framework.article.repository.UserTagRepository;
-import org.naruto.framework.utils.PageUtils;
+import org.naruto.framework.common.utils.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

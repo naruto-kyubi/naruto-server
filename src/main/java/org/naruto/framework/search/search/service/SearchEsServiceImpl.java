@@ -11,7 +11,7 @@ import org.naruto.framework.search.article.domain.EsArticle;
 import org.naruto.framework.search.article.repository.ArticleEsRepository;
 import org.naruto.framework.search.user.repository.UserEsRepository;
 import org.naruto.framework.core.elasticsearch.ElasticSearchUtils;
-import org.naruto.framework.utils.PageUtils;
+import org.naruto.framework.common.utils.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;

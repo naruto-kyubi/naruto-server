@@ -10,7 +10,7 @@ import org.naruto.framework.article.domain.Article;
 import org.naruto.framework.article.repository.ArticleRepository;
 import org.naruto.framework.search.article.domain.EsArticle;
 import org.naruto.framework.search.article.repository.ArticleEsRepository;
-import org.naruto.framework.utils.ObjUtils;
+import org.naruto.framework.common.utils.ObjUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;

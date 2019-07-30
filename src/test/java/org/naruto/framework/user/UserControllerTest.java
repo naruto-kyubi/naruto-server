@@ -1,14 +1,13 @@
 package org.naruto.framework.user;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.naruto.framework.FrameworkApplication;
-import org.naruto.framework.captcha.CaptchaType;
-import org.naruto.framework.captcha.domain.Captcha;
-import org.naruto.framework.captcha.repository.CaptchaRepository;
+import org.naruto.framework.common.captcha.CaptchaType;
+import org.naruto.framework.common.captcha.domain.Captcha;
+import org.naruto.framework.common.captcha.repository.CaptchaRepository;
 import org.naruto.framework.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

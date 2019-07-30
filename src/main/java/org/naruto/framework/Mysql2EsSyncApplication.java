@@ -19,7 +19,11 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-@SpringBootApplication(exclude = {ShiroAutoConfiguration.class,ShiroWebAutoConfiguration.class, ShiroBeanAutoConfiguration.class, ShiroAnnotationProcessorAutoConfiguration.class,ShiroWebFilterConfiguration.class})
+@SpringBootApplication(exclude = {ShiroAutoConfiguration.class,
+                                ShiroWebAutoConfiguration.class,
+                                ShiroBeanAutoConfiguration.class,
+                                ShiroAnnotationProcessorAutoConfiguration.class,
+                                ShiroWebFilterConfiguration.class})
 @EnableJpaAuditing
 @EnableTransactionManagement(proxyTargetClass = true)
 @EnableJpaRepositories(repositoryFactoryBeanClass = CustomRepositoryFactoryBean.class)

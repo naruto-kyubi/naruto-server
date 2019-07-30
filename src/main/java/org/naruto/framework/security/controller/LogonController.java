@@ -2,8 +2,8 @@ package org.naruto.framework.security.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.naruto.framework.captcha.CaptchaType;
-import org.naruto.framework.captcha.service.CaptchaService;
+import org.naruto.framework.common.captcha.CaptchaType;
+import org.naruto.framework.common.captcha.service.CaptchaService;
 import org.naruto.framework.core.web.ResultEntity;
 import org.naruto.framework.security.service.LogonService;
 import org.naruto.framework.core.security.SessionUtils;
