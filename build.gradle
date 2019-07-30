@@ -45,7 +45,8 @@ dependencies {
 
 bootJar {
 	manifest {
-		attributes 'Start-Class': 'org.naruto.framework.FrameworkApplication'
+		attributes 'Start-Class': '${start-class}'
+		attributes 'Main-Class': 'org.springframework.boot.loader.PropertiesLauncher'
 	}
 }
 
