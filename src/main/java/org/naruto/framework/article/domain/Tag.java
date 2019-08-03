@@ -9,6 +9,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name="tags")
@@ -24,6 +25,7 @@ public class Tag {
     @Column(length=40)
     private String id;
 
+    @NotBlank(message ="标签名称不能为空")
     @Column(length = 20,unique = true)
     private String name;
 

@@ -24,6 +24,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Arrays;
@@ -31,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@Validated
 public class UserController {
 
     @Value("${img.location}")
@@ -58,7 +62,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/v1/user/registerCaptcha", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
-    public ResponseEntity<ResultEntity> getRegisterCaptcha(@Validated @RequestParam(name = "mobile") String mobile) {
+    public ResponseEntity<ResultEntity> getRegisterCaptcha(@NotBlank @RequestParam(name = "mobile") String mobile) {
         captchaService.createCaptcha(mobile, CaptchaType.SINGUP);
         return ResponseEntity.ok(ResultEntity.ok(null));
     }
