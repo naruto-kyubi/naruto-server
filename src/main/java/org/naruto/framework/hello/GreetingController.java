@@ -1,7 +1,7 @@
 package org.naruto.framework.hello;
 
 import lombok.extern.slf4j.Slf4j;
-import org.dozer.Mapper;
+import org.modelmapper.ModelMapper;
 import org.naruto.framework.article.domain.Article;
 import org.naruto.framework.article.vo.ArticleVo;
 import org.naruto.framework.core.exception.CommonError;
@@ -23,7 +23,7 @@ public class GreetingController {
     private final AtomicLong counter = new AtomicLong();
 
     @Autowired
-    Mapper mapper;
+    private ModelMapper modelMapper;
 
     @RequestMapping("/v1/greeting")
     public ResponseEntity<ResultEntity>  greeting(@RequestParam(value="name") String name) {
@@ -38,7 +38,7 @@ public class GreetingController {
             article.setId("123456");
             article.setCover("COVER");
 
-            ArticleVo v =  mapper.map(article,ArticleVo.class);;
+            ArticleVo v =  modelMapper.map(article,ArticleVo.class);;
 
             return ResponseEntity.ok(ResultEntity.ok(v));
         }

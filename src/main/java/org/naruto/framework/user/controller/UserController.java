@@ -1,6 +1,8 @@
 package org.naruto.framework.user.controller;
 
 
+import org.modelmapper.ModelMapper;
+import org.naruto.framework.article.vo.ArticleVo;
 import org.naruto.framework.common.captcha.CaptchaType;
 import org.naruto.framework.common.captcha.service.CaptchaService;
 import org.naruto.framework.core.web.ResultEntity;
@@ -11,6 +13,7 @@ import org.naruto.framework.user.domain.User;
 import org.naruto.framework.user.service.ThirdPartyUserService;
 import org.naruto.framework.user.service.UserService;
 import org.naruto.framework.common.utils.PageUtils;
+import org.naruto.framework.user.vo.RegisterRequest;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -54,15 +57,19 @@ public class UserController {
     @Autowired
     private SessionUtils sessionUtils;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
 
     @RequestMapping(value = "/v1/user/register", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    public ResponseEntity<ResultEntity> register(@Validated @RequestBody User user){
+    public ResponseEntity<ResultEntity> register(@Validated @RequestBody RegisterRequest registerRequest){
 
+        User user =  modelMapper.map(registerRequest,User.class);
         return ResponseEntity.ok(ResultEntity.ok(userService.register(user)));
     }
 
     @RequestMapping(value = "/v1/user/registerCaptcha", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
-    public ResponseEntity<ResultEntity> getRegisterCaptcha(@NotBlank @RequestParam(name = "mobile") String mobile) {
+    public ResponseEntity<ResultEntity> getRegisterCaptcha(@NotBlank(message = "mobie number is blank") @RequestParam(name = "mobile") String mobile) {
         captchaService.createCaptcha(mobile, CaptchaType.SINGUP);
         return ResponseEntity.ok(ResultEntity.ok(null));
     }
