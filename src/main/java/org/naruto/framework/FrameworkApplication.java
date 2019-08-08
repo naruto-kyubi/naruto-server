@@ -1,5 +1,6 @@
 package org.naruto.framework;
 
+import org.modelmapper.ModelMapper;
 import org.naruto.framework.core.repository.CustomRepositoryFactoryBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -40,6 +41,11 @@ public class FrameworkApplication {
 		//文件上传临时目录
 		factory.setLocation(uploadfilelocation);
 		return factory.createMultipartConfig();
+	}
+
+	@Bean
+	public ModelMapper modelMapper() {
+		return new ModelMapper();
 	}
 
 }
