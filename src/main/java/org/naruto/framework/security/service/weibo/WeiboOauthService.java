@@ -2,7 +2,7 @@ package org.naruto.framework.security.service.weibo;
 
 import com.alibaba.fastjson.JSONObject;
 import org.naruto.framework.core.security.IOauthService;
-import org.naruto.framework.security.vo.OauthUserInfo;
+import org.naruto.framework.core.security.OauthUserInfo;
 import org.naruto.framework.user.domain.ThirdPartyUser;
 import org.naruto.framework.user.domain.User;
 import org.naruto.framework.user.service.ThirdPartyUserService;

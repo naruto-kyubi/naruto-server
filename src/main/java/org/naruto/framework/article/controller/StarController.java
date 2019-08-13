@@ -9,7 +9,7 @@ import org.naruto.framework.core.web.ResultEntity;
 import org.naruto.framework.core.security.SessionUtils;
 import org.naruto.framework.user.domain.User;
 import org.naruto.framework.user.service.UserService;
-import org.naruto.framework.common.utils.PageUtils;
+import org.naruto.framework.core.utils.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;

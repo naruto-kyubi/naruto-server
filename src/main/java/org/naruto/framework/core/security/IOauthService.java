@@ -1,6 +1,5 @@
 package org.naruto.framework.core.security;
 
-import org.naruto.framework.security.vo.OauthUserInfo;
 import org.naruto.framework.user.domain.ThirdPartyUser;
 import org.naruto.framework.user.domain.User;
 

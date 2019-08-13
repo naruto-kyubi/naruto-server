@@ -5,7 +5,7 @@ import org.naruto.framework.core.exception.ServiceException;
 import org.naruto.framework.core.security.IAuthenticationService;
 import org.naruto.framework.core.security.IOauthService;
 import org.naruto.framework.security.exception.SecurityError;
-import org.naruto.framework.security.vo.LogonUser;
+import org.naruto.framework.core.security.LogonUser;
 import org.naruto.framework.user.domain.ThirdPartyUser;
 import org.naruto.framework.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;

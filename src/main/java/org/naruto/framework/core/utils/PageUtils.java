@@ -1,4 +1,4 @@
-package org.naruto.framework.common.utils;
+package org.naruto.framework.core.utils;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,6 +10,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class PageUtils {
+
+
     public static Map prepareQueryPageMap(Map map) {
         if (null == map) map = new HashMap();
 

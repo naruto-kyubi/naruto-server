@@ -10,7 +10,7 @@ import org.naruto.framework.user.domain.ThirdPartyUser;
 import org.naruto.framework.user.domain.User;
 import org.naruto.framework.user.service.ThirdPartyUserService;
 import org.naruto.framework.user.service.UserService;
-import org.naruto.framework.common.utils.PageUtils;
+import org.naruto.framework.core.utils.PageUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -216,13 +216,13 @@ public class UserController {
         return ResponseEntity.ok(ResultEntity.ok(user));
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/v1/users/search", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
-    public ResponseEntity<ResultEntity> search(
-            @RequestParam(required = false) Map map,
-            HttpServletRequest request, HttpServletResponse response) {
-
-        Page page = userService.search(map);
-        return ResponseEntity.ok(ResultEntity.ok(page.getContent(), PageUtils.wrapperPagination(page)));
-    }
+//    @ResponseBody
+//    @RequestMapping(value = "/v1/users/search", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+//    public ResponseEntity<ResultEntity> search(
+//            @RequestParam(required = false) Map map,
+//            HttpServletRequest request, HttpServletResponse response) {
+//
+//        Page page = userService.search(map);
+//        return ResponseEntity.ok(ResultEntity.ok(page.getContent(), PageUtils.wrapperPagination(page)));
+//    }
 }

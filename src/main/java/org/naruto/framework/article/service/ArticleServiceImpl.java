@@ -8,7 +8,7 @@ import org.naruto.framework.article.repository.ArticleRepository;
 import org.naruto.framework.article.repository.CommentRepository;
 import org.naruto.framework.core.exception.CommonError;
 import org.naruto.framework.core.exception.ServiceException;
-import org.naruto.framework.common.utils.PageUtils;
+import org.naruto.framework.core.utils.PageUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

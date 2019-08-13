@@ -1,4 +1,4 @@
-package org.naruto.framework.common.utils;
+package org.naruto.framework.core.utils;
 
 import java.lang.reflect.Field;
 import java.util.*;

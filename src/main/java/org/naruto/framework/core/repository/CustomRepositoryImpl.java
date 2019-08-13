@@ -1,6 +1,6 @@
 package org.naruto.framework.core.repository;
 
-import org.naruto.framework.common.utils.PageUtils;
+import org.naruto.framework.core.utils.PageUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;

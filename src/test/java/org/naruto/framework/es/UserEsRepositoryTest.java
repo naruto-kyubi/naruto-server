@@ -7,7 +7,7 @@ import org.naruto.framework.search.user.domain.EsUser;
 import org.naruto.framework.search.user.repository.UserEsRepository;
 import org.naruto.framework.user.domain.User;
 import org.naruto.framework.user.repository.UserRepository;
-import org.naruto.framework.common.utils.ObjUtils;
+import org.naruto.framework.core.utils.ObjUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;

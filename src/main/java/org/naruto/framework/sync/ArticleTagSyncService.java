@@ -5,7 +5,7 @@ import org.naruto.framework.article.domain.Article;
 import org.naruto.framework.article.service.ArticleService;
 import org.naruto.framework.search.article.domain.EsArticle;
 import org.naruto.framework.search.article.service.ArticleEsService;
-import org.naruto.framework.common.utils.ObjUtils;
+import org.naruto.framework.core.utils.ObjUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
