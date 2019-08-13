@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.validation.ConstraintViolationException;
+
 @Slf4j
 @ControllerAdvice
 public class ControllerExceptionHandler {
@@ -42,9 +44,10 @@ public class ControllerExceptionHandler {
         return ResultEntity.fail(new ServiceException(CommonError.UNKNOWN_ERROR));
     }
 
+
     @ResponseBody
-    @ExceptionHandler(value = MissingServletRequestParameterException.class)
-    public ResultEntity missParameterExceptionHandler(MissingServletRequestParameterException ex) {
+    @ExceptionHandler(value={MissingServletRequestParameterException.class,ConstraintViolationException.class})
+    public ResultEntity missParameterExceptionHandler(Exception ex) {
         ServiceException serviceException = new ServiceException(CommonError.PARAMETER_VALIDATION_ERROR);
         serviceException.setErrMsg(ex.getMessage());
         return ResultEntity.fail(serviceException);
