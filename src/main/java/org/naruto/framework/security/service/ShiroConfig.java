@@ -1,4 +1,4 @@
-package org.naruto.framework.security;
+package org.naruto.framework.security.service;
 
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.DefaultSubjectDAO;
