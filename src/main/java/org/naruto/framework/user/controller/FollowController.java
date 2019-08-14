@@ -1,15 +1,12 @@
 package org.naruto.framework.user.controller;
 
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
-import org.naruto.framework.core.web.ResultEntity;
-import org.naruto.framework.search.user.service.UserEsService;
 import org.naruto.framework.core.security.SessionUtils;
+import org.naruto.framework.core.utils.PageUtils;
+import org.naruto.framework.core.web.ResultEntity;
 import org.naruto.framework.user.domain.Follow;
 import org.naruto.framework.user.domain.User;
 import org.naruto.framework.user.service.FollowService;
 import org.naruto.framework.user.service.UserService;
-import org.naruto.framework.core.utils.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -30,9 +27,6 @@ public class FollowController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private UserEsService userEsService;
-
 
     @Autowired
     private SessionUtils sessionUtils;
@@ -42,8 +36,9 @@ public class FollowController {
     @RequestMapping(value = "/v1/user/follow/{id}", method = RequestMethod.GET)
     public ResponseEntity<ResultEntity> query(@PathVariable("id") String id) {
 
-        Subject subject = SecurityUtils.getSubject();
-        User sessionUser = (User) subject.getPrincipal();
+//        Subject subject = SecurityUtils.getSubject();
+//        User sessionUser = (User) subject.getPrincipal();
+        User sessionUser = sessionUtils.getCurrentUser(null);
         Follow follow = null;
         if(null!=sessionUser){
             follow = followService.query(sessionUser.getId(),id);
@@ -76,8 +71,8 @@ public class FollowController {
             @PathVariable("id") String id,
             HttpServletRequest request,
             HttpServletResponse response) {
-        Subject subject = SecurityUtils.getSubject();
-        User sessionUser = (User) subject.getPrincipal();
+
+        User sessionUser = sessionUtils.getCurrentUser(null);
 
         userService.increaseFollowCount(sessionUser.getId(),-1L);
         userService.increaseFanCount(id,-1L);
