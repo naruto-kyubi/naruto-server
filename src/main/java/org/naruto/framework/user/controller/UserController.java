@@ -13,6 +13,7 @@ import org.naruto.framework.user.domain.User;
 import org.naruto.framework.user.service.ThirdPartyUserService;
 import org.naruto.framework.user.service.UserService;
 import org.naruto.framework.user.vo.RegisterRequest;
+import org.naruto.framework.user.vo.ResetPasswordRequest;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -60,7 +61,6 @@ public class UserController {
 
     @RequestMapping(value = "/v1/user/register", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public ResponseEntity<ResultEntity> register(@Validated @RequestBody RegisterRequest registerRequest){
-
         User user =  modelMapper.map(registerRequest,User.class);
         return ResponseEntity.ok(ResultEntity.ok(userService.register(user)));
     }
@@ -72,13 +72,13 @@ public class UserController {
     }
 
     @RequestMapping(value = "/v1/user/resetPassword", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    public ResponseEntity<ResultEntity> resetPassword(@Validated @RequestBody User user){
-
+    public ResponseEntity<ResultEntity> resetPassword(@Validated @RequestBody ResetPasswordRequest resetPasswordRequest){
+        User user =  modelMapper.map(resetPasswordRequest,User.class);
         return ResponseEntity.ok(ResultEntity.ok(userService.resetPassword(user)));
     }
 
     @RequestMapping(value = "/v1/user/forgotPasswordCaptcha", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
-    public ResponseEntity<ResultEntity> getForgotPasswordCaptcha(@Validated @RequestParam(name = "mobile") String mobile) {
+    public ResponseEntity<ResultEntity> getForgotPasswordCaptcha(@NotBlank(message = "mobie number is blank") @RequestParam(name = "mobile") String mobile) {
         captchaService.createCaptcha(mobile, CaptchaType.FORGOTPASSWORD);
         return ResponseEntity.ok(ResultEntity.ok(null));
     }

@@ -30,14 +30,6 @@ public class UserService {
     @Autowired
     private IEncrpyt encrpytService;
 
-    @Autowired
-    private FollowRepository followRepository;
-
-//    @Autowired
-//    private UserEsService userEsService;
-
-//    @Value("${naruto.encrpyt.salt}")
-//    private String salt;
 
     public User register(User user){
         if(user == null) {
@@ -51,17 +43,12 @@ public class UserService {
         }
         captchaService.validateCaptcha(user.getMobile(), CaptchaType.SINGUP,user.getCaptcha());
 
-//        String salt = JwtUtils.generateSalt();
         String salt = UUID.randomUUID().toString().replaceAll("-","");
         user.setPassword(encrpytService.encrpyt(user.getPassword(),salt));
         user.setPasswordSalt(salt);
         return userRepository.save(user);
     }
 
-//    public static void main(String[] args){
-//        String salt = UUID.randomUUID().toString().replaceAll("-","");
-//        System.out.println("--"+ salt + ";length=" + salt.length());
-//    }
 
     public User save(User user){
         return userRepository.save(user);
@@ -72,24 +59,19 @@ public class UserService {
     }
 
     public User resetPassword(User user){
-        if(user == null) {
+        if(user == null || user.getPassword() == null) {
             throw new ServiceException(CommonError.PARAMETER_VALIDATION_ERROR);
         }
-
         User current = userRepository.queryUserByMobile(user.getMobile());
         if(null == current){
             throw new ServiceException(UserError.USER_NOT_EXIST_ERROR);
         }
 
         captchaService.validateCaptcha(user.getMobile(), CaptchaType.FORGOTPASSWORD,user.getCaptcha());
-        current.setPassword(encrpytService.encrpyt(user.getPassword(),user.getPasswordSalt()));
+        current.setPassword(encrpytService.encrpyt(user.getPassword(),current.getPasswordSalt()));
         return userRepository.save(current);
     }
 
-//    @Transactional
-//    public Set<Role> getUserRoles(String id) {
-//        return userRepository.findById(id).get().getRoles();
-//    }
 
     @Transactional
     public User getUserById(String id){ return this.userRepository.findById(id).get(); }
@@ -137,9 +119,4 @@ public class UserService {
     public void increaseFollowCount(String userId,Long step){
         userRepository.increateCount(userId,"follow_count",step);
     }
-
-//    public Page<UserVo> search(Map map) {
-//
-//        return userEsService.search(map);
-//    }
 }
