@@ -1,4 +1,4 @@
-package org.naruto.framework.article;
+package org.naruto.framework.article.controller;
 
 import org.naruto.framework.article.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;

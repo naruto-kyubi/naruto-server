@@ -1,4 +1,4 @@
-package org.naruto.framework;
+package org.naruto.framework.core;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

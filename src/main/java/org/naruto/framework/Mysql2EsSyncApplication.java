@@ -30,7 +30,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ComponentScan(excludeFilters={
         @ComponentScan.Filter(type= FilterType.ANNOTATION,classes={SpringBootApplication.class, Controller.class}),
         @ComponentScan.Filter(type = FilterType.REGEX, pattern = "org.naruto.framework.security.*"),
-        @ComponentScan.Filter(type = FilterType.REGEX, pattern = "org.naruto.framework.WebAppConfigurer")
+        @ComponentScan.Filter(type = FilterType.REGEX, pattern = "org.naruto.framework.article.controller.WebAppConfigurer")
     })
 public class Mysql2EsSyncApplication implements CommandLineRunner {
 
