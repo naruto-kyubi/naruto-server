@@ -3,6 +3,7 @@ package org.naruto.framework.security.service;
 import lombok.extern.slf4j.Slf4j;
 import org.naruto.framework.core.exception.ServiceException;
 import org.naruto.framework.core.security.IAuthenticationService;
+import org.naruto.framework.core.security.ILogonService;
 import org.naruto.framework.core.security.IOauthService;
 import org.naruto.framework.security.exception.SecurityError;
 import org.naruto.framework.core.security.LogonUser;
@@ -16,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @Slf4j
-public class LogonService {
+public class LogonService implements ILogonService {
     @Autowired
     private Map<String, IAuthenticationService> authenticationServiceMap = new ConcurrentHashMap<>();
 
