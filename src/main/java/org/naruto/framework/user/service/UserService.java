@@ -62,14 +62,13 @@ public class UserService {
         if(user == null || user.getPassword() == null) {
             throw new ServiceException(CommonError.PARAMETER_VALIDATION_ERROR);
         }
-        String newPassword = user.getPassword();
         User current = userRepository.queryUserByMobile(user.getMobile());
         if(null == current){
             throw new ServiceException(UserError.USER_NOT_EXIST_ERROR);
         }
 
         captchaService.validateCaptcha(user.getMobile(), CaptchaType.FORGOTPASSWORD,user.getCaptcha());
-        current.setPassword(encrpytService.encrpyt(newPassword,current.getPasswordSalt()));
+        current.setPassword(encrpytService.encrpyt(user.getPassword(),current.getPasswordSalt()));
         return userRepository.save(current);
     }
 
