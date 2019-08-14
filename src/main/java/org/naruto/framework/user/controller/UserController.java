@@ -4,10 +4,10 @@ package org.naruto.framework.user.controller;
 import org.modelmapper.ModelMapper;
 import org.naruto.framework.common.captcha.CaptchaType;
 import org.naruto.framework.common.captcha.service.CaptchaService;
+import org.naruto.framework.core.security.ILogonService;
 import org.naruto.framework.core.security.SessionUtils;
 import org.naruto.framework.core.utils.PageUtils;
 import org.naruto.framework.core.web.ResultEntity;
-import org.naruto.framework.security.service.LogonService;
 import org.naruto.framework.user.domain.ThirdPartyUser;
 import org.naruto.framework.user.domain.User;
 import org.naruto.framework.user.service.ThirdPartyUserService;
@@ -43,7 +43,7 @@ public class UserController {
     private UserService userService;
 
     @Autowired
-    private LogonService logonService;
+    private ILogonService logonService;
 
     @Autowired
     private ThirdPartyUserService thirdPartyUserService;
