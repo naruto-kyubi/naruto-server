@@ -68,7 +68,7 @@ public class CaptchaService {
     }
 
     public void validateCaptcha(String mobile, CaptchaType captchaType, String captcha){
-        if(StringUtils.isBlank(mobile) ||  null==captchaType || StringUtils.isBlank(captcha)) throw new ServiceException(CommonError.PARAMETER_VALIDATION_ERROR);
+        if(StringUtils.isBlank(mobile) ||  null==captchaType || StringUtils.isBlank(captcha)) throw new ServiceException(CommonError.PARAMETER_VALIDATION_ERROR.setErrMsg("mobile or captcha is blank"));
 
         Captcha otp = captchaRepository.findFirstByMobileAndTypeAndCaptchaOrderByCreateAtDesc(mobile,captchaType.toString(),captcha);
         if(null==otp)  throw new ServiceException(CaptchaError.CAPTCHA_INCORRECT_ERROR);

@@ -17,6 +17,9 @@ public class RegisterRequest {
     @NotBlank(message ="password is blank")
     private String password;
 
+    @NotBlank(message ="mobile is blank")
+    private String mobile;
+
     @NotBlank(message ="captcha is blank")
     private String captcha;
 }
