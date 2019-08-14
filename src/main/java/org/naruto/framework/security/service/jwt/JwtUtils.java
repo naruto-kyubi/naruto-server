@@ -4,7 +4,6 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
@@ -69,14 +68,13 @@ public class JwtUtils {
         return jwt.getExpiresAt().before(now);
     }
 
-    /**
-     * 生成随机盐,长度32位
-     * @return
-     */
-    public static String generateSalt(){
-        SecureRandomNumberGenerator secureRandom = new SecureRandomNumberGenerator();
-        String hex = secureRandom.nextBytes(16).toHex();
-        return hex;
-    }
-
+//    /**
+//     * 生成随机盐,长度32位
+//     * @return
+//     */
+//    public static String generateSalt(){
+//        SecureRandomNumberGenerator secureRandom = new SecureRandomNumberGenerator();
+//        String hex = secureRandom.nextBytes(16).toHex();
+//        return hex;
+//    }
 }

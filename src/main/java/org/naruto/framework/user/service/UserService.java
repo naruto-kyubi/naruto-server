@@ -5,7 +5,6 @@ import org.naruto.framework.common.captcha.service.CaptchaService;
 import org.naruto.framework.core.encrpyt.IEncrpyt;
 import org.naruto.framework.core.exception.CommonError;
 import org.naruto.framework.core.exception.ServiceException;
-import org.naruto.framework.security.service.jwt.JwtUtils;
 import org.naruto.framework.user.domain.User;
 import org.naruto.framework.user.exception.UserError;
 import org.naruto.framework.user.repository.FollowRepository;
@@ -17,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -50,11 +50,18 @@ public class UserService {
             throw new ServiceException(UserError.NICKNAME_EXIST_ERROR);
         }
         captchaService.validateCaptcha(user.getMobile(), CaptchaType.SINGUP,user.getCaptcha());
-        String salt = JwtUtils.generateSalt();
+
+//        String salt = JwtUtils.generateSalt();
+        String salt = UUID.randomUUID().toString().replaceAll("-","");
         user.setPassword(encrpytService.encrpyt(user.getPassword(),salt));
         user.setPasswordSalt(salt);
         return userRepository.save(user);
     }
+
+//    public static void main(String[] args){
+//        String salt = UUID.randomUUID().toString().replaceAll("-","");
+//        System.out.println("--"+ salt + ";length=" + salt.length());
+//    }
 
     public User save(User user){
         return userRepository.save(user);
