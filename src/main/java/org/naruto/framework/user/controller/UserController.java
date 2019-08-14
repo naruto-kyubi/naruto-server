@@ -2,17 +2,16 @@ package org.naruto.framework.user.controller;
 
 
 import org.modelmapper.ModelMapper;
-import org.naruto.framework.article.vo.ArticleVo;
 import org.naruto.framework.common.captcha.CaptchaType;
 import org.naruto.framework.common.captcha.service.CaptchaService;
+import org.naruto.framework.core.security.SessionUtils;
+import org.naruto.framework.core.utils.PageUtils;
 import org.naruto.framework.core.web.ResultEntity;
 import org.naruto.framework.security.service.LogonService;
-import org.naruto.framework.core.security.SessionUtils;
 import org.naruto.framework.user.domain.ThirdPartyUser;
 import org.naruto.framework.user.domain.User;
 import org.naruto.framework.user.service.ThirdPartyUserService;
 import org.naruto.framework.user.service.UserService;
-import org.naruto.framework.core.utils.PageUtils;
 import org.naruto.framework.user.vo.RegisterRequest;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Arrays;
