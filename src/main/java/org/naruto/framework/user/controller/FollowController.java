@@ -2,14 +2,13 @@ package org.naruto.framework.user.controller;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
-import org.naruto.framework.core.web.ResultEntity;
-import org.naruto.framework.search.user.service.UserEsService;
 import org.naruto.framework.core.security.SessionUtils;
+import org.naruto.framework.core.utils.PageUtils;
+import org.naruto.framework.core.web.ResultEntity;
 import org.naruto.framework.user.domain.Follow;
 import org.naruto.framework.user.domain.User;
 import org.naruto.framework.user.service.FollowService;
 import org.naruto.framework.user.service.UserService;
-import org.naruto.framework.core.utils.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -29,9 +28,6 @@ public class FollowController {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private UserEsService userEsService;
 
 
     @Autowired
