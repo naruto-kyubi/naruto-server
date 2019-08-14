@@ -1,10 +1,9 @@
 package org.naruto.framework.security.controller;
 
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
+import org.naruto.framework.core.security.SessionUtils;
 import org.naruto.framework.core.web.ResultEntity;
-import org.naruto.framework.user.domain.User;
 import org.naruto.framework.security.service.ResourceRoleService;
+import org.naruto.framework.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,11 +22,13 @@ public class PermissionController {
     @Autowired
     private ResourceRoleService resourceRoleService;
 
+    @Autowired
+    private SessionUtils sessionUtils;
+
     @RequestMapping(value = "/v1/logon/function", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public ResponseEntity<ResultEntity> queryFunctions() {
 
-        Subject subject = SecurityUtils.getSubject();
-        User user = (User) subject.getPrincipal();
+        User user = sessionUtils.getCurrentUser(null);
         List list = null;
         if(null!=user){
             list = resourceRoleService.queryUserFunctions(user.getId());
