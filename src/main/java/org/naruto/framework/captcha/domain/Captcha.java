@@ -1,4 +1,4 @@
-package org.naruto.framework.common.captcha.domain;
+package org.naruto.framework.captcha.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -2,7 +2,7 @@ package org.naruto.framework;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-import org.naruto.framework.common.captcha.CaptchaTestSuite;
+import org.naruto.framework.captcha.CaptchaTestSuite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({CaptchaTestSuite.class})

@@ -1,4 +1,4 @@
-package org.naruto.framework.common.captcha;
+package org.naruto.framework.captcha;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

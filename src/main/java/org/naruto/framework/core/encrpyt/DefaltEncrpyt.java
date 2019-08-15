@@ -1,6 +1,6 @@
 package org.naruto.framework.core.encrpyt;
 
-import org.apache.shiro.crypto.hash.Md5Hash;
+import org.naruto.framework.core.utils.MD5;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.stereotype.Component;
 
@@ -10,6 +10,7 @@ public class DefaltEncrpyt implements IEncrpyt{
 
     @Override
     public String encrpyt(String str, String salt) {
-        return new Md5Hash(str, salt).toString();
+//        return new Md5Hash(str, salt).toString();
+        return MD5.encrypt(str,salt);
     }
 }

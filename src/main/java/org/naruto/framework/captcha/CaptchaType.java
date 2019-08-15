@@ -1,4 +1,4 @@
-package org.naruto.framework.common.captcha;
+package org.naruto.framework.captcha;
 
 public enum CaptchaType {
     SINGUP,LOGON,FORGOTPASSWORD;

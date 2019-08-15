@@ -1,6 +1,6 @@
-package org.naruto.framework.common.captcha.repository;
+package org.naruto.framework.captcha.repository;
 
-import org.naruto.framework.common.captcha.domain.Captcha;
+import org.naruto.framework.captcha.domain.Captcha;
 import org.springframework.data.repository.CrudRepository;
 
 public interface CaptchaRepository extends CrudRepository<Captcha,String> {

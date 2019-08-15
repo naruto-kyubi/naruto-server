@@ -2,8 +2,8 @@ package org.naruto.framework.user.controller;
 
 
 import org.modelmapper.ModelMapper;
-import org.naruto.framework.common.captcha.CaptchaType;
-import org.naruto.framework.common.captcha.service.CaptchaService;
+import org.naruto.framework.captcha.CaptchaType;
+import org.naruto.framework.captcha.service.CaptchaService;
 import org.naruto.framework.core.security.ILogonService;
 import org.naruto.framework.core.security.SessionUtils;
 import org.naruto.framework.core.utils.PageUtils;

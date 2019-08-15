@@ -1,13 +1,13 @@
-package org.naruto.framework.common.captcha;
+package org.naruto.framework.captcha;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.naruto.framework.FrameworkApplication;
-import org.naruto.framework.common.captcha.domain.Captcha;
-import org.naruto.framework.common.captcha.repository.CaptchaRepository;
-import org.naruto.framework.common.captcha.service.CaptchaService;
+import org.naruto.framework.captcha.domain.Captcha;
+import org.naruto.framework.captcha.repository.CaptchaRepository;
+import org.naruto.framework.captcha.service.CaptchaService;
 import org.naruto.framework.core.exception.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,4 +1,4 @@
-package org.naruto.framework.common.captcha.service;
+package org.naruto.framework.captcha.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.aliyuncs.CommonRequest;
@@ -12,11 +12,11 @@ import com.aliyuncs.profile.DefaultProfile;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.naruto.framework.common.captcha.CaptchaConfig;
-import org.naruto.framework.common.captcha.CaptchaType;
-import org.naruto.framework.common.captcha.domain.Captcha;
-import org.naruto.framework.common.captcha.exception.CaptchaError;
-import org.naruto.framework.common.captcha.repository.CaptchaRepository;
+import org.naruto.framework.captcha.CaptchaConfig;
+import org.naruto.framework.captcha.CaptchaType;
+import org.naruto.framework.captcha.domain.Captcha;
+import org.naruto.framework.captcha.exception.CaptchaError;
+import org.naruto.framework.captcha.repository.CaptchaRepository;
 import org.naruto.framework.core.exception.CommonError;
 import org.naruto.framework.core.exception.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;

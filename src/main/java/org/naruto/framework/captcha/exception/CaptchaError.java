@@ -1,4 +1,4 @@
-package org.naruto.framework.common.captcha.exception;
+package org.naruto.framework.captcha.exception;
 
 import org.naruto.framework.core.exception.CommonError;
 
