@@ -2,9 +2,11 @@ package org.naruto.framework.user.service;
 
 import org.naruto.framework.captcha.CaptchaType;
 import org.naruto.framework.captcha.service.CaptchaService;
+import org.apache.commons.lang.StringUtils;
 import org.naruto.framework.core.encrpyt.IEncrpyt;
 import org.naruto.framework.core.exception.CommonError;
 import org.naruto.framework.core.exception.ServiceException;
+import org.naruto.framework.core.file.FileService;
 import org.naruto.framework.user.domain.User;
 import org.naruto.framework.user.exception.UserError;
 import org.naruto.framework.user.repository.UserRepository;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -28,6 +31,9 @@ public class UserService {
 
     @Autowired
     private IEncrpyt encrpytService;
+
+    @Autowired
+    private FileService fileService;
 
 
     public User register(User user){
@@ -48,15 +54,6 @@ public class UserService {
         return userRepository.save(user);
     }
 
-
-    public User save(User user){
-        return userRepository.save(user);
-    }
-
-    public User getUserByMobile(String mobile){
-        return userRepository.queryUserByMobile(mobile);
-    }
-
     public User resetPassword(User user){
         if(user == null || user.getPassword() == null) {
             throw new ServiceException(CommonError.PARAMETER_VALIDATION_ERROR);
@@ -70,6 +67,27 @@ public class UserService {
         current.setPassword(encrpytService.encrpyt(user.getPassword(),current.getPasswordSalt()));
         return userRepository.save(current);
     }
+
+    public String setAvatar(MultipartFile file,String userid) throws Exception{
+        String contentType = file.getContentType();
+        String fileName = file.getOriginalFilename();
+        String imageUrl = fileService.uploadFile(file);
+        User user = this.queryUserById(userid);
+        user.setAvatar(imageUrl);
+        this.save(user);
+        return user.getAvatar();
+    }
+
+
+    public User save(User user){
+        return userRepository.save(user);
+    }
+
+    public User getUserByMobile(String mobile){
+        return userRepository.queryUserByMobile(mobile);
+    }
+
+
 
 
     @Transactional
