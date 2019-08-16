@@ -1,17 +1,18 @@
 package org.naruto.framework.search.search.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.index.query.MoreLikeThisQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
+import org.naruto.framework.core.elasticsearch.ElasticSearchUtils;
 import org.naruto.framework.core.elasticsearch.HighLightResultMapper;
+import org.naruto.framework.core.utils.PageUtils;
 import org.naruto.framework.search.ElasticSearchHighlightConfig;
 import org.naruto.framework.search.article.domain.EsArticle;
 import org.naruto.framework.search.article.repository.ArticleEsRepository;
 import org.naruto.framework.search.user.repository.UserEsRepository;
-import org.naruto.framework.core.elasticsearch.ElasticSearchUtils;
-import org.naruto.framework.core.utils.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -28,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Slf4j
 public class SearchEsServiceImpl implements SearchEsService{
 
     @Resource
@@ -64,7 +66,7 @@ public class SearchEsServiceImpl implements SearchEsService{
                 ).withMinScore(0.4F).
                 build();
         searchQuery.setPageable(pageable);
-        System.out.println(searchQuery.getQuery().toString());
+        log.debug("searchMutiIndices:" + searchQuery.getQuery().toString());
 
         Page<Map> page = elasticsearchTemplate.query(searchQuery, response -> {
             SearchHits hits = response.getHits();
@@ -97,14 +99,19 @@ public class SearchEsServiceImpl implements SearchEsService{
         Pageable pageable = PageUtils.createPageable(_map);
         String articleId = (String) map.get("id");
 //        MoreLikeThisRequestBuilder mlt = new MoreLikeThisRequestBuilder(client, "indexName", "indexType", "id");  mlt.setField("title");//匹配的字段  SearchResponse response = client.moreLikeThis(mlt.request()).actionGet();
-        QueryBuilders.moreLikeThisQuery(new MoreLikeThisQueryBuilder.Item[]{new MoreLikeThisQueryBuilder.Item("naruto","article",articleId)});
+//        QueryBuilders.moreLikeThisQuery(new MoreLikeThisQueryBuilder.Item[]{new MoreLikeThisQueryBuilder.Item("naruto","article",articleId)});
 
         SearchQuery searchQuery = new NativeSearchQueryBuilder().
                 withIndices("naruto").
                 withFields("id","title","contentHtml","updatedAt","userId").
-                withQuery(QueryBuilders.moreLikeThisQuery(new MoreLikeThisQueryBuilder.Item[]{new MoreLikeThisQueryBuilder.Item("naruto","article",articleId)})).
+                withQuery(QueryBuilders.moreLikeThisQuery(
+                        new MoreLikeThisQueryBuilder.Item[]{
+                                new MoreLikeThisQueryBuilder.Item("naruto","article",articleId)}).
+                        minimumShouldMatch("1").
+                        minDocFreq(4)).
                 build();
         searchQuery.setPageable(pageable);
+        log.info("searchLikeThis:" + searchQuery.getQuery().toString());
         return articleEsRepository.search(searchQuery);
     }
 }
